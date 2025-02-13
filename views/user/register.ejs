@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AESTHE - Register</title>
+    <link rel="stylesheet" href="register.css">
+</head>
+
+<body>
+    <div class="split-layout">
+        <div class="left-side">
+            <div class="menu-icon">☰</div>
+            <nav class="top-nav">
+                <a href="#">SEARCH</a>
+                <a href="#">LOG IN</a>
+                <a href="#">HELP</a>
+            </nav>
+            <div class="logo">AESTHE</div>
+            <div class="register-content">
+                <h1 class="personaldetails">PERSONAL DETAILS</h1>
+                <form>
+                    <div class="form-group">
+                        <label for="name">FULL NAME</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-MAIL</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">PASSWORD</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">CONFIRM PASSWORD</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>TELEPHONE</label>
+                        <div class="phone-group">
+                            <input type="text" class="prefix" value="+91" readonly>
+                            <input type="tel" class="phone" required>
+                        </div>
+                    </div>
+                    <p class="verify-text">We will send you an SMS to verify your phone number</p>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="newsletter">
+                        <label for="newsletter">I wish to receive AESTHE news on my e-mail</label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="privacy" required>
+                        <label for="privacy">I accept the <a href="#">privacy statement</a></label>
+                    </div>
+
+                    <button type="submit" class="btn">CREATE ACCOUNT</button>
+                </form>
+            </div>
+        </div>
+        <div class="right-side"></div>
+    </div>
+</body>
+
+</html>
