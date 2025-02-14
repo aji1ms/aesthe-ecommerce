@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -100,19 +99,6 @@ h1 {
     border-bottom-color: #000;
 }
 
-.phone-group {
-    display: flex;
-    gap: 1rem;
-}
-
-.phone-group .prefix {
-    width: 80px;
-}
-
-.phone-group .phone {
-    flex: 1;
-}
-
 .verify-text {
     font-size: 0.8rem;
     color: #666;
@@ -136,6 +122,13 @@ h1 {
     text-decoration: none;
 }
 
+
+.error-message {
+    color: red;
+    font-size: 0.75rem;
+    display: none;
+}
+
 .btn {
     width: 100%;
     padding: 1rem;
@@ -152,6 +145,7 @@ h1 {
     background: #000;
     color: #fff;
 }
+
 
 @media (max-width: 768px) {
     .split-layout {

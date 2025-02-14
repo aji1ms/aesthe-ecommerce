@@ -18,16 +18,12 @@ const userSchema = new mongoose.Schema({
         sparse: true,
         default: null
     },
-    googleId: {
-        type: String,
-        unique: true
-    },
     password: {
         type: String,
-        require: false
+        require: true
     },
     isBlocked: {
-        type:Boolean,
+        type: Boolean,
         default: false
     },
     isAdmin: {
@@ -40,7 +36,10 @@ const userSchema = new mongoose.Schema({
     }],
     wallet: [{
         type: Schema.Types.ObjectId,
-        ref: "Whishlist"
+    }],
+    wishlist: [{
+        type: Schema.Types.ObjectId,
+        ref: "whishlist"
     }],
     orderHistory: [{
         type: Schema.Types.ObjectId,
@@ -52,13 +51,16 @@ const userSchema = new mongoose.Schema({
     },
     referalCode: {
         type: String,
+        // required:true
     },
     redeemed: {
-        type: Boolean
+        type: Boolean,
+        // default:false
     },
     redeemedUsers: [{
         type: Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        // required:true
     }],
     searchHistory: [{
         category: {
@@ -75,5 +77,5 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
-const User = mongoose.model("User",userSchema);
+const User = mongoose.model("User", userSchema);
 module.exports = User;
