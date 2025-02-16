@@ -4,6 +4,8 @@ const userController = require("../controllers/user/userController");
 const passport = require('passport');
 
 
+router.get('/pageNotFound', userController.pageNotFound);
+
 router.get('/', userController.loadHomepage);
 router.get('/signup', userController.loadSignup);
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -18,6 +20,7 @@ router.post('/verify-otp', userController.verifyOtp);
 router.post('/resend-otp', userController.resendOtp);
 
 router.get('/login', userController.loadloginpage);
-router.get('/pageNotFound', userController.pageNotFound);
+router.post('/login',userController.login);
+
 
 module.exports = router;

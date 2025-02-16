@@ -15,16 +15,20 @@
             <div class="logo">AESTHE</div>
             <div class="login-content">
                 <h1 class="login">LOG IN</h1>
-                <form>
+                <form action="/login" method="POST">
                     <div class="form-group">
                         <label for="email">EMAIL</label>
-                        <input type="email" id="email" required>
+                        <input type="email"  name="email" id="email" required>
                     </div>
                     <div class="form-group">
                         <label for="password">PASSWORD</label>
-                        <input type="password" id="password" required>
+                        <input type="password" name="password" id="password" required>
                     </div>
-
+                   <% if (locals.message && message.length>0) { %>
+                    <div class="alert alert-danger text-center">
+                        <%=message%>
+                    </div>
+                   <%}%>
                     <a href="#" class="forgot-password">Forgot your password?</a>
 
                     <button type="submit" class="btn">LOG IN</button>

@@ -46,19 +46,24 @@
                         <input type="password" name="cPassword" id="confirm-password" required>
                         <div id="error5" class="error-message"></div>
                     </div>
-                    <p class="verify-text">We will send you an SMS to verify your phone number</p>
+                    <% if (locals.message && message.length>0) { %>
+                        <div class="alert">
+                            <%=message%>
+                        </div>
+                        <%}%>
+                            <p class="verify-text">We will send you an SMS to verify your phone number</p>
 
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="newsletter">
-                        <label for="newsletter">I wish to receive AESTHE news on my e-mail</label>
-                    </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="newsletter">
+                                <label for="newsletter">I wish to receive AESTHE news on my e-mail</label>
+                            </div>
 
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="privacy" required>
-                        <label for="privacy">I accept the <a href="#">privacy statement</a></label>
-                    </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="privacy" required>
+                                <label for="privacy">I accept the <a href="#">privacy statement</a></label>
+                            </div>
 
-                    <button type="submit" class="btn">CREATE ACCOUNT</button>
+                            <button type="submit" class="btn">CREATE ACCOUNT</button>
                 </form>
             </div>
         </div>

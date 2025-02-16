@@ -79,11 +79,11 @@ async function sendVerificationEmail(email, otp) {
 
 const register = async (req, res) => {
 
-    const { name, email, phone, password } = req.body;
-
     try {
 
-        const { email, password, cPassword } = req.body;
+        const { name, email, phone, password, cPassword } = req.body;
+        console.log("Registration attempt with password:", password);
+
         if (password != cPassword) {
             return res.render("register", { message: "Password do not match" });
         }
@@ -191,10 +191,52 @@ const resendOtp = async (req, res) => {
 
 const loadloginpage = async (req, res) => {
     try {
-        res.render("login")
+        if (req.session.userData) {
+            return res.redirect('/');
+        } else {
+            return res.render("login");
+        }
     } catch (error) {
         console.log("Login Page Loading Error", error);
         res.status(500).redirect("/pageNotFound")
+    }
+}
+
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const findUser = await User.findOne({ isAdmin: 0, email: email });
+
+        // Add logging to debug
+        console.log("Login attempt for email:", email);
+        console.log("User found:", findUser);
+
+        if (!findUser) {
+            return res.render('login', { message: "User not found" });
+        }
+
+        if (findUser.isBlocked) {
+            return res.render('login', { message: "User is blocked by admin" });
+        }
+
+        const passwordMatch = await bcrypt.compare(password, findUser.password);
+        console.log("Password match:", passwordMatch);
+
+        if (!passwordMatch) {
+            return res.render('login', { message: "Password incorrect" });
+        }
+
+        req.session.userData = {
+            _id: findUser._id,
+            email: findUser.email,
+            name: findUser.name
+        };
+
+        return res.redirect("/");
+
+    } catch (error) {
+        console.log("Error Login", error);
+        return res.render('login', { message: "Login failed. Please try again later" });
     }
 }
 
@@ -219,4 +261,5 @@ module.exports = {
     verifyOtp,
     resendOtp,
     loadloginpage,
+    login,
 } 

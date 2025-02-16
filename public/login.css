@@ -123,6 +123,9 @@ h1 {
     cursor: pointer;
     transition: all 0.3s;
 }
+.alert {
+    color: red;
+}
 
 .btn:hover {
     background: #000;
