@@ -21,6 +21,7 @@ router.post('/resend-otp', userController.resendOtp);
 
 router.get('/login', userController.loadloginpage);
 router.post('/login',userController.login);
+router.get('/logout',userController.logout);
 
 
 module.exports = router;

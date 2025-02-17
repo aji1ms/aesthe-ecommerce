@@ -3,13 +3,21 @@ const { Session } = require("express-session");
 const User = require("../../models/userSchema");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
+const { session } = require("passport");
 const env = require("dotenv").config();
 
 // ---Home page---
 
 const loadHomepage = async (req, res) => {
     try {
-        res.render("home");
+        const user = req.session.userData;
+        console.log(user)
+        if (user) {
+            const userData = await User.findOne({ _id: user._id });
+            res.render("home", { user: userData });
+        } else {
+            return res.render('home');
+        }
     } catch (error) {
         console.log("Home Page Not Found", error)
         res.status(500).redirect("/pageNotFound")
@@ -151,7 +159,7 @@ const verifyOtp = async (req, res) => {
         return res.status(200).json({
             status: 'success',
             message: 'Account verified successfully!',
-            redirectUrl: '/'
+            redirectUrl: '/login'
         });
 
     } catch (error) {
@@ -240,6 +248,23 @@ const login = async (req, res) => {
     }
 }
 
+// ---logout ---
+
+const logout = async (req,res) => {
+    try {
+        req.session.destroy((err)=>{
+            if(err){
+                console.log("Session destroty error",err.message);
+                return res.redirect('/pageNotFound');
+            }
+            return res.redirect('/login');
+        })
+    } catch (error) {
+        console.log("Logout error",error);
+        res.redirect('/pageNotFound');
+    }
+}
+
 // ---404 page---
 
 const pageNotFound = async (req, res) => {
@@ -262,4 +287,5 @@ module.exports = {
     resendOtp,
     loadloginpage,
     login,
+    logout,
 } 

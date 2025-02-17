@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="images/AestheLogo-red.png"/>
+  <link rel="icon" type="image/png" href="images/AestheLogo-red.png" />
   <title>AESTHE | Online Fashion</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://kit.fontawesome.com/2c69d5657b.js" crossorigin="anonymous"></script>
 
 </head>
+
 <body>
 
   <div class="header">
     <div class="container">
-      <div class="navbar" >
+      <div class="navbar">
         <div class="logo">
           <nav>
             <ul id="MenuItems">
@@ -25,53 +27,72 @@
         </div>
         <nav class="first-nav">
           <ul id="MenuItems">
-            <img src="images/account.svg" width="25px"  alt="">
-            <li><a href="/signup">Sign up</a></li>
-            <li><a href="/login">Login</a></li>
-            <img src="images/search.svg" class="search" alt="">
-            <img src="images/fav.svg" width="25px"  alt="">
-            <li><a href="#">Favourites</a></li>
+            <%if (locals.user) {%>
+              <li class="dropdown">
+                <a href="#" class="user-name">
+                  <%=locals.user.name%>
+                </a>
+                <div class="dropdown-content">
+                  <a href="/profile"><i class="fas fa-user"></i> My Profile</a>
+                  <div class="divider"></div>
+                  <a href="/orders"><i class="fas fa-shopping-bag"></i> My Orders</a>
+                  <a href="/settings"><i class="fas fa-cog"></i> Settings</a>
+                  <div class="divider"></div>
+                  <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+              </li>
+              <%} else {%>
+                <a href="/signup">
+                  <img src="images/account.svg" width="25px" alt="">
+                </a>
+                <li><a href="/signup">Sign up</a></li>
+                <li><a href="/login">Login</a></li>
+                <%}%>
+                  <img src="images/search.svg" class="search" alt="">
+                  <img src="images/fav.svg" width="25px" alt="">
+                  <li><a href="#">Favourites</a></li>
 
-            <a href="#"><img src="images/bag.svg" width="25px"  alt="">
-            <li>Shopping bag(0)</a></li>
+                  <a href="#"><img src="images/bag.svg" width="25px" alt="">
+                    <li>Shopping bag(0)
+                  </a></li>
           </ul>
         </nav>
       </div>
       <div class="mobile-img-logo">
-      <img src="images/menu.svg" class="mobile-menu" id="nav-toggle">
-      <img src="images/logo.svg"  alt="">
-    </div>
-      <div class="second-nav-container" >
-      <a href="">
-        <img id="logoImage" src="images/AestheLogo-red.png" width="50px" alt="">
-      </a>
-      <nav class="second-nav">
-        <ul id="MenuItems">
-          <li><a href="#">Ladies<span>&#8594;</span></a></li> 
-          <li><a href="#">Men <span>&#8594;</span></a></li>
-          <li><a href="#">Baby <span>&#8594;</span></a></li>
-          <li><a href="#">Kids <span>&#8594;</span></a></li>
-          <li><a href="#">Home <span>&#8594;</span></a></li>
-          <li><a href="#">Sales <span>&#8594;</span></a></li>
-        </ul>
-        <img src="images/search.svg"   alt=""> <input placeholder="search products" type="text" class="search-input">
-      </nav>
-    </div>
+        <img src="images/menu.svg" class="mobile-menu" id="nav-toggle">
+        <img src="images/logo.svg" alt="">
+      </div>
+      <div class="second-nav-container">
+        <a href="">
+          <img id="logoImage" src="images/AestheLogo-red.png" width="50px" alt="">
+        </a>
+        <nav class="second-nav">
+          <ul id="MenuItems">
+            <li><a href="#">Ladies<span>&#8594;</span></a></li>
+            <li><a href="#">Men <span>&#8594;</span></a></li>
+            <li><a href="#">Baby <span>&#8594;</span></a></li>
+            <li><a href="#">Kids <span>&#8594;</span></a></li>
+            <li><a href="#">Home <span>&#8594;</span></a></li>
+            <li><a href="#">Sales <span>&#8594;</span></a></li>
+          </ul>
+          <img src="images/search.svg" alt=""> <input placeholder="search products" type="text" class="search-input">
+        </nav>
+      </div>
     </div>
   </div>
 
   <!-- mobile navbar -->
   <div class="mobile-navbar" id="nav-menu">
-    <nav >
+    <nav>
       <ul>
-        <li><img src="images/account.svg" >Sign in<span><i class="fa fa-times" id="hide-toggle"></i></span></li>
+        <li><img src="images/account.svg">Sign in<span><i class="fa fa-times" id="hide-toggle"></i></span></li>
         <li><a href="#">Women <span>&#8594;</span></a></li>
-          <li><a href="#">Men <span>&#8594;</span></a></li>
-          <li><a href="#">Kids <span>&#8594;</span></a></li>
-          <li><a href="#">Divided <span>&#8594;</span></a></li>
-          <li><a href="#">Sale <span>&#8594;</span></a></li>
-          <li><a href="#">MAGAZINE <span>&#8594;</span></a></li>
-          <li><a href="#">Sustainability <span>&#8594;</span></a></li>
+        <li><a href="#">Men <span>&#8594;</span></a></li>
+        <li><a href="#">Kids <span>&#8594;</span></a></li>
+        <li><a href="#">Divided <span>&#8594;</span></a></li>
+        <li><a href="#">Sale <span>&#8594;</span></a></li>
+        <li><a href="#">MAGAZINE <span>&#8594;</span></a></li>
+        <li><a href="#">Sustainability <span>&#8594;</span></a></li>
         <li class="small-li">Customer Service</li>
         <li class="small-li">NewsLetter</li>
         <li class="small-li">Find a store</li>
