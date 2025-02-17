@@ -16,16 +16,21 @@ const userSchema = new mongoose.Schema({
         unique: true,
         sparse:true,
     },
+    authType:{
+        type:String,
+        enum:["email","google"],
+        required:true,
+        default:"email",
+    },
     phone: {
         type: String,
         required: false,
         unique: true,
         sparse: true,
-        default: null
     },
     password: {
         type: String,
-        required: false,
+        required: false, 
     },
     isBlocked: {
         type: Boolean,

@@ -223,6 +223,10 @@ const login = async (req, res) => {
             return res.render('login', { message: "User not found" });
         }
 
+        if (findUser.authType === "google") {
+            return res.render('login', { message: "Please log in using Google" });
+        }
+
         if (findUser.isBlocked) {
             return res.render('login', { message: "User is blocked by admin" });
         }
@@ -250,17 +254,17 @@ const login = async (req, res) => {
 
 // ---logout ---
 
-const logout = async (req,res) => {
+const logout = async (req, res) => {
     try {
-        req.session.destroy((err)=>{
-            if(err){
-                console.log("Session destroty error",err.message);
+        req.session.destroy((err) => {
+            if (err) {
+                console.log("Session destroty error", err.message);
                 return res.redirect('/pageNotFound');
             }
             return res.redirect('/login');
         })
     } catch (error) {
-        console.log("Logout error",error);
+        console.log("Logout error", error);
         res.redirect('/pageNotFound');
     }
 }

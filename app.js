@@ -5,6 +5,7 @@ const session = require("express-session");
 const passport = require("./config/passport");
 const db = require("./config/db");
 const userRouter = require("./routes/userRouter");
+const adminRouter = require("./routes/adminRouter");
 db();
 
 const app = express();
@@ -27,7 +28,7 @@ app.use(passport.session());
 
 app.use((req, res, next) => {
     res.set('cache-control', 'no-store')
-    next()
+    next() 
 })
 
 app.set("view engine", "ejs");
@@ -35,6 +36,7 @@ app.set("views", [path.join(__dirname, "views/user"), path.join(__dirname, "view
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use('/', userRouter);
+app.use('/admin',adminRouter);
 
 const PORT = 3000 || process.env.PORT;
 app.listen(process.env.PORT, () => {

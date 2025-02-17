@@ -30,6 +30,7 @@ body {
 .left-side {
     width: 50%;
     padding: 2rem;
+    padding-top: 0%;
     display: flex;
     flex-direction: column;
 }
@@ -68,6 +69,7 @@ body {
     font-family: "Bodoni MT", "Didot", "Times New Roman", serif;
     font-size: 1.5rem;
     color: #595959;
+    margin-bottom: 30px;
 }
 
 h1 {
@@ -103,8 +105,16 @@ h1 {
 
 .forgot-password {
     display: block;
-    margin: 1rem 0 2rem;
+    margin-bottom: 15px;
     color: #666;
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+.signingoogle {
+    display: block;
+    margin-bottom: 15px;
+    color: red;
     text-decoration: none;
     font-size: 0.8rem;
 }
@@ -113,11 +123,12 @@ h1 {
     color: #000;
 }
 
-.btn {
+#btn {
     width: 100%;
     padding: 1rem;
+    margin: 10px;
     border: 1px solid #000;
-    background: #fff;
+    background: #ffffff;
     color: #000;
     font-size: 0.9rem;
     cursor: pointer;
@@ -127,7 +138,7 @@ h1 {
     color: red;
 }
 
-.btn:hover {
+#btn:hover {
     background: #000;
     color: #fff;
 }
