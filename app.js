@@ -39,9 +39,9 @@ app.use('/', userRouter);
 app.use('/admin',adminRouter);
 
 const PORT = 3000 || process.env.PORT;
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, () => { 
     console.log("Server Running....");
-});
+}); 
 
 
-module.exports = app;    
+module.exports = app;     

@@ -114,9 +114,9 @@ h1 {
 .signingoogle {
     display: block;
     margin-bottom: 15px;
-    color: red;
+    color: rgb(0, 27, 183);
     text-decoration: none;
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 .forgot-password:hover {

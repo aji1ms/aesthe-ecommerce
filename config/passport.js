@@ -13,13 +13,11 @@ passport.use(new GoogleStrategy({
             let user = await User.findOne({ email: profile.emails[0].value });
 
             if (user) {
-                // If the user exists but has email/password auth, prevent login
                 if (user.authType === "email") {
                     return done(null, false, { message: "Use email/password to log in." });
                 }
                 return done(null, user);
             } else {
-                // Create a new user with Google authentication
                 user = new User({
                     name: profile.displayName,
                     email: profile.emails[0].value,

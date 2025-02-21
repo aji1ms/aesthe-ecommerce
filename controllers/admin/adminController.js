@@ -25,15 +25,15 @@ const login = async (req, res) => {
                 req.session.admin = true;
                 return res.redirect('/admin');
             } else {
-                return res.render('admin-login',{message:"incorrect password"});
+                return res.render('admin-login', { message: "incorrect password" });
             }
         } else {
-            return res.render("admin-login",{message:"Email not found or not an admin"});
+            return res.render("admin-login", { message: "Email not found or not an admin" });
         }
-    } catch (error) {  
+    } catch (error) {
         console.log("Admin login error", error);
-        return res.render("admin-login",{message:"An error occured. please try again"});
-    } 
+        return res.render("admin-login", { message: "An error occured. please try again" });
+    }
 }
 
 // ---Admin dashboard page---
@@ -47,9 +47,37 @@ const loadDashboard = async (req, res) => {
         }
     }
 }
- 
+
+// ---Admin logout page---
+
+const logout = async (req, res) => {
+    try {
+        req.session.destroy(err => { 
+            if (err) {
+                console.log("Error destroying session", err);
+                return res.redirect("/errorPage");
+            }
+            return res.redirect("/admin/adminlogin");
+        })
+    } catch (error) {
+        console.log("unexpected error during logout", error);
+        res.redirect("/errorpage")
+    }
+}
+
+
+// ---Admin Error page---
+
+const pageError = async (req, res) => {
+    res.render("admin-error");
+}
+
+
+
 module.exports = {
     loadLogin,
     login,
     loadDashboard,
+    pageError,
+    logout,
 }

@@ -1,64 +1,10 @@
-<%-include("../../views/partials/admin/header")%>
-
-    <div id="content">
-        <nav class="navbar navbar-dark">
-            <div class="container-fluid">
-                <button class="sidebar-toggler">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="d-flex align-items-center">
-                    <span class="text-white">Admin Dashboard</span>
-                </div>
+<%- include("../../views/partials/admin/header") %>
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Dashboard </h2>
             </div>
-        </nav>
 
-        <div class="container-fluid py-4">
-            <div class="row g-4">
-                <div class="col-12 col-md-6 col-xl-3">
-                    <div class="card stats-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Total Sales</h5>
-                            <h2 class="mb-2">$24,780</h2>
-                            <p class="text-success mb-0">
-                                <i class="fas fa-arrow-up"></i> 12% from last month
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-xl-3">
-                    <div class="card stats-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Total Orders</h5>
-                            <h2 class="mb-2">1,245</h2>
-                            <p class="text-success mb-0">
-                                <i class="fas fa-arrow-up"></i> 5% from last month
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-xl-3">
-                    <div class="card stats-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Total Customers</h5>
-                            <h2 class="mb-2">8,592</h2>
-                            <p class="text-success mb-0">
-                                <i class="fas fa-arrow-up"></i> 18% from last month
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-xl-3">
-                    <div class="card stats-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Total Products</h5>
-                            <h2 class="mb-2">452</h2>
-                            <p class="text-success mb-0">
-                                <i class="fas fa-arrow-up"></i> 3% from last month
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
-    <%-include("../../views/partials/admin/footer")%>
+    </section>
+    <%- include("../../views/partials/admin/footer") %>
