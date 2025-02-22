@@ -63,6 +63,7 @@ img {
   display: flex;
   align-items: center;
   padding: 10px;
+  position: relative;
 }
 
 nav {
@@ -141,6 +142,7 @@ nav ul img {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 70px;
 }
 
 .second-nav-container .second-nav {
@@ -156,6 +158,9 @@ nav ul img {
 #logoImage {
   width: 200px;
   height: 180px;
+  position: absolute;
+  top: 0px;
+  right: 650px;
 }
 
 .second-nav li {

@@ -2,23 +2,27 @@ const express = require("express");
 const router = express.Router();
 const adminController = require("../controllers/admin/adminController");
 const customerController = require("../controllers/admin/customerController");
+const categoryController = require("../controllers/admin/categoryController");
 const { userAUth, adminAuth } = require("../middlewares/auth");
 
+// --Login Management--
 
 router.get("/adminlogin", adminController.loadLogin);
 router.post("/admin-login", adminController.login);
-
 router.get('/', adminAuth, adminController.loadDashboard);
-
-router.get('/logout',adminController.logout)
-
+router.get('/logout', adminController.logout)
 router.get("/errorpage", adminController.pageError)
 
-router.get("/users",adminAuth,customerController.customerInfo)
+// --Customer Management--
 
-router.get("/blockCustomer",adminAuth,customerController.customerBlocked);
-router.get("/unblockCustomer",adminAuth,customerController.customerUnblocked)
+router.get("/users", adminAuth, customerController.customerInfo)
+router.get("/blockCustomer", adminAuth, customerController.customerBlocked);
+router.get("/unblockCustomer", adminAuth, customerController.customerUnblocked)
 
+// --Category Management--
+
+router.get("/category", adminAuth, categoryController.categoryInfo);
+router.post("/addCategory", adminAuth, categoryController.addCategory)
 
 
 module.exports = router;
