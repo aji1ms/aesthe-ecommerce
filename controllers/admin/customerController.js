@@ -65,7 +65,7 @@ const customerUnblocked = async (req, res) => {
         res.render("/errorpage");
     } 
 }
-
+ 
 
 module.exports = {
     customerInfo,

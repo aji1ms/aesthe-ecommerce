@@ -41,14 +41,15 @@
                         </td>
                         <td>
                             <%if(data[i].isBlocked===false){%>
-                                <button class="btn btn-danger" style="width: 80px;">
-                                    <a href="/admin/blockCustomer?id=<%=data[i]._id%>" class="text-white"
-                                        style="text-decoration: none;">Block</a>
-                                </button>
+                                <button class="btn btn-danger" style="width: 80px;"
+                                onclick="confirmBlock('<%= data[i]._id %>', '<%= data[i].name %>')">
+                                Block
+                            </button>
                                 <%}else{%>
-                                    <button class="btn btn-success" style="width: 80px;">
-                                        <a href="/admin/unblockCustomer?id=<%=data[i]._id%>" class="text-white" style="text-decoration: none;">Unblock</a>
-                                    </button>
+                                    <button class="btn btn-success" style="width: 80px;"
+                                    onclick="confirmUnblock('<%= data[i]._id %>', '<%= data[i].name %>')">
+                                    Unblock
+                                </button>
                                     <%}%>
                         </td>
                     </tr>
@@ -68,3 +69,42 @@
         </nav>
     </div>
     <%- include("../../views/partials/admin/footer") %>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+        function confirmBlock(customerId, customerName) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: `Do you really want to block ${customerName}?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, Block!",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/admin/blockCustomer?id=${customerId}`;
+                }
+            });
+        }
+
+        function confirmUnblock(customerId, customerName) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: `Do you really want to unblock ${customerName}?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#28a745",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, Unblock!",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/admin/unblockCustomer?id=${customerId}`;
+                }
+            });
+        }
+        
+    </script>
