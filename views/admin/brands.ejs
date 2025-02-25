@@ -36,7 +36,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <form method="post" action="" enctype="">
+                        <form method="post" action="/admin/addBrand" enctype="multipart/form-data">
                             <div class="mb-4">
                                 <label for="product_name" class="form-label">Brand Name</label>
                                 <input type="text" name="name" placeholder="Type here" class="form-control" />
@@ -65,40 +65,45 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-start"></td>
-                                        <td class="text-start">
-                                            <div class="d-flex align-items-center justify-content-center" style="
+                                    <%data.reverse().forEach((brand,index)=>{%>
+                                        <tr>
+                                            <td class="text-start">
+                                                <%=brand.brandName%>
+                                            </td>
+                                            <td class="text-start">
+                                                <div class="d-flex align-items-center justify-content-center" style="
                         width: 40px;
                         height: 40px;
                         border-radius: 50%;
                         overflow: hidden;
                       ">
-                                                <img src="" alt="" class="img-fluid rounded-circle"
-                                                    style="width: 100%; height: auto" />
-                                            </div>
-                                        </td>
-                                        <td class="text-start">
-                                            <span class="badge rounded-pill alert-danger"
-                                                style="width: 60px">Blocked</span>
+                                                    <img src="/uploads/re-image/<%=brand.brandImage[0]%>"
+                                                        alt="<%=brand.brandName%>" class="img-fluid rounded-circle"
+                                                        style="width: 100%; height: auto" />
+                                                </div>
+                                            </td>
+                                            <td class="text-start">
+                                                <span class="badge rounded-pill alert-danger"
+                                                    style="width: 60px">Blocked</span>
 
-                                            <span class="badge rounded-pill alert-success"
-                                                style="width: 60px">Active</span>
-                                        </td>
-                                        <td class="text-start">
-                                            <button class="btn btn-danger" style="width: 90px">
-                                                <a href="" class="text-white">Block</a>
-                                            </button>
+                                                <span class="badge rounded-pill alert-success"
+                                                    style="width: 60px">Active</span>
+                                            </td>
+                                            <td class="text-start">
+                                                <button class="btn btn-danger" style="width: 90px">
+                                                    <a href="" class="text-white">Block</a>
+                                                </button>
 
-                                            <button class="btn btn-success" style="width: 90px">
-                                                <a href="" class="text-white">Unblock</a>
-                                            </button>
+                                                <button class="btn btn-success" style="width: 90px">
+                                                    <a href="" class="text-white">Unblock</a>
+                                                </button>
 
-                                            <button class="btn btn-danger" style="width: 90px" onclick="">
-                                                <a href="" class="text-white">Delete</a>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                                <button class="btn btn-danger" style="width: 90px" onclick="">
+                                                    <a href="" class="text-white">Delete</a>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <%})%>
                                 </tbody>
                             </table>
                         </div>
