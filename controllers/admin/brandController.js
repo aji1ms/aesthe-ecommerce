@@ -24,16 +24,16 @@ const getBrandPage = async (req, res) => {
 }
 
 
-const addBrand = async (req,res) => {
+const addBrand = async (req, res) => {
     try {
-        
+
         const brand = req.body.name;
-        const findBrand = await Brand.findOne({brand});
-        if(!findBrand){
+        const findBrand = await Brand.findOne({ brand });
+        if (!findBrand) {
             const image = req.file.filename;
             const newBrand = new Brand({
-                brandName : brand,
-                brandImage : image,
+                brandName: brand,
+                brandImage: image,
             })
             await newBrand.save();
             res.redirect("/admin/brands")
@@ -44,7 +44,53 @@ const addBrand = async (req,res) => {
     }
 }
 
+
+const blockBrand = async (req, res) => {
+    try {
+
+        const id = req.query.id;
+        await Brand.updateOne({ _id: id }, { $set: { isBlocked: true } });
+        res.redirect("/admin/brands");
+
+    } catch (error) {
+        res.redirect('/errorpage')
+    }
+}
+
+
+const unblockBrand = async (req, res) => {
+    try {
+
+        const id = req.query.id;
+        await Brand.updateOne({ _id: id }, { $set: { isBlocked: false } });
+        res.redirect("/admin/brands");
+
+    } catch (error) {
+        res.redirect("/errorpage")
+    }
+}
+
+
+const deleteBrand = async (req, res) => {
+    try {
+
+        const {id} = req.query;
+        if(!id){
+            return res.status(400).redirect("errorpage");
+        }
+        await Brand.deleteOne({_id:id});
+        res.redirect("/admin/brands");
+
+    } catch (error) {
+        console.log("Error During Deleting: ",error);
+        res.status(500).redirect("/errorpage");
+    }
+}
+
 module.exports = {
     getBrandPage,
     addBrand,
+    blockBrand,
+    unblockBrand,
+    deleteBrand,
 }
