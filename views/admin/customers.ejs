@@ -18,13 +18,14 @@
         </form>
     </header>
     <div class="right mt-5">
-        <table class="table table-striped">
+        <table class="table table-striped"
+            style=" margin: 10px; font-family: math; font-size: initial; font-weight: 550;">
             <thead>
                 <tr>
-                    <th scope="col"><b>Name</b></th>
-                    <th scope="col"><b>Email</b></th>
-                    <th scope="col"><b>Phone No</b></th>
-                    <th scope="col"><b>Action</b></th>
+                    <th scope="col"><b style="font-weight: bolder; font-size:large;">Name</b></th>
+                    <th scope="col"><b style="font-weight: bolder; font-size:large;">Email</b></th>
+                    <th scope="col"><b style="font-weight: bolder; font-size:large;">Phone No</b></th>
+                    <th scope="col"><b style="font-weight: bolder; font-size:large;">Action</b></th>
                 </tr>
             </thead>
             <tbody>
@@ -42,14 +43,14 @@
                         <td>
                             <%if(data[i].isBlocked===false){%>
                                 <button class="btn btn-danger" style="width: 80px;"
-                                onclick="confirmBlock('<%= data[i]._id %>', '<%= data[i].name %>')">
-                                Block
-                            </button>
+                                    onclick="confirmBlock('<%= data[i]._id %>', '<%= data[i].name %>')">
+                                    Block
+                                </button>
                                 <%}else{%>
                                     <button class="btn btn-success" style="width: 80px;"
-                                    onclick="confirmUnblock('<%= data[i]._id %>', '<%= data[i].name %>')">
-                                    Unblock
-                                </button>
+                                        onclick="confirmUnblock('<%= data[i]._id %>', '<%= data[i].name %>')">
+                                        Unblock
+                                    </button>
                                     <%}%>
                         </td>
                     </tr>
@@ -62,49 +63,51 @@
             <ul class="pagination justify-content-center mb-20" style="margin-right: 200px;">
                 <%for(let i=1; i<=totalPages; i++){%>
                     <li class="page-item <%=(i===currentPage) ? 'active' : '' %>">
-                        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                        <a class="page-link" href="?page=<%= i %>">
+                            <%= i %>
+                        </a>
                     </li>
-                <%}%>
+                    <%}%>
             </ul>
         </nav>
     </div>
     <%- include("../../views/partials/admin/footer") %>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
 
-        function confirmBlock(customerId, customerName) {
-            Swal.fire({
-                title: "Are you sure?",
-                text: `Do you really want to block ${customerName}?`,
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Yes, Block!",
-                cancelButtonText: "Cancel"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = `/admin/blockCustomer?id=${customerId}`;
-                }
-            });
-        }
+            function confirmBlock(customerId, customerName) {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: `Do you really want to block ${customerName}?`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Yes, Block!",
+                    cancelButtonText: "Cancel"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `/admin/blockCustomer?id=${customerId}`;
+                    }
+                });
+            }
 
-        function confirmUnblock(customerId, customerName) {
-            Swal.fire({
-                title: "Are you sure?",
-                text: `Do you really want to unblock ${customerName}?`,
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#28a745",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Yes, Unblock!",
-                cancelButtonText: "Cancel"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = `/admin/unblockCustomer?id=${customerId}`;
-                }
-            });
-        }
-        
-    </script>
+            function confirmUnblock(customerId, customerName) {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: `Do you really want to unblock ${customerName}?`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#28a745",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Yes, Unblock!",
+                    cancelButtonText: "Cancel"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `/admin/unblockCustomer?id=${customerId}`;
+                    }
+                });
+            }
+
+        </script>
