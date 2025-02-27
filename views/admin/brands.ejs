@@ -52,6 +52,7 @@
                                 </button>
                             </div>
                         </form>
+
                     </div>
                     <div class="col-md-7 ml-105">
                         <div class="table-responsive">
@@ -114,60 +115,46 @@
         <div class="pagination-container">
         </div>
     </section>
-    <script>
 
-        function confirmDelete() {
-            return confirm("Are you sure you want to delete this brand?");
-        }
-
-    </script>
     <%- include("../../views/partials/admin/footer") %>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
+
+            function confirmDelete() {
+                return confirm("Are you sure you want to delete this brand?");
+            }
+
             function confirmBlock(brandId, brandName) {
                 Swal.fire({
-                    title: `Block ${brandName}?`,
-                    text: "This brand will be blocked and won't be available for users.",
-                    icon: "warning",
-                    iconColor: "#ff6b6b",
-                    showCancelButton: true,
-                    confirmButtonColor: "#ff6b6b",
-                    cancelButtonColor: "#6c757d",
-                    confirmButtonText: "Yes, Block",
-                    cancelButtonText: "Cancel",
+                    icon: "success",
+                    toast: true,
+                    position: "top-end",
+                    title: "Blocked successfully",
+                    showConfirmButton: false,
+                    timer: 2000,
                     customClass: {
-                        popup: "rounded-lg shadow-lg",
-                        confirmButton: "rounded-pill",
-                        cancelButton: "rounded-pill"
+                        popup: "custom-toast"
                     }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = `/admin/blockBrand?id=${brandId}`;
-                    }
+                }).then(() => {
+                    window.location.href = `/admin/blockBrand?id=${brandId}`;
                 });
             }
 
+
             function confirmUnblock(brandId, brandName) {
                 Swal.fire({
-                    title: `Unblock ${brandName}?`,
-                    text: "This brand will be available again for users.",
                     icon: "success",
-                    iconColor: "#2ecc71",
-                    showCancelButton: true,
-                    confirmButtonColor: "#2ecc71",
-                    cancelButtonColor: "#6c757d",
-                    confirmButtonText: "Yes, Unblock",
-                    cancelButtonText: "Cancel",
+                    toast: true,
+                    position: "top-end",
+                    title: "Unblocked successfully",
+                    showConfirmButton: false,
+                    timer: 2000,
                     customClass: {
-                        popup: "rounded-lg shadow-lg",
-                        confirmButton: "rounded-pill",
-                        cancelButton: "rounded-pill"
+                        popup: "custom-toast"
                     }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = `/admin/unblockBrand?id=${brandId}`;
-                    }
+                }).then(() => {
+                    window.location.href = `/admin/unblockBrand?id=${brandId}`;
                 });
             }
 

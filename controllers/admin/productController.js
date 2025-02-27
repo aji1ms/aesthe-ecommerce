@@ -19,7 +19,7 @@ const getProductAddPage = async (req, res) => {
         })
 
     } catch (error) {
-        res.redirect("/errorpage");
+        res.redirect("/errorpage"); 
     }
 }
 
@@ -44,8 +44,8 @@ const addProducts = async (req, res) => {
                 }
             }
 
-            const categoryId = await Category.findOne({ name: products.category });
-
+            const categoryId = await Category.findOne({ name: products.category }); 
+ 
             if (!categoryId) {
                 return res.status(400).json("Invalid category name")
             }

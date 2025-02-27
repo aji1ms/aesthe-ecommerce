@@ -3,7 +3,6 @@
     <head>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css" />
         <style>
-            
             a {
                 text-decoration: none;
             }
@@ -109,7 +108,7 @@
                                     <div id="description-error" class="error-message"></div>
                                 </div>
                                 <div class="d-grid">
-                                    <button class="btn btn-primary" type="submit">
+                                    <button class="btn btn-primary" type="submit" onclick="createCat()">
                                         Create category
                                     </button>
                                 </div>
@@ -174,7 +173,8 @@
                                                 </td>
                                                 <td class="text-start">
                                                     <button class="btn btn-info">
-                                                        <a href="/admin/editCategory?id=<%=category._id%>" class="text-white">Edit</a>
+                                                        <a href="/admin/editCategory?id=<%=category._id%>"
+                                                            class="text-white">Edit</a>
                                                     </button>
                                                 </td>
                                             </tr>
@@ -235,17 +235,27 @@
                         return response.json();
                     })
                     .then(data => {
-                        location.reload();
+                        Swal.fire({
+                            icon: "success",
+                            toast: true,
+                            position: "top-end",
+                            title: "New category created",
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(() => {
+                            location.reload();
+                        });
                     })
                     .catch(error => {
                         if (error.message === "Category already exists") {
                             Swal.fire({
-
                                 icon: 'error',
-                                title: "Oops",
-                                text: "Category already exists"
-
-                            })
+                                toast: true,
+                                position: "top-end",
+                                title: "Category already exists",
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
                         } else {
                             Swal.fire({
                                 icon: 'error',

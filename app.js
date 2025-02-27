@@ -9,7 +9,7 @@ const adminRouter = require("./routes/adminRouter");
 db();
 
 const app = express();
-
+ 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
@@ -18,7 +18,7 @@ app.use(session({
     saveUninitialized: true,
     cookie: {
         secure: false,
-        httpOnly: true,
+        httpOnly: true, 
         maxAge: 72 * 60 * 60 * 1000
     }
 }))

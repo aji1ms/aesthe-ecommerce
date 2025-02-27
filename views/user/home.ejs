@@ -1,20 +1,23 @@
 <%-include("../../views/partials/user/header")%>
- <!-- small section -->
+
+  <!-- small section -->
+
   <section class="small">
     <div class="two-text">
       <p>Become a member & get welcome bonus points</p>
       <p>Estimated delivery time: 2-7 days</p>
     </div>
-    <div class="container-small" >
+    <div class="container-small">
       <h1>Sale - Up to 50% off</h1>
-      <p>Valid on selected items in stores and at hm.com while stock lasts. The assortment may differ between stores and at aesthe.com.</p>
+      <p>Valid on selected items in stores and at hm.com while stock lasts. The assortment may differ between stores and
+        at aesthe.com.</p>
     </div>
   </section>
 
 
   <!-- big section  -->
 
-  <section class="big" >
+  <section class="big">
     <div class="container-big">
       <div class="inside-big">
         <h1>New neutrals</h1>
@@ -23,8 +26,8 @@
     </div>
   </section>
 
-   <!-- small section -->
-   <section class="small" >
+  <!-- small section -->
+  <section class="small">
     <div class="container-small second-small-section">
       <h1>Free & flexible returns</h1>
       <p>Online returns made easier!</p>
@@ -33,20 +36,53 @@
   </section>
 
 
-    <!-- big section  -->
+  <!-- second big section  -->
 
-    <section class="big" >
-      <div class="container-big second-big-section">
-        <div class="inside-big">
-          <h1>Denim update</h1>
-          <button>SHOP NOW</button>
-        </div>
+  <section class="big">
+    <div class="container-big second-big-section">
+      <div class="inside-big">
+        <h1>Denim update</h1>
+        <button>SHOP NOW</button>
       </div>
-    </section>
+    </div>
+  </section>
 
-<!-- third big section -->
+  <!-- new arrival section  -->
 
-  <section class="big" >
+  <section class="product-section">
+    <div class="section-header">
+      <h2>New Arrivals</h2>
+    </div>
+    <div class="product-container">
+      <%for(let i=0; i<products.length; i++){%>
+        <div class="product-card">
+          <div class="product-image">
+            <a href="/productDetails?id=<%=products[i]._id%>">
+              <img src="/uploads/re-image/<%=products[i].productImage[0]%>" alt="<%=products[i].productName%>">
+            </a>
+          </div>
+          <div class="product-info">
+            <h3 class="product-name" style="margin-bottom: 0%;">
+              <%=products[i].productName%>
+            </h3>
+            <p class="product-price" style="margin-bottom: 8px;">Rs. <%=products[i].salePrice%>
+            </p>
+
+            <a href="/addToCart?id=<%=products[i]._id%>">
+              <!-- <button class="addCart-homeBtn">ADD TO CART</button> -->
+            </a>
+          </div>
+        </div>
+        <%}%>
+    </div>
+    <!-- <div class="view-all">
+      <a href="/products/new-arrivals" class="view-all-btn">VIEW ALL</a>
+    </div> -->
+  </section>
+
+  <!-- third big section -->
+
+  <section class="big">
     <div class="container-big third-big-section">
       <div class="inside-big">
         <h1>Preppy luxe</h1>
@@ -55,17 +91,17 @@
     </div>
   </section>
 
-  
-<!-- fourth big section -->
 
-<section class="big" >
-  <div class="container-big fourth-big-section">
-    <div class="inside-big">
-      <h1>In focus: Stripes</h1>
-      <button>SHOP NOW</button>
+  <!-- fourth big section -->
+
+  <section class="big">
+    <div class="container-big fourth-big-section">
+      <div class="inside-big">
+        <h1>In focus: Stripes</h1>
+        <button>SHOP NOW</button>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <!-- footer -->
   <%-include("../../views/partials/user/footer")%>

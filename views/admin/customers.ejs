@@ -76,38 +76,37 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
 
-            function confirmBlock(customerId, customerName) {
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: `Do you really want to block ${customerName}?`,
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#d33",
-                    cancelButtonColor: "#3085d6",
-                    confirmButtonText: "Yes, Block!",
-                    cancelButtonText: "Cancel"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = `/admin/blockCustomer?id=${customerId}`;
-                    }
-                });
-            }
+function confirmBlock(customerId) {
+    Swal.fire({
+        icon: "success",
+        toast: true,
+        position: "top-end",
+        title: "Blocked successfully",
+        showConfirmButton: false,
+        timer: 2000,
+        customClass: {
+            popup: "custom-toast"
+        }
+    }).then(() => {
+        window.location.href = `/admin/blockCustomer?id=${customerId}`;
+    });
+}
 
-            function confirmUnblock(customerId, customerName) {
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: `Do you really want to unblock ${customerName}?`,
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#28a745",
-                    cancelButtonColor: "#3085d6",
-                    confirmButtonText: "Yes, Unblock!",
-                    cancelButtonText: "Cancel"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = `/admin/unblockCustomer?id=${customerId}`;
-                    }
-                });
-            }
+function confirmUnblock(customerId) {
+    Swal.fire({
+        icon: "success",
+        toast: true,
+        position: "top-end",
+        title: "Unblocked successfully",
+        showConfirmButton: false,
+        timer: 2000,
+        customClass: {
+            popup: "custom-toast"
+        }
+    }).then(() => {
+        window.location.href = `/admin/unblockCustomer?id=${customerId}`;
+    });
+}
+
 
         </script>
