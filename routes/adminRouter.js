@@ -8,7 +8,7 @@ const productController = require("../controllers/admin/productController");
 const { userAUth, adminAuth } = require("../middlewares/auth");
 const multer = require("multer");
 const storage = require("../helpers/multer");
-const uploads = multer({ storage: storage });
+const uploads = multer({ storage: storage }); 
 
 // --Login Management--
 
@@ -39,7 +39,7 @@ router.get("/brands", adminAuth, brandController.getBrandPage);
 router.post("/addBrand", adminAuth, uploads.single("image"), brandController.addBrand);
 router.get("/blockBrand", adminAuth, brandController.blockBrand);
 router.get("/unblockBrand", adminAuth, brandController.unblockBrand);
-router.get("/deleteBrand", adminAuth, brandController.deleteBrand);
+router.get("/deleteBrand", adminAuth, brandController.deleteBrand); 
 
 // --Product Management--
 
@@ -48,5 +48,9 @@ router.post("/addProducts", adminAuth, uploads.array("images", 4), productContro
 router.get('/products', adminAuth, productController.getAllProducts);
 router.get('/blockProduct', adminAuth, productController.blockProduct);
 router.get('/unblockProduct', adminAuth, productController.unblockProduct);
+router.get('/editProduct', adminAuth, productController.getEditProduct);
+router.post('/editProduct/:id', adminAuth, uploads.array("images", 4), productController.editProduct);
+router.post('/deleteImage', adminAuth, productController.deleteSingleImage);
+
 
 module.exports = router;

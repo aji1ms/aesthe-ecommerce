@@ -19,7 +19,7 @@ const getProductAddPage = async (req, res) => {
         })
 
     } catch (error) {
-        res.redirect("/errorpage"); 
+        res.redirect("/errorpage");
     }
 }
 
@@ -44,8 +44,8 @@ const addProducts = async (req, res) => {
                 }
             }
 
-            const categoryId = await Category.findOne({ name: products.category }); 
- 
+            const categoryId = await Category.findOne({ name: products.category });
+
             if (!categoryId) {
                 return res.status(400).json("Invalid category name")
             }
@@ -116,7 +116,7 @@ const getAllProducts = async (req, res) => {
             })
         } else {
             res.render("admin-error")
-        } 
+        }
 
     } catch (error) {
         res.redirect("errorpage");
@@ -127,7 +127,7 @@ const getAllProducts = async (req, res) => {
 const blockProduct = async (req, res) => {
     try {
 
-        let id = req.query.id; 
+        let id = req.query.id;
         await Product.updateOne({ _id: id }, { $set: { isBlocked: true } });
         res.redirect("/admin/products");
 
@@ -135,12 +135,96 @@ const blockProduct = async (req, res) => {
         res.redirect("/errorpage");
     }
 }
- 
+
 const unblockProduct = async (req, res) => {
     try {
         let id = req.query.id;
         await Product.updateOne({ _id: id }, { $set: { isBlocked: false } });
         res.redirect("/admin/products");
+
+    } catch (error) {
+        res.redirect("/errorpage");
+    }
+}
+
+const getEditProduct = async (req, res) => {
+    try {
+
+        const id = req.query.id;
+        const product = await Product.findOne({ _id: id });
+        const category = await Category.find({});
+        const brand = await Brand.find({});
+        res.render("edit-product", {
+            product: product,
+            brand: brand,
+            cat: category,
+        })
+
+    } catch (error) {
+        res.redirect("/errorpage");
+    }
+}
+
+
+const editProduct = async (req, res) => {
+    try {
+
+        const id = req.params.id;
+        const product = await Product.findOne({ _id: id });
+        const data = req.body;
+        const existingProduct = await Product.findOne({
+            productName: data.productName,
+            _id: { $ne: id }
+        })
+        if (existingProduct) {
+            res.status().json({ error: "Product with this name already exists.Please try with another name" });
+        }
+
+        const images = [];
+
+        if (req.files && req.files.length > 0) {
+            for (let i = 0; i < req.files.length; i++) {
+                images.push(req.files[i].filename)
+            }
+        }
+
+        const updateFields = {
+            productName: data.productName,
+            description: data.description,
+            brand: data.brand,
+            category: product.category,
+            regularPrice: data.regularPrice,
+            salePrice: data.salePrice,
+            quantity: data.quantity,
+            size: data.size,
+            color: data.color
+        }
+        if (req.files.length > 0) { 
+            updateFields.$push = { productImage: { $each: images } };
+        }
+
+        await Product.findByIdAndUpdate(id, updateFields, { new: true });
+        res.redirect("/admin/products");
+
+    } catch (error) {
+        console.log("edit error: ", error);
+        res.redirect("/errorpage")
+    }
+}
+
+const deleteSingleImage = async (req, res) => { 
+    try {
+
+        const { imageNameToServer, productIdToServer } = req.body;
+        const product = await Product.findByIdAndUpdate(productIdToServer, { $pull: { productImage: imageNameToServer } });
+        const imagePath = path.join("public", "uploads", "re-image", imageNameToServer);
+        if (fs.existsSync(imagePath)) {
+            await fs.unlinkSync(imagePath);
+            console.log(`Image ${imageNameToServer} deleted successfully`);
+        } else {
+            console.log(`Image ${imageNameToServer} not found`)
+        }
+        res.send({ status: true });
 
     } catch (error) {
         res.redirect("/errorpage");
@@ -153,4 +237,7 @@ module.exports = {
     getAllProducts,
     blockProduct,
     unblockProduct,
+    getEditProduct,
+    editProduct,
+    deleteSingleImage,
 }

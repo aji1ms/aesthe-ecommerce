@@ -160,14 +160,14 @@
                                                 </td>
                                                 <td class="text-start">
                                                     <%if(category.isListed){%>
-                                                        <button class="btn btn-danger" style="width: 70px">
-                                                            <a href="/admin/listCategory?id=<%=category._id%>"
-                                                                class="text-white">Unlist</a>
+                                                        <button class="btn btn-danger" style="width: 70px"
+                                                            onclick="unlistCategory('<%=category._id%>')">
+                                                            Unlist
                                                         </button>
                                                         <%}else{%>
-                                                            <button class="btn btn-success" style="width: 70px">
-                                                                <a href="/admin/unlistCategory?id=<%=category._id%>"
-                                                                    class="text-white">List</a>
+                                                            <button class="btn btn-success" style="width: 70px"
+                                                                onclick="listCategory('<%=category._id%>')">
+                                                                List
                                                             </button>
                                                             <%}%>
                                                 </td>
@@ -300,6 +300,38 @@
                 Array.from(errorElements).forEach((element) => {
                     element.innerText = "";
                     element.style.display = "none";
+                });
+            }
+
+            function unlistCategory(categoryId) {
+                Swal.fire({
+                    icon: 'success',
+                    toast: true,
+                    position: "top-end",
+                    title: 'Category Unlisted Successfully',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    customClass: {
+                        popup: "custom-toast"
+                    }
+                }).then(() => {
+                    window.location.href = `/admin/listCategory?id=${categoryId}`;
+                });
+            }
+
+            function listCategory(categoryId) {
+                Swal.fire({
+                    icon: 'success',
+                    toast: true,
+                    position: "top-end",
+                    title: 'Category Listed Successfully',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    customClass: {
+                        popup: "custom-toast"
+                    }
+                }).then(() => {
+                    window.location.href = `/admin/unlistCategory?id=${categoryId}`;
                 });
             }
 

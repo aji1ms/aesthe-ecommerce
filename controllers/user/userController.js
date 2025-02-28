@@ -23,7 +23,7 @@ const loadHomepage = async (req, res) => {
         )
         console.log(user)
 
-        productData.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
+        productData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         productData = productData.slice(0, 5);
 
         if (user) {
