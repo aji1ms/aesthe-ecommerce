@@ -63,7 +63,7 @@
         <img src="images/logo.svg" alt="">
       </div>
       <div class="second-nav-container">
-        <a href="">
+        <a href="/">
           <img id="logoImage" src="images/AestheLogo-red.png" width="50px" alt="">
         </a>
         <nav class="second-nav">
@@ -75,7 +75,9 @@
             <li><a href="#">Home <span>&#8594;</span></a></li>
             <li><a href="#">Sales <span>&#8594;</span></a></li>
           </ul>
-          <img src="images/search.svg" alt=""> <input placeholder="search products" type="text" class="search-input">
+          <form action="/search" method="post">
+          <img src="images/search.svg" alt=""> <input placeholder="search products" name="query" type="text" class="search-input">
+        </form>
         </nav>
       </div>
     </div>
