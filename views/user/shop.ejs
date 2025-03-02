@@ -578,6 +578,7 @@
                     <!-- Example product cards - repeat as needed -->
                     <div class="product-card">
                         <div class="product-image">
+                            <a href="/productDetails?id=<%=products[i]._id%>">
                             <img src="/uploads/re-image/<%=products[i].productImage[0]%>"
                                 alt="<%=products[i].productName%>">
                             <div class="wishlist-icon">
@@ -600,6 +601,7 @@
                             <div class="product-price">
                                 <span class="current-price">Rs.<%=products[i].salePrice.toLocaleString('en-IN')%></span>
                                 <span class="old-price">Rs.<%=products[i].regularPrice.toLocaleString('en-IN')%></span>
+                            </a>
                             </div>
                             <!-- <div class="product-colors">
                                 <div class="color-option" style="background-color: #000000"></div>
