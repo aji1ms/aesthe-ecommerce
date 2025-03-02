@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require("../controllers/user/userController");
+const profileController = require("../controllers/user/profileController");
 const passport = require('passport');
 const { userAuth } = require('../middlewares/auth');
 
@@ -42,5 +43,17 @@ router.get('/shop', userController.loadShoppingPage);
 router.get('/filter', userController.filterProducts);
 router.get('/filterPrice', userController.filterByPrice);
 router.post('/search', userController.searchProducts);
+
+// --Profile Management--
+
+router.get('/forgot-password', profileController.getForgotPasswordPage);
+router.post('/forgot-email-valid', profileController.forgotEmailValid);
+router.post('/verify-passForgot-otp', profileController.verifyForgotPassOtp);
+router.get('/reset-password', profileController.getResetPassPage);
+router.post('/resend-forgot-otp', profileController.resendOtp);
+router.post('/reset-password', profileController.postNewPassword);
+
+
+
 
 module.exports = router;
