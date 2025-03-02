@@ -111,13 +111,31 @@ h1 {
     font-size: 0.8rem;
 }
 
-.signingoogle {
-    display: block;
-    margin-bottom: 15px;
-    color: rgb(0, 27, 183);
-    text-decoration: none;
-    font-size: 1rem;
+.btn-google {
+    background: #fff;
+    color: #000000;
+    border: 1px solid #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 1rem;
+    margin: 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
 }
+
+.btn-google img {
+    width: 18px;
+    height: 18px;
+}
+.btn-google:hover {
+    background: #000;
+    color: #fff;
+}
+
 
 .forgot-password:hover {
     color: #000;

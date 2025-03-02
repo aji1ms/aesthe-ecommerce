@@ -23,6 +23,11 @@ app.use(session({
     }
 }))
 
+app.use((req, res, next) => {
+    res.locals.userData = req.session.userData || null;
+    next();
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 

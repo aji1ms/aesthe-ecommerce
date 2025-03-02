@@ -10,7 +10,8 @@ passport.use(new GoogleStrategy({
 },
     async (accessToken, refreshToken, profile, done) => {
         try {
-            let user = await User.findOne({ email: profile.emails[0].value });
+            const email = profile.emails[0].value.toLowerCase(); 
+            let user = await User.findOne({ email });
 
             if (user) {
                 if (user.authType === "email") {
@@ -20,28 +21,31 @@ passport.use(new GoogleStrategy({
             } else {
                 user = new User({
                     name: profile.displayName,
-                    email: profile.emails[0].value,
+                    email: email, 
                     googleId: profile.id,
                     authType: "google",
                 });
                 await user.save();
                 return done(null, user);
             }
-
         } catch (error) {
             return done(error, null);
         }
     }
 ));
 
+
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-    User.findById(id)
-        .then(user => done(null, user))
-        .catch(err => done(err, null));
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await User.findById(id);
+        done(null, user);
+    } catch (err) {
+        done(err, null);
+    }
 });
 
 module.exports = passport;
