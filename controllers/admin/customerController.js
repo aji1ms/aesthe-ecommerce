@@ -22,6 +22,7 @@ const customerInfo = async (req, res) => {
                 { email: { $regex: ".*" + search + ".*" } },
             ],
         })
+            .sort({ createdOn: -1 })
             .limit(limit * 1)
             .skip((page - 1) * limit)
             .exec();
@@ -63,9 +64,9 @@ const customerUnblocked = async (req, res) => {
         res.redirect('/admin/users')
     } catch (error) {
         res.render("/errorpage");
-    } 
+    }
 }
- 
+
 
 module.exports = {
     customerInfo,
