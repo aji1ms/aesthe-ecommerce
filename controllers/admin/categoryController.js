@@ -45,7 +45,7 @@ const categoryInfo = async (req, res) => {
 
 
 const addCategory = async (req, res) => {
-    const { name, description } = req.body;
+    const { name, description} = req.body;
     try {
 
         const existingCategory = await Category.findOne({ name });

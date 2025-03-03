@@ -79,11 +79,11 @@
                                         Unblock
                                     </button>
                                     <% } %>
-
                         </td>
                         <td>
                             <button class="btn btn-info" style="width: 80px;">
-                                <a href="/admin/editProduct?id=<%=data[i]._id%>" class="text-white" style="text-decoration: none;">Edit</a>
+                                <a href="/admin/editProduct?id=<%=data[i]._id%>" class="text-white"
+                                    style="text-decoration: none;">Edit</a>
                             </button>
                         </td>
                     </tr>
@@ -118,33 +118,57 @@
     <script>
         function confirmBlock(productId, productName) {
             Swal.fire({
-                icon: "success",
-                toast: true,
-                position: "top-end",
-                title: "Blocked successfully",
-                showConfirmButton: false,
-                timer: 2000,
-                customClass: {
-                    popup: "custom-toast"
+                title: 'Are you sure?',
+                text: `Do you want to block ${productName}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, block it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: "success",
+                        toast: true,
+                        position: "top-end",
+                        title: "Blocked successfully",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        customClass: {
+                            popup: "custom-toast"
+                        }
+                    }).then(() => {
+                        window.location.href = `/admin/blockProduct?id=${productId}`;
+                    });
                 }
-            }).then(() => {
-                window.location.href = `/admin/blockProduct?id=${productId}`;
             });
         }
 
         function confirmUnblock(productId, productName) {
             Swal.fire({
-                icon: "success",
-                toast: true,
-                position: "top-end",
-                title: "Unblocked successfully",
-                showConfirmButton: false,
-                timer: 2000,
-                customClass: {
-                    popup: "custom-toast"
+                title: 'Are you sure?',
+                text: `Do you want to unblock ${productName}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, unblock it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: "success",
+                        toast: true,
+                        position: "top-end",
+                        title: "Unblocked successfully",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        customClass: {
+                            popup: "custom-toast"
+                        }
+                    }).then(() => {
+                        window.location.href = `/admin/unblockProduct?id=${productId}`;
+                    });
                 }
-            }).then(() => {
-                window.location.href = `/admin/unblockProduct?id=${productId}`;
             });
         }
     </script>

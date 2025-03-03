@@ -117,6 +117,19 @@
                                             </select>
                                             <div id="category-error" class="error-message"></div>
                                         </div>
+                                        <div class="col-sm-6 mb-3">
+                                            <label class="form-label">Category Of</label>
+                                            <select class="form-select border" style="width: 150px;" name="categoryOf"
+                                                required>
+                                                <option value="">Select Category Type</option>
+                                                <option value="mens">Mens</option>
+                                                <option value="ladies">Ladies</option>
+                                                <option value="kids">Kids</option>
+                                                <option value="baby">Baby</option>
+                                            </select>
+                                            <div id="categoryOf-error" class="error-message"></div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -241,17 +254,17 @@
 
 
                 let cropper = new Cropper(image, {
-                    aspectRatio: NaN, 
-                    viewMode: 0, 
+                    aspectRatio: NaN,
+                    viewMode: 0,
                     guides: true,
                     background: false,
-                    autoCropArea: 0.8, 
+                    autoCropArea: 0.8,
                     zoomable: true,
                     zoomOnTouch: true,
                     zoomOnWheel: true,
                     cropBoxMovable: true,
                     cropBoxResizable: true,
-                    scalable: true 
+                    scalable: true
                 });
 
 
@@ -335,9 +348,15 @@
             const saleprice = document.getElementsByName('salePrice')[0].value;
             const color = document.getElementsByName('color')[0].value;
             const category = document.getElementsByName('category')[0].value;
+            const categoryOf = document.getElementsByName('categoryOf')[0].value;
             const images = document.getElementById('input1')
             const quantity = document.getElementsByName('quantity')
             let isValid = true
+            
+            if (categoryOf === "") {
+                displayErrorMessage('categoryOf-error', 'Please select a category type.');
+                isValid = false;
+            }
             if (name.trim() === "") {
                 displayErrorMessage('productName-error', 'Please enter a product name.');
                 isValid = false;

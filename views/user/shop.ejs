@@ -138,7 +138,7 @@
             }
 
             .price-range-btn {
-                background-color:#000000;
+                background-color: #000000;
                 color: white;
                 font-size: medium;
                 margin: 10px;
@@ -148,7 +148,7 @@
                 border-color: white;
             }
 
-            .price-range-btn:hover{
+            .price-range-btn:hover {
                 transform: scale(1.05);
                 background-color: white;
                 color: black;
@@ -493,8 +493,8 @@
                         <option value="newest">Newest</option>
                         <option value="price-low">Price: Low to High</option>
                         <option value="price-high">Price: High to Low</option>
-                        <option value="">aA - zZ</option>
-                        <option value="">zZ - aA</option>
+                        <option value="name-asc">aA - zZ</option>
+                        <option value="name-desc">zZ - aA</option>
                     </select>
                 </div>
 
@@ -546,7 +546,7 @@
                                     <button class="price-range-btn">Above 5000</button>
                                 </a>
                             </div>
-                            
+
                         </div>
 
                     </div>
@@ -579,20 +579,20 @@
                     <div class="product-card">
                         <div class="product-image">
                             <a href="/productDetails?id=<%=products[i]._id%>">
-                            <img src="/uploads/re-image/<%=products[i].productImage[0]%>"
-                                alt="<%=products[i].productName%>">
-                            <div class="wishlist-icon">
-                                <button class="wishlist-button" data-product-id="1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path
-                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z">
-                                        </path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <!-- <div class="product-tag">New Arrival</div> -->
+                                <img src="/uploads/re-image/<%=products[i].productImage[0]%>"
+                                    alt="<%=products[i].productName%>">
+                                <div class="wishlist-icon">
+                                    <button class="wishlist-button" data-product-id="1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path
+                                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <!-- <div class="product-tag">New Arrival</div> -->
                         </div>
                         <div class="product-info">
                             <h3 class="product-name">
@@ -601,7 +601,7 @@
                             <div class="product-price">
                                 <span class="current-price">Rs.<%=products[i].salePrice.toLocaleString('en-IN')%></span>
                                 <span class="old-price">Rs.<%=products[i].regularPrice.toLocaleString('en-IN')%></span>
-                            </a>
+                                </a>
                             </div>
                             <!-- <div class="product-colors">
                                 <div class="color-option" style="background-color: #000000"></div>
@@ -673,6 +673,7 @@
         <!-- Your footer will go here -->
 
         <script>
+
             document.addEventListener('DOMContentLoaded', function () {
                 // Wishlist functionality
                 const wishlistButtons = document.querySelectorAll('.wishlist-button');

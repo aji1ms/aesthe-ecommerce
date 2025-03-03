@@ -19,6 +19,11 @@ const productSchema = new mongoose.Schema({
         ref: "Category",
         required: true
     },
+    categoryOf: {
+        type: String,
+        enum: ['mens', 'ladies', 'kids', 'baby'],
+        required: true
+    },
     regularPrice: {
         type: Number,
         required: true

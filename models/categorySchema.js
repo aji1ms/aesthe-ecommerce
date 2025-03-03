@@ -19,6 +19,11 @@ const categorySchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    categoryOf: {
+        type: String,
+        enum: ['mens', 'ladies', 'kids', 'baby'],
+        required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now

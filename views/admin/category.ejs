@@ -83,9 +83,9 @@
             <header class="card-header text-center mb-20">
                 <form action="/admin/category/" method="get" class="d-inline">
                     <div class="input-group input-group-sm border border-1 border-grey rounded-pill"
-                         style="width: 500px; margin-left: 230px">
+                        style="width: 500px; margin-left: 230px">
                         <input type="text" class="form-control border-0 rounded-pill mt-3"
-                               placeholder="Search categories" name="search" />
+                            placeholder="Search categories" name="search" />
                         <button class="btn" type="submit">Search</button>
                     </div>
                 </form>
@@ -224,7 +224,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ name, description })
+                    body: JSON.stringify({ name, description})
                 })
                     .then(response => {
                         if (!response.ok) {
@@ -275,7 +275,7 @@
                 if (name === "") {
                     displayErrorMessage("name-error", "Please enter name");
                     isValid = false
-                } else if (!/^[a-zA-Z\s]+$/.test(name)) {
+                } else if (!/^[a-zA-Z\s-]+$/.test(name)) {
                     displayErrorMessage("name-error", "Category name should contain only alphabetic characters");
                     isValid = false
                 }
