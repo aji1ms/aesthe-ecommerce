@@ -551,10 +551,6 @@
 
                     </div>
 
-                    <!-- <div class="filter-footer">
-                        <button id="clearBtn">Clear all</button>
-                        <button id="applyBtn">Apply</button>
-                    </div> -->
                 </div>
 
                 <div class="filter-mobile">
@@ -573,9 +569,9 @@
             </div>
 
             <!-- Products Grid -->
+
             <div class="products-grid">
                 <%for(i=0; i<products.length; i++){%>
-                    <!-- Example product cards - repeat as needed -->
                     <div class="product-card">
                         <div class="product-image">
                             <a href="/productDetails?id=<%=products[i]._id%>">
@@ -592,6 +588,7 @@
                                         </svg>
                                     </button>
                                 </div>
+
                                 <!-- <div class="product-tag">New Arrival</div> -->
                         </div>
                         <div class="product-info">
@@ -670,30 +667,23 @@
 
         </div>
 
-        <!-- Your footer will go here -->
-
         <script>
 
             document.addEventListener('DOMContentLoaded', function () {
-                // Wishlist functionality
                 const wishlistButtons = document.querySelectorAll('.wishlist-button');
                 wishlistButtons.forEach(button => {
                     button.addEventListener('click', function () {
                         this.classList.toggle('active');
-                        // Add your wishlist logic here
                     });
                 });
 
-                // Filter button for mobile
                 const filterButton = document.getElementById('filter-button');
                 if (filterButton) {
                     filterButton.addEventListener('click', function () {
-                        // Add your filter logic here
                         console.log('Filter button clicked');
                     });
                 }
 
-                // View options (grid/list)
                 const viewButtons = document.querySelectorAll('.grid-view, .list-view');
                 viewButtons.forEach(button => {
                     button.addEventListener('click', function () {
@@ -719,42 +709,38 @@
                 const applyBtn = document.getElementById('applyBtn');
                 const filterbutton = document.getElementById('filter-button');
 
-                // Create overlay element
+
                 const overlay = document.createElement('div');
                 overlay.className = 'filter-overlay';
                 document.body.appendChild(overlay);
 
-                // Open filter sidebar
                 filterBtn.addEventListener('click', function () {
                     filterSidebar.classList.add('active');
                     overlay.classList.add('active');
-                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                    document.body.style.overflow = 'hidden';
                 });
 
                 filterbutton.addEventListener('click', function () {
                     filterSidebar.classList.add('active');
                     overlay.classList.add('active');
-                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                    document.body.style.overflow = 'hidden'; 
                 });
 
-                // Close filter sidebar
                 function closeFilter() {
                     filterSidebar.classList.remove('active');
                     overlay.classList.remove('active');
-                    document.body.style.overflow = ''; // Restore scrolling
+                    document.body.style.overflow = '';
                 }
 
                 closeFilterBtn.addEventListener('click', closeFilter);
                 overlay.addEventListener('click', closeFilter);
 
-                // Clear all filters
                 clearBtn.addEventListener('click', function () {
-                    // Reset all checkboxes
                     document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                         checkbox.checked = false;
                     });
 
-                    // Reset price range
+
                     const priceMin = document.getElementById('priceMin');
                     const priceMax = document.getElementById('priceMax');
                     priceMin.value = priceMin.min;
@@ -763,14 +749,12 @@
                     document.getElementById('maxValue').textContent = '₹' + priceMax.max;
                 });
 
-                // Apply filters
+
                 applyBtn.addEventListener('click', function () {
-                    // Create a form to submit filters
                     const form = document.createElement('form');
                     form.method = 'GET';
-                    form.action = window.location.pathname; // Submit to current URL
+                    form.action = window.location.pathname; 
 
-                    // Add selected categories
                     const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked'));
                     selectedCategories.forEach(input => {
                         const hiddenInput = document.createElement('input');
@@ -780,7 +764,7 @@
                         form.appendChild(hiddenInput);
                     });
 
-                    // Add selected brands
+
                     const selectedBrands = Array.from(document.querySelectorAll('input[name="brand"]:checked'));
                     selectedBrands.forEach(input => {
                         const hiddenInput = document.createElement('input');
@@ -790,7 +774,6 @@
                         form.appendChild(hiddenInput);
                     });
 
-                    // Add price range
                     const minPrice = document.getElementById('priceMin').value;
                     const maxPrice = document.getElementById('priceMax').value;
 
@@ -806,15 +789,12 @@
                     maxPriceInput.value = maxPrice;
                     form.appendChild(maxPriceInput);
 
-                    // Append form to body and submit
                     document.body.appendChild(form);
                     form.submit();
 
-                    // Close the filter
                     closeFilter();
                 });
 
-                // Update price range display
                 const priceMin = document.getElementById('priceMin');
                 const priceMax = document.getElementById('priceMax');
                 const minValue = document.getElementById('minValue');

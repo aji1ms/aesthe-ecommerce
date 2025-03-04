@@ -86,7 +86,6 @@
                 cancelButtonText: "Cancel"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Show a success toast after confirmation
                     Swal.fire({
                         icon: "success",
                         toast: true,
@@ -98,7 +97,6 @@
                             popup: "custom-toast"
                         }
                     }).then(() => {
-                        // Redirect or perform AJAX request for blocking
                         window.location.href = `/admin/blockCustomer?id=${userId}`;
                     });
                 }
@@ -117,7 +115,6 @@
                 cancelButtonText: "Cancel"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Show a success toast after confirmation
                     Swal.fire({
                         icon: "success",
                         toast: true,
@@ -129,7 +126,6 @@
                             popup: "custom-toast"
                         }
                     }).then(() => {
-                        // Redirect or perform AJAX request for unblocking
                         window.location.href = `/admin/unblockCustomer?id=${userId}`;
                     });
                 }

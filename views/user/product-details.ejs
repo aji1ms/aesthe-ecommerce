@@ -23,7 +23,6 @@
                 margin: 0 auto;
             }
 
-            /* Product Detail Section */
             .product-detail {
                 display: flex;
                 flex-wrap: wrap;
@@ -34,7 +33,6 @@
                 border-radius: 4px;
             }
 
-            /* Product Images Section */
             .product-images {
                 flex: 1;
                 min-width: 300px;
@@ -57,55 +55,40 @@
                 border-radius: 2px;
             }
 
-            /* Zoom container for the FIRST image only */
             .zoom-container {
                 width: 350px;
-                /* Adjust as needed */
                 height: 350px;
-                /* Adjust as needed */
                 overflow: hidden;
-                /* Hides the parts of the image that overflow */
                 position: relative;
-                /* You can also use a border or outline if you like */
             }
 
-            /* The image that will be zoomed/panned */
             .zoom-image {
                 width: 100%;
                 height: 100%;
-                object-fit: cover;
-                /* Ensures the image covers the container area */
+                object-fit: contain;
                 transition: transform 0.1s ease;
             }
 
-            /* On hover, scale the image */
             .zoom-container:hover .zoom-image {
                 transform: scale(2);
-                /* 2x zoom, adjust to taste */
                 cursor: zoom-in;
-                /* We'll control the transform-origin via JS on mousemove */
             }
 
-
-            /* The modal background */
             .modal {
                 display: none;
-                /* Hidden by default */
                 position: fixed;
                 z-index: 999;
-                /* Sit on top of other elements */
                 left: 0;
                 top: 0;
                 width: 100%;
                 height: 100%;
                 overflow: auto;
-                /* Enable scrolling if needed */
                 background-color: rgba(0, 0, 0, 0.8);
                 justify-content: center;
                 align-items: center;
             }
 
-            /* The close button (X) */
+
             .close {
                 position: absolute;
                 top: 20px;
@@ -116,19 +99,16 @@
                 cursor: pointer;
             }
 
-            /* The enlarged image inside the modal */
+
             .modal-content {
                 margin: auto;
                 display: block;
                 max-width: 95%;
-                /* Increased from 80% to 95% */
                 max-height: 95%;
-                /* Increased from 80% to 95% */
                 transition: transform 0.3s ease;
                 cursor: zoom-in;
             }
 
-            /* Caption text (optional) */
             #modal-caption {
                 margin-top: 10px;
                 text-align: center;
@@ -136,7 +116,7 @@
             }
 
 
-            /* Product Info Section */
+
             .product-info {
                 flex: 1;
                 min-width: 300px;
@@ -265,7 +245,6 @@
                 display: block;
             }
 
-            /* Related Products Section */
             .related-section {
                 margin-top: 40px;
             }
@@ -296,6 +275,7 @@
 
             .product-card img {
                 width: 100%;
+                height: 280;
                 aspect-ratio: 4/4;
                 object-fit: contain;
             }
@@ -330,7 +310,6 @@
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             }
 
-            /* Pagination */
             .pagination {
                 display: flex;
                 justify-content: center;
@@ -397,15 +376,12 @@
                 <div class="product-images">
                     <div class="images-grid">
                         <div class="zoom-container">
-                            <img
-                              src="/uploads/re-image/<%= product.productImage[0] %>"
-                              alt="Product image"
-                              class="zoom-image"
-                              onclick="openModal('/uploads/re-image/<%= product.productImage[1] %>')"
-                            />
-                          </div>
-                          <img src="/uploads/re-image/<%=product.productImage[1]%>" alt="Product image"
-                          onclick="openModal('/uploads/re-image/<%= product.productImage[1] %>')">
+                            <img src="/uploads/re-image/<%= product.productImage[0] %>" alt="Product image"
+                                class="zoom-image"
+                                onclick="openModal('/uploads/re-image/<%= product.productImage[1] %>')" />
+                        </div>
+                        <img src="/uploads/re-image/<%=product.productImage[1]%>" alt="Product image"
+                            onclick="openModal('/uploads/re-image/<%= product.productImage[1] %>')">
                         <img src="/uploads/re-image/<%=product.productImage[2]%>" alt="Product image"
                             onclick="openModal('/uploads/re-image/<%= product.productImage[2] %>')">
                         <img src="/uploads/re-image/<%=product.productImage[3]%>" alt="Product image"
@@ -503,8 +479,6 @@
             </div>
 
             <!-- Style With Section -->
-
-            <!-- Style With Section -->
             <div class="related-section">
                 <h2 class="section-title">Related Products</h2>
                 <div class="products-grid">
@@ -531,117 +505,94 @@
                 </div>
             </div>
 
-            <!-- Others Also Bought Section -->
-            <!-- <div class="related-section">
-                <h2 class="section-title">Others also bought</h2>
-                <div class="products-grid">
-                    <% othersAlsoBought.forEach(product=> { %>
-                        <div class="product-card">
-                            <div class="wishlist-icon">♡</div>
-                            <a href="/productDetails?id=<%= product._id %>">
-                                <% if(product.productImage && product.productImage.length> 0) { %>
-                                    <img src="/uploads/re-image/<%= product.productImage[0] %>"
-                                        alt="<%= product.productName %>">
-                                    <% } else { %>
-                                        <img src="/path/to/default-image.jpg" alt="Default product image">
-                                        <% } %>
-                            </a>
-                            <div class="product-card-info">
-                                <h3 class="product-card-title">
-                                    <%= product.productName %>
-                                </h3>
-                                <p class="product-card-price">Rs.<%= product.salePrice %>
-                                </p>
-                            </div>
-                        </div>
-                        <% }); %>
-                </div>
-            </div> -->
+
             <!-- Pagination -->
+
             <div class="pagination">
-                <div class="pagination-item">«</div>
-                <div class="pagination-item active">1</div>
-                <div class="pagination-item">2</div>
-                <div class="pagination-item">3</div>
-                <div class="pagination-item">4</div>
-                <div class="pagination-item">»</div>
+                <!-- Previous page link -->
+                <a href="?id=<%= product._id %>&page=<%= currentPage - 1 %>"
+                    class="pagination-item <%= currentPage === 1 ? 'disabled' : '' %>">«</a>
+
+                <!-- Page numbers -->
+                <% for(let i=1; i <=totalPages; i++) { %>
+                    <a href="?id=<%= product._id %>&page=<%= i %>"
+                        class="pagination-item <%= currentPage === i ? 'active' : '' %>">
+                        <%= i %>
+                    </a>
+                    <% } %>
+
+                        <!-- Next page link -->
+                        <a href="?id=<%= product._id %>&page=<%= currentPage + 1 %>"
+                            class="pagination-item <%= currentPage === totalPages ? 'disabled' : '' %>">»</a>
             </div>
-        </div>
 
-        <script>
+            <script>
 
-            const zoomContainer = document.querySelector('.zoom-container');
-            const zoomImage = document.querySelector('.zoom-image');
+                const zoomContainer = document.querySelector('.zoom-container');
+                const zoomImage = document.querySelector('.zoom-image');
 
-            // Listen for mouse movements inside the container
-            zoomContainer.addEventListener('mousemove', function (e) {
-                // Get the container’s bounding box
-                const rect = zoomContainer.getBoundingClientRect();
+                zoomContainer.addEventListener('mousemove', function (e) {
+                    const rect = zoomContainer.getBoundingClientRect();
 
-                // Calculate the cursor’s x/y relative to the container
-                const x = e.clientX - rect.left; // distance from container's left edge
-                const y = e.clientY - rect.top;  // distance from container's top edge
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
 
-                // Container dimensions
-                const width = zoomContainer.offsetWidth;
-                const height = zoomContainer.offsetHeight;
 
-                // Convert cursor position to a percentage of the container’s size
-                const xPercent = (x / width) * 100;
-                const yPercent = (y / height) * 100;
+                    const width = zoomContainer.offsetWidth;
+                    const height = zoomContainer.offsetHeight;
 
-                // Update transform-origin based on cursor position
-                // This makes the point under the cursor stay in focus
-                zoomImage.style.transformOrigin = `${xPercent}% ${yPercent}%`;
-            });
 
-            function openModal(imageSrc) {
-                const modal = document.getElementById("image-modal");
-                const modalImg = document.getElementById("modal-img");
+                    const xPercent = (x / width) * 100;
+                    const yPercent = (y / height) * 100;
 
-                // Display the modal
-                modal.style.display = "flex"; // or "block"
-
-                // Set the src of the modal image to the clicked image
-                modalImg.src = imageSrc;
-            }
-
-            function closeModal() {
-                const modal = document.getElementById("image-modal");
-                modal.style.display = "none";
-            }
-            // Simple accordion functionality
-            document.querySelectorAll('.accordion-header').forEach(header => {
-                header.addEventListener('click', () => {
-                    const content = header.nextElementSibling;
-                    content.classList.toggle('active');
-
-                    // Change the plus/minus sign
-                    const symbol = header.querySelector('span:last-child');
-                    symbol.textContent = content.classList.contains('active') ? '-' : '+';
+                    zoomImage.style.transformOrigin = `${xPercent}% ${yPercent}%`;
                 });
-            });
 
-            // Size selection functionality
-            document.querySelectorAll('.size-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    document.querySelectorAll('.size-option').forEach(opt => {
-                        opt.classList.remove('active');
+                function openModal(imageSrc) {
+                    const modal = document.getElementById("image-modal");
+                    const modalImg = document.getElementById("modal-img");
+
+
+                    modal.style.display = "flex";
+
+                    modalImg.src = imageSrc;
+                }
+
+                function closeModal() {
+                    const modal = document.getElementById("image-modal");
+                    modal.style.display = "none";
+                }
+
+                document.querySelectorAll('.accordion-header').forEach(header => {
+                    header.addEventListener('click', () => {
+                        const content = header.nextElementSibling;
+                        content.classList.toggle('active');
+
+
+                        const symbol = header.querySelector('span:last-child');
+                        symbol.textContent = content.classList.contains('active') ? '-' : '+';
                     });
-                    option.classList.add('active');
                 });
-            });
 
-            // Color selection functionality
-            document.querySelectorAll('.color-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    document.querySelectorAll('.color-option').forEach(opt => {
-                        opt.classList.remove('active');
+                document.querySelectorAll('.size-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        document.querySelectorAll('.size-option').forEach(opt => {
+                            opt.classList.remove('active');
+                        });
+                        option.classList.add('active');
                     });
-                    option.classList.add('active');
                 });
-            });
-        </script>
+
+
+                document.querySelectorAll('.color-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        document.querySelectorAll('.color-option').forEach(opt => {
+                            opt.classList.remove('active');
+                        });
+                        option.classList.add('active');
+                    });
+                });
+            </script>
     </body>
 
     </html>

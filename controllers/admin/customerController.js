@@ -1,6 +1,6 @@
 const User = require("../../models/userSchema");
 
-
+// ---customer List---
 
 const customerInfo = async (req, res) => {
     try {
@@ -47,6 +47,8 @@ const customerInfo = async (req, res) => {
     }
 }
 
+// ---Block coustomer---
+
 const customerBlocked = async (req, res) => {
     try {
         let id = req.query.id;
@@ -56,6 +58,8 @@ const customerBlocked = async (req, res) => {
         res.render("/errorpage")
     }
 }
+
+// ---unblock customer---
 
 const customerUnblocked = async (req, res) => {
     try {

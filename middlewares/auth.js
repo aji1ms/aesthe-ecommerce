@@ -4,9 +4,15 @@ const User = require("../models/userSchema");
 
 const userAuth = (req, res, next) => {
     if (req.session.user) {
-        User.findById(req, session.user)
+        User.findById(req.session.user)
             .then(data => {
-                if (data && !isBlocked) {
+                if (data && !data.isBlocked) {
+                    req.session.userData = {
+                        _id: data._id,
+                        name: data.name,
+                        email: data.email,
+                        phone:data.phone,
+                    };
                     next();
                 } else {
                     res.redirect("/login");

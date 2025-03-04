@@ -6,7 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const sharp = require("sharp");
 
-
+// ---Product page---
 
 const getProductAddPage = async (req, res) => {
     try {
@@ -22,6 +22,8 @@ const getProductAddPage = async (req, res) => {
         res.redirect("/errorpage");
     }
 }
+
+// ---Add product---
 
 const addProducts = async (req, res) => {
     try {
@@ -80,6 +82,8 @@ const addProducts = async (req, res) => {
     }
 }
 
+// ---Product List---
+
 const getAllProducts = async (req, res) => {
     try {
 
@@ -124,6 +128,7 @@ const getAllProducts = async (req, res) => {
     }
 }
 
+// ---Block Product---
 
 const blockProduct = async (req, res) => {
     try {
@@ -137,6 +142,8 @@ const blockProduct = async (req, res) => {
     }
 }
 
+// ---unBlock Product---
+
 const unblockProduct = async (req, res) => {
     try {
         let id = req.query.id;
@@ -147,6 +154,8 @@ const unblockProduct = async (req, res) => {
         res.redirect("/errorpage");
     }
 }
+
+// ---EditProduct Product---
 
 const getEditProduct = async (req, res) => {
     try {
@@ -213,6 +222,8 @@ const editProduct = async (req, res) => {
         res.redirect("/errorpage")
     }
 }
+
+// ---Delete Product Image---
 
 const deleteSingleImage = async (req, res) => { 
     try {

@@ -285,6 +285,7 @@ const login = async (req, res) => {
             return res.render('login', { message: "Password incorrect" });
         }
 
+        req.session.user = findUser._id;
         req.session.userData = {
             _id: findUser._id,
             email: findUser.email,
@@ -327,7 +328,7 @@ const loadShoppingPage = async (req, res) => {
         const categories = await Category.find({ isListed: true });
         const categoryIds = categories.map((category) => category._id.toString());
         const page = parseInt(req.query.page) || 1;
-        const limit = 9;
+        const limit = 16;
         const skip = (page - 1) * limit;
         const products = await Product.find({
             isBlocked: false,

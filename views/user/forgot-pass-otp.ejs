@@ -47,7 +47,6 @@
             }
         }, 1000);
 
-        // Initially disable resend button
         resendButton.style.opacity = '0.5';
         resendButton.disabled = true;
 
@@ -92,12 +91,9 @@
             clearInterval(timer);
             timeLeft = 59;
             timerDisplay.textContent = timeLeft;
-
-            // Disable the resend button again
             resendButton.style.opacity = '0.5';
             resendButton.disabled = true;
 
-            // Start the timer again
             const newTimer = setInterval(() => {
                 if (timeLeft <= 0) {
                     clearInterval(newTimer);

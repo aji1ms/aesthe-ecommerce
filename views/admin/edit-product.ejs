@@ -245,11 +245,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Global variables to store croppers
+        
         let croppers = [null, null, null, null];
         let croppedFiles = [null, null, null, null];
 
-        // Setup image upload and cropping for each input
         for (let i = 1; i <= 4; i++) {
             setupImageCropper(i);
         }

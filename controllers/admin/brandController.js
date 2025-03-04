@@ -1,6 +1,7 @@
 const Brand = require("../../models/brandSchema");
 const Product = require("../../models/productSchema");
 
+// ---Brand page---
 
 const getBrandPage = async (req, res) => {
     try {
@@ -23,6 +24,7 @@ const getBrandPage = async (req, res) => {
     }
 }
 
+// ---Add Brand---
 
 const addBrand = async (req, res) => {
     try {
@@ -44,6 +46,7 @@ const addBrand = async (req, res) => {
     }
 }
 
+// ---Block Brand page---
 
 const blockBrand = async (req, res) => {
     try {
@@ -57,6 +60,7 @@ const blockBrand = async (req, res) => {
     }
 }
 
+// ---UnBlock Brand---
 
 const unblockBrand = async (req, res) => {
     try {
@@ -70,6 +74,7 @@ const unblockBrand = async (req, res) => {
     }
 }
 
+// ---Delete Brand---
 
 const deleteBrand = async (req, res) => {
     try {

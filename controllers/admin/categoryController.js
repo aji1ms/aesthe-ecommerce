@@ -1,6 +1,6 @@
 const Category = require("../../models/categorySchema");
 
-
+// ---Category page---
 
 const categoryInfo = async (req, res) => {
     try {
@@ -42,7 +42,7 @@ const categoryInfo = async (req, res) => {
     }
   };
   
-
+// ---AddCategory page---
 
 const addCategory = async (req, res) => {
     const { name, description} = req.body;
@@ -64,6 +64,7 @@ const addCategory = async (req, res) => {
     }
 }
 
+// ---CategoryList page---
 
 const getlistCategory = async (req, res) => {
     try {
@@ -77,6 +78,8 @@ const getlistCategory = async (req, res) => {
     }
 }
 
+// ---unlist category page---
+
 const getUnlistCategory = async (req, res) => {
     try {
 
@@ -88,6 +91,8 @@ const getUnlistCategory = async (req, res) => {
         res.redirect("/errorpage");
     }
 }
+
+// ---Edit category page---
 
 const getEditCategory = async (req, res) => {
     try {

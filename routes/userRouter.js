@@ -53,6 +53,15 @@ router.post('/verify-passForgot-otp', profileController.verifyForgotPassOtp);
 router.get('/reset-password', profileController.getResetPassPage);
 router.post('/resend-forgot-otp', profileController.resendOtp);
 router.post('/reset-password', profileController.postNewPassword);
+router.get("/userProfile", userAuth, profileController.userProfile);
+router.get("/change-email", userAuth, profileController.changeEmail);
+router.post("/change-email", userAuth, profileController.changeEmailValid);
+router.post("/verify-email-otp", userAuth, profileController.verifyEmailOtp);
+router.post("/update-email", userAuth, profileController.updateEmail);
+router.get('/change-password', userAuth, profileController.changePassword);
+router.post('/change-password', userAuth, profileController.changePasswordValid);
+router.post('/verify-changePassword-otp', userAuth, profileController.verifyChangePasswordOtp);
+
 
 // --Product Management--
 
