@@ -32,7 +32,8 @@ const productDetails = async (req, res) => {
    
     const relatedProducts = await Product.find({
       category: product.category,
-      _id: { $ne: product._id }
+      _id: { $ne: product._id },
+      isBlocked:false,
     }).skip(skip).limit(limit);
 
     const categoryOffer = findCategory?.categoryOffer || 0;

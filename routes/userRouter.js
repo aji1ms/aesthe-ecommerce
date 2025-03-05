@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require("../controllers/user/userController");
 const profileController = require("../controllers/user/profileController");
 const productController = require("../controllers/user/productController");
+const wishlistController = require("../controllers/user/wishlistController");
 const passport = require('passport');
 const { userAuth } = require('../middlewares/auth');
 
@@ -76,6 +77,12 @@ router.get('/deleteAddress', userAuth, profileController.deleteAddress);
 // --Product Management--
 
 router.get("/productDetails", productController.productDetails);
+
+// --wishlist Management--
+
+router.get('/wishlist', userAuth, wishlistController.loadWishlist);
+router.post('/addToWishlist', userAuth, wishlistController.addToWishlist);
+router.get('/removeFromWishlist', userAuth, wishlistController.removeFromWishlist);
 
 
 

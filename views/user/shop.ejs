@@ -576,9 +576,9 @@
                         <div class="product-image">
                             <a href="/productDetails?id=<%=products[i]._id%>">
                                 <img src="/uploads/re-image/<%=products[i].productImage[0]%>"
-                                    alt="<%=products[i].productName%>">
-                                <div class="wishlist-icon">
-                                    <button class="wishlist-button" data-product-id="1">
+                                    alt="<%=products[i].productName%>"> </a>
+                                <div class="wishlist-icon" >
+                                    <button class="wishlist-button" data-product-id="1" onclick="addToWishlist('<%=products[i]._id%>')">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round">
@@ -591,21 +591,17 @@
 
                                 <!-- <div class="product-tag">New Arrival</div> -->
                         </div>
+                        <a href="/productDetails?id=<%=products[i]._id%>">
                         <div class="product-info">
                             <h3 class="product-name">
                                 <%=products[i].productName%>
                             </h3>
                             <div class="product-price">
                                 <span class="current-price">Rs.<%=products[i].salePrice.toLocaleString('en-IN')%></span>
-                                <span class="old-price">Rs.<%=products[i].regularPrice.toLocaleString('en-IN')%></span>
-                                </a>
-                            </div>
-                            <!-- <div class="product-colors">
-                                <div class="color-option" style="background-color: #000000"></div>
-                                <div class="color-option" style="background-color: #8B4513"></div>
-                                <span class="color-count">+2</span>
-                            </div> -->
+                                <span class="old-price">Rs.<%=products[i].regularPrice.toLocaleString('en-IN')%></span>   
+                            </div>      
                         </div>
+                    </a>
                     </div>
 
 
@@ -667,7 +663,44 @@
 
         </div>
 
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
+
+            function addToWishlist(productId) {
+                $.ajax({
+                    url: '/addToWishlist',
+                    method: 'POST',
+                    data: { productId: productId },
+                    success: (response) => {
+                        if (response.status) {
+                            Swal.fire({
+                                title: "Added to wishlist",
+                                text: "The product has been added to wishlist",
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false,
+                            })
+                        } else {
+                            Swal.fire({
+                                title: "Already in wishlist",
+                                text: response.message,
+                                icon: 'info',
+                                timer: 2000,
+                                showConfirmButton: false,
+                            })
+                        }
+                    },
+                    error: (error) => {
+                        Swal.fire({
+                            title: 'Error',
+                            text: "There was an error adding the product to your wishlist",
+                            icon: "error",
+                            icon: 2000,
+                        })
+                    },
+                })
+            }
 
             document.addEventListener('DOMContentLoaded', function () {
                 const wishlistButtons = document.querySelectorAll('.wishlist-button');
@@ -723,7 +756,7 @@
                 filterbutton.addEventListener('click', function () {
                     filterSidebar.classList.add('active');
                     overlay.classList.add('active');
-                    document.body.style.overflow = 'hidden'; 
+                    document.body.style.overflow = 'hidden';
                 });
 
                 function closeFilter() {
@@ -753,7 +786,7 @@
                 applyBtn.addEventListener('click', function () {
                     const form = document.createElement('form');
                     form.method = 'GET';
-                    form.action = window.location.pathname; 
+                    form.action = window.location.pathname;
 
                     const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked'));
                     selectedCategories.forEach(input => {
