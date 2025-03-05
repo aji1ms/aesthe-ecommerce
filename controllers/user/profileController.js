@@ -187,7 +187,51 @@ const userProfile = async (req, res) => {
         })
 
     } catch (error) {
-        console.log("Error retrieving profileData", error);
+        console.error("Error retrieving profileData", error);
+        res.redirect("/pageNotFound");
+    }
+}
+
+// ---Edit userProfile page---
+
+const editUserProfile = async (req, res) => {
+    try {
+
+        const userData = req.session.userData;
+        const findUser = await User.findOne({ userData: userData })
+        res.render("edit-profile", {
+            userData: userData
+        })
+
+    } catch (error) {
+        res.redirect("/pageNotFound")
+    }
+}
+
+// ---Edit userProfile page---
+
+const postEditProfile = async (req, res) => {
+    try {
+
+        const data = req.body;
+        const userId = req.query.id;
+        const findUser = await User.findOne({ _id: userId });
+        if (!findUser) {
+            return res.redirect("/pageNotFound");
+        }
+        await User.updateOne(
+            { _id: userId },
+            {
+                $set: {
+                    name: data.name,
+                    phone: data.phone,
+                }
+            }
+        );
+        res.json({ success: true, redirect: '/userProfile' });
+
+    } catch (error) {
+        console.log("Error occured while editing profile: ", error);
         res.redirect("/pageNotFound");
     }
 }
@@ -497,6 +541,8 @@ module.exports = {
     resendOtp,
     postNewPassword,
     userProfile,
+    editUserProfile,
+    postEditProfile,
     changeEmail,
     changeEmailValid,
     verifyEmailOtp,
@@ -509,5 +555,5 @@ module.exports = {
     postAddAddress,
     editAddress,
     postEditAddress,
-    deleteAddress
+    deleteAddress,
 }
