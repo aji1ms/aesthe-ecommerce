@@ -127,10 +127,6 @@ h1 {
     transition: all 0.3s;
 }
 
-.btn-google img {
-    width: 18px;
-    height: 18px;
-}
 .btn-google:hover {
     background: #000;
     color: #fff;

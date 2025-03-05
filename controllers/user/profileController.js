@@ -1,5 +1,6 @@
 const { Session } = require("express-session");
 const User = require("../../models/userSchema");
+const Address = require("../../models/addressSchema");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const { render } = require("ejs");
@@ -179,8 +180,10 @@ const userProfile = async (req, res) => {
     try {
 
         const userData = req.session.userData;
+        const addressData = await Address.findOne({ userData: userData });
         res.render("profile", {
             user: userData,
+            userAddress: addressData,
         })
 
     } catch (error) {
@@ -334,7 +337,155 @@ const verifyChangePasswordOtp = async (req, res) => {
     }
 }
 
+// ---Address Page---
 
+const loadAddressPage = async (req, res) => {
+    try {
+        const userId = req.session.user;
+        const userAddress = await Address.findOne({ userId: userId });
+        res.render("address", { userAddress });
+    } catch (error) {
+        console.log("Error loading address page: ", error);
+        res.redirect('/pageNotFound');
+    }
+}
+
+// ---Add Address Page---
+
+const addAddress = async (req, res) => {
+    try {
+
+        const user = req.session.user;
+        res.render("add-address", { user: user });
+
+    } catch (error) {
+        res.redirect('/pageNotFound')
+    }
+}
+
+// ---Add Address---
+
+const postAddAddress = async (req, res) => {
+    try {
+
+        const userId = req.session.user;
+        const userData = await User.findOne({ _id: userId });
+        const { addressType, name, city, landMark, state, pincode, phone, altPhone } = req.body;
+
+        const userAddress = await Address.findOne({ userId: userData._id });
+        if (!userAddress) {
+            const newAddress = new Address({
+                userId: userData._id,
+                address: [{ addressType, name, city, landMark, state, pincode, phone, altPhone }]
+            })
+            await newAddress.save();
+        } else {
+            userAddress.address.push({ addressType, name, city, landMark, state, pincode, phone, altPhone });
+            await userAddress.save();
+        }
+
+        res.json({ success: true, redirect: '/address' });
+
+    } catch (error) {
+        console.log("Error adding address: ", error);
+        res.redirect("/pageNotFound")
+    }
+}
+
+// ---Edit Address---
+
+const editAddress = async (req, res) => {
+    try {
+
+        const addressId = req.query.id;
+        const user = req.session.user;
+        const currAddress = await Address.findOne({
+            userId: user,
+            "address._id": addressId,
+        });
+
+        if (!currAddress) {
+            return res.redirect('/pageNotFound');
+        }
+        const addressData = currAddress.address.find((item) => {
+            return item._id.toString() === addressId.toString();
+        })
+
+        if (!addressData) {
+            return res.redirect("/pageNotFound")
+        }
+
+        res.render("edit-address", { address: addressData, user: user });
+
+    } catch (error) {
+        console.log("Error in edit addresss: ", error);
+        res.redirect('/pageNotFound')
+    }
+}
+
+// ---Editing Address---
+
+const postEditAddress = async (req, res) => {
+    try {
+
+        const data = req.body;
+        const addressId = req.query.id;
+        const user = req.session.user;
+        const findAddress = await Address.findOne({ "address._id": addressId });
+
+        if (!findAddress) {
+            return res.redirect("/pageNotfound")
+        }
+        await Address.updateOne(
+            { "address._id": addressId },
+            {
+                $set: {
+                    "address.$.addressType": data.addressType,
+                    "address.$.name": data.name,
+                    "address.$.city": data.city,
+                    "address.$.landMark": data.landMark,
+                    "address.$.state": data.state,
+                    "address.$.pincode": data.pincode,
+                    "address.$.phone": data.phone,
+                    "address.$.altPhone": data.altPhone,
+                }
+            }
+        )
+        res.json({ success: true, redirect: '/address' });
+
+    } catch (error) {
+        console.log("Error Ocuured while editiing address: ", error);
+        return res.redirect("/pageNotFound")
+    }
+}
+
+// ---Delete Address---
+
+const deleteAddress = async (req, res) => {
+    try {
+
+        const addressId = req.query.id;
+        const findAddress = await Address.findOne({ "address._id": addressId });
+        if (!findAddress) {
+            return res.status(404).send('Address not found');
+        }
+        await Address.updateOne(
+            { "address._id": addressId },
+            {
+                $pull: {
+                    address: {
+                        _id: addressId,
+                    }
+                }
+            }
+        )
+        res.redirect("/address");
+
+    } catch (error) {
+        console.log("Error occured while deleting address: ", error);
+        return res.redirect('/pageNotFound');
+    }
+}
 
 
 
@@ -353,4 +504,10 @@ module.exports = {
     changePassword,
     changePasswordValid,
     verifyChangePasswordOtp,
+    loadAddressPage,
+    addAddress,
+    postAddAddress,
+    editAddress,
+    postEditAddress,
+    deleteAddress
 }

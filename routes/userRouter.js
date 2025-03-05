@@ -62,6 +62,14 @@ router.get('/change-password', userAuth, profileController.changePassword);
 router.post('/change-password', userAuth, profileController.changePasswordValid);
 router.post('/verify-changePassword-otp', userAuth, profileController.verifyChangePasswordOtp);
 
+// --Address Management--
+
+router.get('/address', userAuth, profileController.loadAddressPage);
+router.get('/addAddress', userAuth, profileController.addAddress);
+router.post('/addAddress', userAuth, profileController.postAddAddress);
+router.get('/editAddress', userAuth, profileController.editAddress);
+router.post('/editAddress', userAuth, profileController.postEditAddress);
+router.get('/deleteAddress', userAuth, profileController.deleteAddress);
 
 // --Product Management--
 
