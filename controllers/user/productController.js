@@ -7,11 +7,11 @@ const User = require("../../models/userSchema");
 // productController.js
 
 
-const productDetails = async (req, res) => {
+const productDetails = async (req, res) => { 
   try {
     const userId = req.session.user || null;
     const userData = await User.findById(userId);
-    const productId = req.query.id;
+    const productId = req.query.id || req.query.productId;
 
     const page = parseInt(req.query.page) || 1;
     const limit = 4;

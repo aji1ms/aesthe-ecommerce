@@ -56,6 +56,16 @@ const orderSchema = new mongoose.Schema({
     couponApplied: {
         type: Boolean,
         default: false
+    },
+    paymentMethod: {
+        type: String,
+        required: true,
+        enum: ["cod", "card", "netbanking", "upi"]
+    },
+    paymentStatus: {
+        type: String,
+        enum: ["Pending", "Completed", "Failed"],
+        default: "Pending"
     }
 })
 

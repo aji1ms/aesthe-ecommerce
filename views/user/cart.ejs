@@ -409,8 +409,10 @@
                         <% cartItems.forEach(function(item) { %>
                             <div class="cart-item" data-product-id="<%= item.productId._id %>">
                                 <div class="cart-item-image">
+                                    <a href="/productDetails?productId=<%=item.productId._id%>">
                                     <img src="/uploads/re-image/<%= item.productId.productImage[0] %>"
                                         alt="<%= item.productId.productName %>" id="product-img">
+                                    </a>
                                 </div>
                                 <div class="cart-item-details">
                                     <h3 class="cart-item-title">

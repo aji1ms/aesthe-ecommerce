@@ -25,27 +25,27 @@
                 <form id="registerform" method="post" action="/register">
                     <div class="form-group">
                         <label for="name">FULL NAME</label>
-                        <input type="text" name="name" id="name" required>
+                        <input type="text" name="name" id="name" >
                         <div id="error1" class="error-message"></div>
                     </div>
                     <div class="form-group">
                         <label for="email">E-MAIL</label>
-                        <input type="email" name="email" id="email" required>
+                        <input type="email" name="email" id="email" >
                         <div id="error2" class="error-message"></div>
                     </div>
                     <div class="form-group">
                         <label>TELEPHONE</label>
-                        <input type="tel" name="phone" id="phone" required>
+                        <input type="tel" name="phone" id="phone" >
                         <div id="error3" class="error-message"></div>
                     </div>
                     <div class="form-group">
                         <label for="password">PASSWORD</label>
-                        <input type="password" name="password" id="password" required>
+                        <input type="password" name="password" id="password" >
                         <div id="error4" class="error-message"></div>
                     </div>
                     <div class="form-group">
                         <label for="password">CONFIRM PASSWORD</label>
-                        <input type="password" name="cPassword" id="confirm-password" required>
+                        <input type="password" name="cPassword" id="confirm-password" >
                         <div id="error5" class="error-message"></div>
                     </div>
                     <% if (locals.message && message.length>0) { %>
@@ -61,7 +61,7 @@
                             </div>
 
                             <div class="checkbox-group">
-                                <input type="checkbox" id="privacy" required>
+                                <input type="checkbox" id="privacy" >
                                 <label for="privacy">I accept the <a href="#">privacy statement</a></label>
                             </div>
 

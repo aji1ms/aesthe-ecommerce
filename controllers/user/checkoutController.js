@@ -50,38 +50,45 @@ const placeOrder = async (req, res) => {
     try {
 
         const userId = req.session.user;
-        const user = await User.findById(userId);
-        const cart = await Cart.findOne({ userId }).populate('items.productId');
+        const { billingAddress, payment } = req.body;
 
-        if (!cart || cart.items.length == 0) {
-            return res.redirect('/cart')
+        if (!billingAddress) {
+            return res.status(400).json({ status: false, message: "Billing address is required" });
+        }
+
+        if (!payment) {
+            return res.status(400).json({ status: false, message: "Payment method is required" });
+        }
+
+        const cart = await Cart.findOne({ userId }).populate("items.productId");
+        if (!cart || cart.items.length === 0) {
+            return res.status(400).json({ status: false, message: "Your cart is empty" });
         }
 
         let totalPrice = 0;
-        cart.items.forEach(item => {
+        const orderedItem = cart.items.map(item => {
             totalPrice += item.totalPrice;
-        });
-
-        const discount = 0;
-        const finalAmount = totalPrice - discount;
-
-        const orderItem = cart.items.map(item => {
             return {
                 product: item.productId._id,
                 quantity: item.quantity,
                 price: item.price
-            }
-        })
+            };
+        });
+
+        const deliveryCharge = 149;
+        const discount = 0;
+        const finalAmount = totalPrice + deliveryCharge - discount;
 
         const newOrder = new Order({
             orderedItem,
             totalPrice,
             discount,
             finalAmount,
-            address: user._id,
-            invoiceDate: new Date(),
+            address: billingAddress,
+            paymentMethod: payment,
+            paymentStatus: payment === "cod" ? "Pending" : "Completed",
             status: "Pending",
-            couponApplied: false
+            invoiceDate: new Date()
         });
 
         await newOrder.save();
@@ -89,13 +96,11 @@ const placeOrder = async (req, res) => {
         cart.items = [];
         await cart.save();
 
-        res.render("orderConfirmation", {
-            order: newOrder,
-            user
-        });
+        res.status(200).json({ status: true, message: "Order placed successfully" });
+
     } catch (error) {
         console.error("Error placing order:", error);
-        res.redirect("/pageNotFound");
+        res.status(500).redirect("/pageNotFound");
     }
 };
 
