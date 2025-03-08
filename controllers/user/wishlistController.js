@@ -26,9 +26,8 @@ const loadWishlist = async (req, res) => {
 
 const addToWishlist = async (req, res) => {
     try {
-
-        const productId = req.body.productId;
         const userId = req.session.user;
+        const productId = req.body.productId;
         const user = await User.findById(userId);
 
         if (user.wishlist.includes(productId)) {

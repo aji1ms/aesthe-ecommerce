@@ -18,6 +18,7 @@
                 background-color: #f5f5f5;
             }
 
+
             .container {
                 max-width: 1500px;
                 margin: 0 auto;
@@ -57,7 +58,7 @@
 
             .zoom-container {
                 width: 350px;
-                height: 350px;
+                height: 100%;
                 overflow: hidden;
                 position: relative;
             }
@@ -115,6 +116,10 @@
                 color: #fff;
             }
 
+            #btnWish {
+                background-color: white;
+                border-color: white;
+            }
 
 
             .product-info {
@@ -402,17 +407,26 @@
                     <h1 class="product-title">
                         <%=product.productName%>
                     </h1>
+                    <button id="btnWish" data-productid="<%= product._id %>">
+                        <svg class="svgWish" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z">
+                            </path>
+                        </svg>
+                    </button>
+                    <p style="margin-bottom: 5px; color: #888;">MRP inclusive of all taxes</p>
+
                     <p class="product-price">Rs.<%=product.salePrice%><span
                                 style="text-decoration: line-through; color: #888; font-size: 14px; margin-left: 5px;">
                                 <%=product.regularPrice%>
                             </span></p>
-
+                    <p style="margin-bottom: 5px;">
+                        <%=product.color%>
+                    </p>
                     <div class="product-colors">
-                        <div class="color-option active" style="background-color: #8B4513;"></div>
-                        <div class="color-option" style="background-color: #000;"></div>
-                        <div class="color-option" style="background-color: #fff;"></div>
-                        <div class="color-option" style="background-color: #f5f5dc;"></div>
-                        <div class="color-option" style="background-color: #000080;"></div>
+                        <div class="color-option" style="background-color: <%= product.color %>;"></div>
                     </div>
 
                     <div class="sizes">
@@ -427,7 +441,7 @@
                         </div>
                     </div>
 
-                    <button class="add-button">Add</button>
+                    <button class="add-button" data-productid="<%= product._id %>">Add</button>
 
                     <div class="delivery-info">
                         <p>Delivery Time: 2-7 days</p>
@@ -484,7 +498,7 @@
                 <div class="products-grid">
                     <% relatedProducts.forEach(product=> { %>
                         <div class="product-card">
-                            <div class="wishlist-icon">♡</div>
+                            <div class="wishlist-icon" data-productid="<%= product._id %>">♡</div>
                             <a href="/productDetails?id=<%= product._id %>">
                                 <% if(product.productImage && product.productImage.length> 0) { %>
                                     <img src="/uploads/re-image/<%= product.productImage[0] %>"
@@ -525,8 +539,54 @@
                         <a href="?id=<%= product._id %>&page=<%= currentPage + 1 %>"
                             class="pagination-item <%= currentPage === totalPages ? 'disabled' : '' %>">»</a>
             </div>
-
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script>
+
+                document.getElementById("btnWish").addEventListener("click", async function (event) {
+                    event.preventDefault();
+
+                    // Retrieve the product ID from the data attribute
+                    const productId = this.getAttribute("data-productid");
+
+                    try {
+                        // Send a POST request to the wishlist endpoint
+                        const response = await fetch("/addToWishlist", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ productId })
+                        });
+
+                        const result = await response.json();
+
+                        // Check the response and show appropriate SweetAlert notification
+                        if (result.status) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Success",
+                                text: result.message,
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "info",
+                                title: "Notice",
+                                text: result.message,
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                        }
+                    } catch (error) {
+                        console.error("Error adding product to wishlist:", error);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "An error occurred. Please try again later."
+                        });
+                    }
+                });
 
                 const zoomContainer = document.querySelector('.zoom-container');
                 const zoomImage = document.querySelector('.zoom-image');
@@ -592,6 +652,101 @@
                         option.classList.add('active');
                     });
                 });
+
+                document.querySelector('.add-button').addEventListener('click', async function (e) {
+                    e.preventDefault();
+
+                    // Retrieve the product ID from the data attribute
+                    const productId = this.getAttribute("data-productid");
+
+                    try {
+                        // Send a POST request to the add-to-cart endpoint
+                        const response = await fetch("/addToCart", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ productId })
+                        });
+
+                        const result = await response.json();
+
+                        if (result.status) {
+                            // Show a success alert if the product was added
+                            Swal.fire({
+                                icon: "success",
+                                title: "Success",
+                                text: result.message,
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            // Show an error/info alert if it couldn't be added (e.g., already in cart)
+                            Swal.fire({
+                                icon: "info",
+                                title: "Notice",
+                                text: result.message,
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                        }
+                    } catch (error) {
+                        console.error("Error adding to cart:", error);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Something went wrong. Please try again later."
+                        });
+                    }
+                });
+
+                document.querySelector('.wishlist-icon').addEventListener('click', async function (e) {
+                    event.preventDefault();
+
+                    // Retrieve the product ID from the data attribute
+                    const productId = this.getAttribute("data-productid");
+
+                    try {
+                        // Send a POST request to the wishlist endpoint
+                        const response = await fetch("/addToWishlist", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ productId })
+                        });
+
+                        const result = await response.json();
+
+                        // Check the response and show appropriate SweetAlert notification
+                        if (result.status) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Success",
+                                text: result.message,
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "info",
+                                title: "Notice",
+                                text: result.message,
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                        }
+                    } catch (error) {
+                        console.error("Error adding product to wishlist:", error);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "An error occurred. Please try again later."
+                        });
+                    }
+                });
+
+
             </script>
     </body>
 
