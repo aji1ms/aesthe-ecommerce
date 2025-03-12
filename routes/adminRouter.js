@@ -5,10 +5,11 @@ const customerController = require("../controllers/admin/customerController");
 const categoryController = require("../controllers/admin/categoryController");
 const brandController = require("../controllers/admin/brandController");
 const productController = require("../controllers/admin/productController");
+const orderController = require("../controllers/admin/orderController");
 const { userAUth, adminAuth } = require("../middlewares/auth");
 const multer = require("multer");
 const storage = require("../helpers/multer");
-const uploads = multer({ storage: storage }); 
+const uploads = multer({ storage: storage });
 
 // --Login Management--
 
@@ -39,7 +40,7 @@ router.get("/brands", adminAuth, brandController.getBrandPage);
 router.post("/addBrand", adminAuth, uploads.single("image"), brandController.addBrand);
 router.get("/blockBrand", adminAuth, brandController.blockBrand);
 router.get("/unblockBrand", adminAuth, brandController.unblockBrand);
-router.get("/deleteBrand", adminAuth, brandController.deleteBrand); 
+router.get("/deleteBrand", adminAuth, brandController.deleteBrand);
 
 // --Product Management--
 
@@ -51,6 +52,12 @@ router.get('/unblockProduct', adminAuth, productController.unblockProduct);
 router.get('/editProduct', adminAuth, productController.getEditProduct);
 router.post('/editProduct/:id', adminAuth, uploads.array("images", 4), productController.editProduct);
 router.post('/deleteImage', adminAuth, productController.deleteSingleImage);
+
+// --Order Management--
+
+router.get("/orderList", adminAuth, orderController.listOrders);
+router.get("/orderView/:orderId", adminAuth, orderController.viewOrderDetailPage);
+router.post("/orderView/:orderId", adminAuth, orderController.updateOrderStatus)
 
 
 module.exports = router;

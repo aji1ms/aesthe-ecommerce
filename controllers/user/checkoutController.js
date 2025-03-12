@@ -2,6 +2,7 @@ const User = require("../../models/userSchema");
 const Order = require('../../models/orderSchema');
 const Cart = require("../../models/cartSchema");
 const Address = require("../../models/addressSchema");
+const Product = require("../../models/productSchema");
 
 
 
@@ -48,7 +49,6 @@ const loadCheckoutPage = async (req, res) => {
 
 const placeOrder = async (req, res) => {
     try {
-
         const userId = req.session.user;
         const { billingAddress, payment } = req.body;
 
@@ -63,6 +63,16 @@ const placeOrder = async (req, res) => {
         const cart = await Cart.findOne({ userId }).populate("items.productId");
         if (!cart || cart.items.length === 0) {
             return res.status(400).json({ status: false, message: "Your cart is empty" });
+        }
+
+        const userAddresses = await Address.findOne({ userId });
+        if (!userAddresses) {
+            return res.status(400).json({ status: false, message: "No addresses found for user" });
+        }
+
+        const selectedAddress = userAddresses.address.find(addr => addr._id.toString() === billingAddress);
+        if (!selectedAddress) {
+            return res.status(400).json({ status: false, message: "Selected address not found" });
         }
 
         let totalPrice = 0;
@@ -84,7 +94,8 @@ const placeOrder = async (req, res) => {
             totalPrice,
             discount,
             finalAmount,
-            address: billingAddress,
+            billingAddress: selectedAddress,
+            user: userId,
             paymentMethod: payment,
             paymentStatus: payment === "cod" ? "Pending" : "Completed",
             status: "Pending",
@@ -92,6 +103,10 @@ const placeOrder = async (req, res) => {
         });
 
         await newOrder.save();
+
+        await Promise.all(orderedItem.map(async (item) => {
+        await Product.findByIdAndUpdate(item.product, { $inc: { quantity: -item.quantity } });
+        }));
 
         cart.items = [];
         await cart.save();

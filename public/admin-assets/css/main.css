@@ -616,14 +616,6 @@ b {
     font-size: 24px
 }
 
-.menu-aside .menu-item.active .icon {
-    color: #088178
-}
-
-.menu-aside .menu-item.active .menu-link {
-    background-color: rgba(8, 129, 120, 0.2)
-}
-
 .menu-aside .menu-item.active .submenu a.active {
     color: #088178 !important
 }
@@ -640,7 +632,7 @@ b {
 .menu-aside .menu-link:hover {
     -webkit-transition: .2s linear;
     transition: .2s linear;
-    background-color: #e9ecef
+    background-color: #737373
 }
 
 .menu-aside .submenu {

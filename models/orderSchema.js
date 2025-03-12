@@ -35,7 +35,17 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    address: {
+    billingAddress: {
+        addressType: { type: String, required: true },
+        name: { type: String, required: true },
+        city: { type: String, required: true },
+        landMark: { type: String, required: true },
+        state: { type: String, required: true },
+        pincode: { type: Number, required: true },
+        phone: { type: String, required: true },
+        altPhone: { type: String, required: true }
+    },
+    user: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true
@@ -50,7 +60,7 @@ const orderSchema = new mongoose.Schema({
     },
     createdOn: {
         type: Date,
-        default: Date.now,
+        default: Date.now, 
         required: true
     },
     couponApplied: {
@@ -60,13 +70,17 @@ const orderSchema = new mongoose.Schema({
     paymentMethod: {
         type: String,
         required: true,
-        enum: ["cod", "card", "netbanking", "upi"]
+        enum: ["cod", "Razorpay", "upi"]
     },
     paymentStatus: {
         type: String,
-        enum: ["Pending", "Completed", "Failed"],
+        enum: ["Pending", "Completed", "Failed","Refunded"],
         default: "Pending"
-    }
+    },
+    returnReason: {
+        type: String,
+        default: ""
+      }
 })
 
 const Order = mongoose.model("Order", orderSchema);

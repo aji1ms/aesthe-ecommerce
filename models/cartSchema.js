@@ -17,6 +17,16 @@ const cartSchema = new mongoose.Schema({
             type: Number,
             default: 1
         },
+        color: {
+            type: String,
+            required: true
+        },
+        size: {
+            type: String,
+            required: true,
+            default: 'S',
+            enum: ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+        },
         price: {
             type: Number,
             required: true

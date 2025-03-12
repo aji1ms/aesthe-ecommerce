@@ -425,21 +425,26 @@
                     <p style="margin-bottom: 5px;">
                         <%=product.color%>
                     </p>
+
                     <div class="product-colors">
-                        <div class="color-option" style="background-color: <%= product.color %>;"></div>
+                        <div class="color-option" onclick="selectColor(this)" data-color="<%= product.color %>"
+                            style="background-color: <%= product.color %>;">
+                        </div>
                     </div>
+                    <input type="hidden" id="selectedColor" value="<%= product.color %>">
 
                     <div class="sizes">
                         <div class="size-title">Sizes</div>
                         <div class="size-options">
-                            <div class="size-option">XS</div>
-                            <div class="size-option active">S</div>
-                            <div class="size-option">M</div>
-                            <div class="size-option">L</div>
-                            <div class="size-option">XL</div>
-                            <div class="size-option">XXL</div>
+                            <div class="size-option" onclick="selectSize(this)">XS</div>
+                            <div class="size-option active" onclick="selectSize(this)">S</div>
+                            <div class="size-option" onclick="selectSize(this)">M</div>
+                            <div class="size-option" onclick="selectSize(this)">L</div>
+                            <div class="size-option" onclick="selectSize(this)">XL</div>
+                            <div class="size-option" onclick="selectSize(this)">XXL</div>
                         </div>
                     </div>
+                    <input type="hidden" id="selectedSize" value="S">
 
                     <button class="add-button" data-productid="<%= product._id %>">Add</button>
 
@@ -542,6 +547,11 @@
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script>
 
+                function selectColor(element) {
+                    const color = element.getAttribute('data-color');
+                    document.getElementById("selectedColor").value = color;
+                }
+
                 document.getElementById("btnWish").addEventListener("click", async function (event) {
                     event.preventDefault();
 
@@ -555,7 +565,7 @@
                             headers: {
                                 "Content-Type": "application/json"
                             },
-                            body: JSON.stringify({ productId })
+                            body: JSON.stringify({ productId,  color: selectedColor })
                         });
 
                         const result = await response.json();
@@ -634,14 +644,13 @@
                     });
                 });
 
-                document.querySelectorAll('.size-option').forEach(option => {
-                    option.addEventListener('click', () => {
-                        document.querySelectorAll('.size-option').forEach(opt => {
-                            opt.classList.remove('active');
-                        });
-                        option.classList.add('active');
-                    });
-                });
+                function selectSize(element) {
+                    document.querySelectorAll(".size-option").forEach(size => size.classList.remove("active"));
+                    element.classList.add("active");
+                    const selected = element.innerText.trim();
+                    console.log("Selected size:", selected); // Debug: Check which size is selected
+                    document.getElementById("selectedSize").value = selected;
+                }
 
 
                 document.querySelectorAll('.color-option').forEach(option => {
@@ -655,41 +664,27 @@
 
                 document.querySelector('.add-button').addEventListener('click', async function (e) {
                     e.preventDefault();
-
-                    // Retrieve the product ID from the data attribute
                     const productId = this.getAttribute("data-productid");
 
+                    const selectedColor = document.getElementById("selectedColor").value;
+                    const selectedSize = document.getElementById("selectedSize").value;
+
                     try {
-                        // Send a POST request to the add-to-cart endpoint
                         const response = await fetch("/addToCart", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
                             },
-                            body: JSON.stringify({ productId })
+                            body: JSON.stringify({ productId, size: selectedSize, color: selectedColor })
                         });
-
                         const result = await response.json();
-
-                        if (result.status) {
-                            // Show a success alert if the product was added
-                            Swal.fire({
-                                icon: "success",
-                                title: "Success",
-                                text: result.message,
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
-                        } else {
-                            // Show an error/info alert if it couldn't be added (e.g., already in cart)
-                            Swal.fire({
-                                icon: "info",
-                                title: "Notice",
-                                text: result.message,
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
-                        }
+                        Swal.fire({
+                            icon: result.status ? "success" : "info",
+                            title: result.status ? "Success" : "Notice",
+                            text: result.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
                     } catch (error) {
                         console.error("Error adding to cart:", error);
                         Swal.fire({

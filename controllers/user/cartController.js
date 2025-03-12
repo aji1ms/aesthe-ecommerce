@@ -29,12 +29,17 @@ const loadCart = async (req, res) => {
 
 const addToCart = async (req, res) => {
     try {
-        const { productId } = req.body;
+        const { productId, size,color } = req.body;
+        console.log("Request body:", req.body); 
         const userId = req.session.user;
 
         if (!userId) {
             return res.status(401).json({ status: false, message: "Please login to add items to your cart" });
         }
+
+        if (!size) {
+            return res.status(400).json({ status: false, message: "Please select a size before adding to cart" });
+          }
 
         const product = await Product.findById(productId).populate('category');
         if (!product) {
@@ -54,6 +59,20 @@ const addToCart = async (req, res) => {
             cart = new Cart({ userId: userId, items: [] });
         }
 
+        
+        cart.items.forEach(item => {
+            if (!item.color) {
+              item.color = product.color || "default"; // Use a fallback if needed
+            }
+          });
+
+
+        cart.items.forEach(item => {
+            if (!item.size) {
+              item.size = "S"; 
+            }
+          });
+
         const quantity = 1;
         const itemIndex = cart.items.findIndex(item => item.productId.toString() === productId);
 
@@ -68,6 +87,8 @@ const addToCart = async (req, res) => {
         } else {
             cart.items.push({
                 productId: productId,
+                color: color,
+                size: size,
                 quantity: quantity,
                 price: price,
                 totalPrice: price * quantity

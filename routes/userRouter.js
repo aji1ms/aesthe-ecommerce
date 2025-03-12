@@ -7,6 +7,7 @@ const wishlistController = require("../controllers/user/wishlistController");
 const cartController = require("../controllers/user/cartController");
 const checkoutController = require("../controllers/user/checkoutController");
 const orderController = require("../controllers/user/orderController");
+const walletController = require('../controllers/user/walletController');
 const passport = require('passport');
 const { userAuth } = require('../middlewares/auth');
 
@@ -101,7 +102,14 @@ router.post('/placeOrder', userAuth, checkoutController.placeOrder);
 
 // --Order Management--
 
-router.get('/thank', userAuth, orderController.loadOrderPage);
+router.get('/thank', userAuth, orderController.thankingPage);
+router.get('/orders', userAuth, orderController.loadOrderDetails);
+router.post('/cancelOrder', userAuth, orderController.cancelOrder);
+router.post('/return', userAuth, orderController.returnOrder);
+
+// --Wallet Management--
+
+router.get('/wallet', userAuth, walletController.loadWallet);
 
 
 

@@ -1,4 +1,3 @@
-
 const { Session } = require("express-session");
 const User = require("../../models/userSchema");
 const Category = require("../../models/categorySchema");

@@ -1,4 +1,3 @@
-
 <%-include("../../views/partials/user/header")%>
 
   <style>
@@ -80,7 +79,7 @@
     .account-details {
       background-color: #fff;
       border-radius: 8px;
-      padding: 20px;
+      padding: 8px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
@@ -170,6 +169,133 @@
         font-size: 18px;
       }
     }
+
+    /* Wallet Page Styles */
+    .wallet-details {
+      background-color: #f1f1f1;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .wallet-content {
+      padding: 10px 0;
+    }
+
+    .wallet-balance-section {
+      background-color: #f1f1f1;
+      padding: 25px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .wallet-balance-label {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .wallet-balance-amount {
+      font-size: 32px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .wallet-actions {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #eee;
+    }
+
+    .wallet-action-title {
+      font-size: 18px;
+      color: #ff9800;
+      margin-bottom: 15px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .wallet-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .wallet-input-group {
+      width: 100%;
+    }
+
+    .wallet-input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .wallet-input:focus {
+      border-color: #ff9800;
+      outline: none;
+    }
+
+    .wallet-button {
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      text-align: center;
+      width: 100%;
+      max-width: 200px;
+      margin: 0 auto;
+    }
+
+    .wallet-button:hover {
+      background-color: #f57c00;
+    }
+
+    .wallet-section-title {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+
+    /* Responsive adjustments for wallet */
+    @media (max-width: 768px) {
+      .wallet-balance-amount {
+        font-size: 28px;
+      }
+
+      .wallet-form {
+        flex-direction: column;
+      }
+
+      .wallet-input-group {
+        width: 100%;
+      }
+
+      .wallet-button {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .wallet-balance-section {
+        padding: 15px;
+      }
+
+      .wallet-actions {
+        padding: 15px;
+      }
+
+    }
   </style>
 
   <div class="account-container">
@@ -207,7 +333,7 @@
             <div class="menu-arrow">></div>
           </div>
 
-          <div class="menu-item" data-route="/wallet">
+          <div class="menu-item active" data-route="/account/points">
             <div class="menu-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -284,43 +410,33 @@
           </div>
         </div>
       </div>
-
-      <!-- My Details Section - Always visible -->
-      <div class="account-details-container" id="details-section">
-        <div class="account-details">
+      
+      <!-- WALLET PAGE CONTENT STARTS HERE -->
+      <div class="account-details-container">
+        <div class="account-details wallet-details">
           <div class="details-header">
-            <div class="details-title">My details</div>
-            <a href="/editProfile" class="edit-button">Edit</a>
+            <div class="details-title">My Wallet</div>
           </div>
-
-          <div class="detail-row">
-            <div class="detail-label">Email</div>
-            <div class="detail-value" id="user-email">
-              <%=user.email%>
+          
+          <div class="wallet-content">
+            <div class="wallet-balance-section">
+              <div class="wallet-balance-label">Wallet Balance:</div>
+              <div class="wallet-balance-amount">$1000</div>
+            </div>
+            
+            <div class="wallet-actions">
+              <h3 class="wallet-action-title">Add Money to Wallet</h3>
+              <div class="wallet-form">
+                <div class="wallet-input-group">
+                  <input type="number" id="amount" class="wallet-input" placeholder="Enter amount">
+                </div>
+                <button class="wallet-button" id="add-money-btn">ADD MONEY</button>
+              </div>
             </div>
           </div>
-
-          <div class="detail-row">
-            <div class="detail-label">Name</div>
-            <div class="detail-value" id="user-first-name">
-              <%=user.name%>
-            </div>
-          </div>
-
-          <div class="detail-row">
-            <div class="detail-label">Phone number</div>
-            <div class="detail-value" id="user-phone">
-              <%=user.phone%>
-            </div>
-          </div>
-          <a href="/change-email">
-            <button class="change-btn">Change Email</button>
-          </a>
-          <a href="/change-password">
-            <button class="change-btn">Change Password</button>
-          </a>
         </div>
       </div>
+      <!-- WALLET PAGE CONTENT ENDS HERE -->
     </div>
   </div>
 
@@ -350,4 +466,5 @@
 
   </script>
 
-  <%-include("../../views/partials/user/footer")%>
+
+<%-include("../../views/partials/user/footer")%>
