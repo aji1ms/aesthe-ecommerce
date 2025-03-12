@@ -3,8 +3,8 @@ const User = require("../models/userSchema");
 // --userAuth middleare --
 
 const userAuth = (req, res, next) => {
-    if (req.session.user) {
-        User.findById(req.session.user)
+    if (req.session.userData) {
+        User.findById(req.session.userData._id)
             .then(data => {
                 if (data && !data.isBlocked) {
                     req.session.userData = {

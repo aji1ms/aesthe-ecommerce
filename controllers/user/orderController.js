@@ -16,13 +16,30 @@ const thankingPage = async (req, res) => {
     }
 }
 
-const loadOrderDetails = async (req, res) => {
+const orderList = async (req, res) => {
     try {
-
+        
         const userId = req.session.user;
         const orders = await Order.find({ user: req.session.user }).populate('orderedItem.product').populate('billingAddress');
 
-        res.render("orders", { orders });
+        res.render("orderListing", {orders})
+
+    } catch (error) {
+        console.log("error loding orderlist page");
+        res.redirect('/pageNotFound')
+    }
+}
+
+const loadOrderDetails = async (req, res) => {
+    try {
+
+        const orderId = req.params.orderId;
+        const order = await Order.findById(orderId) 
+      .populate('orderedItem.product')
+      .populate('billingAddress')
+      .populate('user');
+
+        res.render("orders", { order });
     } catch (error) {
         console.log("Error loading orderDetails page: ", error)
         res.redirect("/pageNotFound");
@@ -85,6 +102,7 @@ const returnOrder = async (req, res) => {
 
 module.exports = {
     thankingPage,
+    orderList,
     loadOrderDetails,
     cancelOrder,
     returnOrder,

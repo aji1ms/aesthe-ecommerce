@@ -22,6 +22,7 @@ router.get('/', userController.loadHomepage);
 router.get('/signup', userController.loadSignup);
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/signup' }), (req, res) => {
+    req.session.user = req.user._id;
     req.session.userData = {
         _id: req.user._id,
         email: req.user.email,
@@ -103,7 +104,8 @@ router.post('/placeOrder', userAuth, checkoutController.placeOrder);
 // --Order Management--
 
 router.get('/thank', userAuth, orderController.thankingPage);
-router.get('/orders', userAuth, orderController.loadOrderDetails);
+router.get('/orders', userAuth, orderController.orderList);
+router.get('/orderDetails/:orderId', userAuth, orderController.loadOrderDetails);
 router.post('/cancelOrder', userAuth, orderController.cancelOrder);
 router.post('/return', userAuth, orderController.returnOrder);
 

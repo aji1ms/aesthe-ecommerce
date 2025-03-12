@@ -25,7 +25,6 @@ passport.use(new GoogleStrategy({
                     email: email, 
                     googleId: profile.id,
                     authType: "google",
-                    phone: "000000000",
                 });
                 await user.save();
                 return done(null, user);
