@@ -1,51 +1,52 @@
 const Category = require("../../models/categorySchema");
+const Product = require("../../models/productSchema");
 
 // ---Category page---
 
 const categoryInfo = async (req, res) => {
     try {
-      const page = parseInt(req.query.page) || 1;
-      const limit = 4;
-      const skip = (page - 1) * limit;
-      const search = req.query.search ? req.query.search.trim() : "";
+        const page = parseInt(req.query.page) || 1;
+        const limit = 4;
+        const skip = (page - 1) * limit;
+        const search = req.query.search ? req.query.search.trim() : "";
 
-      let query = {};
-      if (search) {
-        query = { 
-          name: { $regex: new RegExp(search, "i") } 
-        };
-      }
-  
-      console.log("Mongo Query:", query);
-  
-      const categoryData = await Category.find(query)
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit);
-  
+        let query = {};
+        if (search) {
+            query = {
+                name: { $regex: new RegExp(search, "i") }
+            };
+        }
 
-      console.log("Matching documents:", await Category.countDocuments(query));
-  
-      const totalCategories = await Category.countDocuments(query);
-      const totalPages = Math.ceil(totalCategories / limit);
-  
-      res.render("category", {
-        cat: categoryData,
-        currentPage: page,
-        totalPage: totalPages,
-        totalCategories: totalCategories,
-        search: search,
-      });
+        console.log("Mongo Query:", query);
+
+        const categoryData = await Category.find(query)
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+
+        console.log("Matching documents:", await Category.countDocuments(query));
+
+        const totalCategories = await Category.countDocuments(query);
+        const totalPages = Math.ceil(totalCategories / limit);
+
+        res.render("category", {
+            cat: categoryData,
+            currentPage: page,
+            totalPage: totalPages,
+            totalCategories: totalCategories,
+            search: search,
+        });
     } catch (error) {
-      console.log(error);
-      res.redirect("/errorpage");
+        console.log(error);
+        res.redirect("/errorpage");
     }
-  };
-  
+};
+
 // ---AddCategory page---
 
 const addCategory = async (req, res) => {
-    const { name, description} = req.body;
+    const { name, description } = req.body;
     try {
 
         const existingCategory = await Category.findOne({ name });
@@ -63,6 +64,77 @@ const addCategory = async (req, res) => {
         return res.status(500).json({ error: "Internal server error" })
     }
 }
+
+
+// ---Add categoryList offer---
+
+const addCategoryOffer = async (req, res) => {
+    try {
+
+        const percentage = parseInt(req.body.percentage);
+        const categoryId = req.body.categoryId;
+        const category = await Category.findById(categoryId);
+
+        if (!category) {
+            return res.status(404).json({ status: "false", message: "Category not found" });
+        }
+        const products = await Product.find({ category: category._id });
+        const hasProductOffer = products.some((product) => product.productOffer > percentage);
+
+        if (hasProductOffer) {
+            return res.json({ status: false, message: "Product with this category already have product offer" })
+        }
+
+        await Category.updateOne({ _id: categoryId }, { $set: { categoryOffer: percentage } })
+
+        for (const product of products) {
+            product.productOffer = 0;
+            product.salePrice = product.regularPrice;
+            await product.save();
+        }
+
+        res.json({ status: true })
+
+    } catch (error) {
+        res.status(500).json({ status: false, message: "Internal server error" })
+    }
+}
+
+
+
+// ---Remove categoryList offer---
+
+const removeCategoryOffer = async (req, res) => {
+    try {
+
+        const categoryId = req.body.categoryId;
+        const category = await Category.findById(categoryId);
+
+        if (!category) {
+            return res.status(400).json({ status: false, message: "Category not found" });
+        }
+
+        const percentage = category.categoryOffer;
+        const products = await Product.find({ category: category._id })
+
+        if (products.length > 0) {
+            for (const product of products) {
+                product.salePrice += Math.floor(product.regularPrice * (percentage / 100));
+                product.productOffer = 0;
+                await product.save()
+            }
+        }
+
+        category.categoryOffer = 0;
+        await category.save();
+
+        res.json({ status: true, message: "Offer removed successfully" });
+
+    } catch (error) {
+        res.status(500).json({ status: false, message: "Intenal server error" })
+    }
+}
+
 
 // ---CategoryList page---
 
@@ -134,6 +206,8 @@ module.exports = {
     categoryInfo,
     addCategory,
     getlistCategory,
+    addCategoryOffer,
+    removeCategoryOffer,
     getUnlistCategory,
     getEditCategory,
     editCategory,
