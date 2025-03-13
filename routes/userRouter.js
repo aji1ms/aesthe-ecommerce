@@ -8,6 +8,7 @@ const cartController = require("../controllers/user/cartController");
 const checkoutController = require("../controllers/user/checkoutController");
 const orderController = require("../controllers/user/orderController");
 const walletController = require('../controllers/user/walletController');
+const paymentController = require('../controllers/user/paymentController');
 const passport = require('passport');
 const { userAuth } = require('../middlewares/auth');
 
@@ -112,6 +113,11 @@ router.post('/return', userAuth, orderController.returnOrder);
 // --Wallet Management--
 
 router.get('/wallet', userAuth, walletController.loadWallet);
+
+// --payment Management--
+
+router.post('/createOrder',  paymentController.createOrder);
+router.post('/verifyPayment',  paymentController.verifyPayment);
 
 
 

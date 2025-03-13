@@ -200,7 +200,6 @@
     }
 
     .payment-option.selected {
-        border-color: #000;
         background-color: #f9f9f9;
     }
 
@@ -572,12 +571,12 @@
                                     <input type="radio" id="netbanking" name="payment" value="razorpay">
                                     <label for="netbanking">Razorpay</label>
                                 </div>
-                                <div class="payment-option">
+                                <!-- <div class="payment-option">
                                     <input type="radio" id="upi" name="payment" value="upi">
                                     <label for="upi">UPI</label>
                                     <img src="/placeholder.svg?height=20&width=40" alt="Google Pay"
                                         class="payment-icon">
-                                </div>
+                                </div> -->
                                 <div class="payment-option selected">
                                     <input type="radio" id="cod" name="payment" value="cod" checked>
                                     <label for="cod">Cash on delivery</label>
@@ -623,94 +622,160 @@
         </form>
     </div>
 </body>
-
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     const addressList = <%- JSON.stringify(addresses && addresses.length > 0 ? addresses[0].address : []) %>;
 
-    
-    document.querySelectorAll('.delete-button').forEach(button => {
-        button.addEventListener('click', async function (e) {
-            e.preventDefault();
-            const productId = this.getAttribute('data-product-id');
 
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Do you want to remove this item from the cart?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, remove it!',
-                cancelButtonText: 'Cancel',
-                reverseButtons: true
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        const response = await fetch('/deleteCartProduct', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ productId })
-                        });
-                        const data = await response.json();
+    const razorpayKey = "<%= process.env.RAZORPAY_KEY_ID %>";
+    const finalAmountPaise = Number(<%= finalAmount %>) * 100; // Convert rupees to paise
 
-                        if (data.status) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Removed!',
-                                text: data.message,
-                                timer: 2000,
-                                showConfirmButton: false
-                            }).then(() => {
-                                location.reload();
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: data.message
-                            });
-                        }
-                    } catch (error) {
-                        console.error("Error removing product from cart:", error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: "Something went wrong. Please try again later."
-                        });
-                    }
-                }
+    // Function to handle Razorpay payment flow
+    async function payWithRazorpay() {
+        try {
+            // Create order on the backend with the final amount
+            const response = await fetch('/createOrder', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: finalAmountPaise })
             });
-        });
-    });
+            const order = await response.json();
 
-   
-    function updateDeliveryPreview() {
-        const selectedRadio = document.querySelector('input[name="billingAddress"]:checked');
-        if (!selectedRadio) return;
+            var options = {
+                key: razorpayKey,
+                amount: order.amount,
+                currency: order.currency,
+                name: "Your Company Name",
+                description: "Test Transaction",
+                order_id: order.id,
+                handler: function (paymentResponse) {
+                    verifyPayment(paymentResponse);
+                },
+                prefill: {
+                    name: "Test User",
+                    email: "test.user@example.com",
+                    contact: "9999999999"
+                },
+                theme: { color: "#3399cc" }
+            };
 
-        const selectedId = selectedRadio.value;
-        const address = addressList.find(addr => addr._id === selectedId);
-        const deliveryPreview = document.getElementById('deliveryAddressPreview');
+            var rzp1 = new Razorpay(options);
 
-        if (address && deliveryPreview) {
-            deliveryPreview.innerHTML = `
-          <p>${address.name}</p>
-          <p>91+ ${address.phone}</p>
-          <p>${address.landMark}</p>
-          <p>${address.city} ${address.pincode}</p>
-          <p>${address.state}</p>
-          <p><strong>Rs.149.00 · 2-7 days</strong></p>
-        `;
+            // Payment failure listener using SweetAlert2
+            rzp1.on('payment.failed', function (response) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Payment Failed!',
+                    text: 'Oops, something went wrong. Please try again.'
+                }).then(() => {
+                    window.location.href = '/checkout';
+                });
+            });
+
+            rzp1.open();
+        } catch (error) {
+            console.error("Error creating order:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Could not create order. Please try again.'
+            });
         }
     }
-    document.querySelectorAll('input[name="billingAddress"]').forEach(radio => {
-        radio.addEventListener('change', updateDeliveryPreview);
-    });
-    updateDeliveryPreview();
 
-   
+    // Function to verify payment and store order with updated payment status
+    async function verifyPayment(paymentResponse) {
+        try {
+            // Verify payment on the backend
+            const response = await fetch('/verifyPayment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    razorpay_order_id: paymentResponse.razorpay_order_id,
+                    razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                    razorpay_signature: paymentResponse.razorpay_signature
+                })
+            });
+            const verification = await response.json();
+
+            if (verification.success) {
+                // Get the selected billing address from the form
+                const selectedAddressElem = document.querySelector('input[name="billingAddress"]:checked');
+                if (!selectedAddressElem) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Billing Address Missing',
+                        text: 'Please select a billing address before placing your order.'
+                    }).then(() => {
+                        window.location.href = '/checkout';
+                    });
+                    return;
+                }
+                const billingAddress = selectedAddressElem.value;
+
+                // Prepare order data including billing address and update paymentStatus to 'completed'
+                const orderData = {
+                    payment: 'razorpay',
+                    paymentStatus: 'completed',  // updated status for successful payment
+                    billingAddress: billingAddress,
+                    amount: finalAmountPaise,
+                    razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                    order_id: paymentResponse.razorpay_order_id
+                    // Include other order details if needed
+                };
+
+                // Store order details in your database
+                const storeResponse = await fetch('/placeOrder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+                const storeResult = await storeResponse.json();
+
+                if (storeResult.status) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Order Placed Successfully!',
+                        text: 'Thank you for purchasing. Final amount: Rs.' + (finalAmountPaise / 100).toFixed(2)
+                    }).then(() => {
+                        window.location.href = '/thank';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Order Not Placed!',
+                        text: storeResult.message || 'Something went wrong, please try again.'
+                    }).then(() => {
+                        window.location.href = '/checkout';
+                    });
+                }
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Payment Verification Failed!',
+                    text: 'Oops, something went wrong. Please try again.'
+                }).then(() => {
+                    window.location.href = '/checkout';
+                });
+            }
+        } catch (error) {
+            console.error("Error verifying payment:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Oops, something went wrong. Please try again.'
+            }).then(() => {
+                window.location.href = '/checkout';
+            });
+        }
+    }
+
+    // Listen for form submission on the checkout form
     document.getElementById('checkoutForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
+        const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
         const selectedAddress = document.querySelector('input[name="billingAddress"]:checked');
         if (!selectedAddress) {
             Swal.fire({
@@ -721,52 +786,51 @@
             return;
         }
 
-        
-        const submitButton = document.querySelector('.complete-purchase-btn');
-        submitButton.disabled = true;
+        if (selectedPayment === 'razorpay') {
+            // If Razorpay is selected, trigger the Razorpay payment flow
+            await payWithRazorpay();
+        } else {
+            // For COD (or UPI), proceed with the normal order placement
+            const formData = {
+                billingAddress: selectedAddress.value,
+                payment: selectedPayment, // using a unified field name
+                paymentStatus: selectedPayment === 'cod' ? 'pending' : 'upi'
+            };
 
-      
-        const formData = {
-            billingAddress: selectedAddress.value,
-            payment: document.querySelector('input[name="payment"]:checked').value
-        };
+            try {
+                const response = await fetch('/placeOrder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                const result = await response.json();
 
-        try {
-            const response = await fetch('/placeOrder', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
+                if (!response.ok) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: result.message
+                    });
+                    return;
+                }
 
-            const result = await response.json();
-
-            if (!response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Order Placed!',
+                    text: 'Your order is placed successfully, thank you for purchasing.',
+                    timer: 2500,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.href = '/thank';
+                });
+            } catch (error) {
+                console.error("Error placing order:", error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: result.message
+                    text: 'Something went wrong. Please try again later.'
                 });
-                submitButton.disabled = false;
-                return;
             }
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Order Placed!',
-                text: 'Your order is placed successfully, thank you for purchasing.',
-                timer: 2500,
-                showConfirmButton: false
-            }).then(() => {
-                window.location.href = '/thank';
-            });
-        } catch (error) {
-            console.error("Error placing order:", error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Something went wrong. Please try again later.'
-            });
-            submitButton.disabled = false;
         }
     });
 </script>
