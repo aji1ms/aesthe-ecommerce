@@ -674,8 +674,10 @@
                 $.ajax({
                     url: '/addToWishlist',
                     method: 'POST',
-                    data: { productId: productId },
-                    success: (response) => {
+                    contentType: 'application/json',  // Ensure server expects JSON
+                    data: JSON.stringify({ productId: productId }),
+                    success: function (response) {
+                        console.log("AJAX success response:", response);
                         if (response.status) {
                             Swal.fire({
                                 title: "Added to wishlist",
@@ -683,27 +685,40 @@
                                 icon: 'success',
                                 timer: 2000,
                                 showConfirmButton: false,
-                            })
+                            });
                         } else {
                             Swal.fire({
-                                title: "Product already in whishlist",
+                                title: "Notice",
                                 text: response.message,
                                 icon: 'info',
                                 timer: 2000,
                                 showConfirmButton: false,
-                            })
+                            });
                         }
                     },
-                    error: (error) => {
-                        Swal.fire({
-                            title: 'Error',
-                            text: "There was an error adding the product to your wishlist",
-                            icon: "error",
-                            icon: 2000,
-                        })
-                    },
-                })
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error("AJAX error:", jqXHR.status, textStatus, errorThrown);
+                        if (jqXHR.status === 400) {
+                            Swal.fire({
+                                title: "Please Login",
+                                text: "You must be logged in to add items to your wishlist.",
+                                icon: "info",
+                                timer: 2000,
+                                showConfirmButton: false,
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: "There was an error adding the product to your wishlist",
+                                icon: "error",
+                                timer: 2000,
+                                showConfirmButton: false,
+                            });
+                        }
+                    }
+                });
             }
+
 
             document.addEventListener('DOMContentLoaded', function () {
                 const filterBtn = document.getElementById('filterBtn');

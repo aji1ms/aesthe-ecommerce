@@ -407,10 +407,6 @@
                 isValid = false;
             }
 
-            if (parseFloat(price.replace(/,/g, '')) <= parseFloat(saleprice.replace(/,/g, ''))) {
-                displayErrorMessage('regularPrice-error', 'Regular price must be greater than sale price.');
-                isValid = false;
-            }
 
             if (color.trim() === "") {
                 displayErrorMessage('color-error', 'Please enter a color.');

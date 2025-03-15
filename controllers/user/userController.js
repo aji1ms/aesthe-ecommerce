@@ -326,6 +326,7 @@ const loadShoppingPage = async (req, res) => {
         const userData = await User.findOne({ _id: user });
         const categories = await Category.find({ isListed: true });
         const categoryIds = categories.map((category) => category._id.toString());
+        
         const page = parseInt(req.query.page) || 1;
         const limit = 16;
         const skip = (page - 1) * limit;

@@ -87,13 +87,13 @@ router.get("/productDetails", productController.productDetails);
 // --wishlist Management--
 
 router.get('/wishlist', userAuth, wishlistController.loadWishlist);
-router.post('/addToWishlist', userAuth, wishlistController.addToWishlist);
-router.get('/removeFromWishlist', userAuth, wishlistController.removeFromWishlist);
+router.post('/addToWishlist', wishlistController.addToWishlist);
+router.get('/removeFromWishlist', userAuth,  wishlistController.removeFromWishlist);
 
 // --Cart Management--
 
 router.get('/cart', userAuth, cartController.loadCart);
-router.post('/addToCart', userAuth, cartController.addToCart);
+router.post('/addToCart', cartController.addToCart);
 router.post('/updateQuantity', userAuth, cartController.updateProductQuantity);
 router.post('/deleteCartProduct', userAuth, cartController.deleteProductFromCart);
 
@@ -116,8 +116,8 @@ router.get('/wallet', userAuth, walletController.loadWallet);
 
 // --payment Management--
 
-router.post('/createOrder',  paymentController.createOrder);
-router.post('/verifyPayment',  paymentController.verifyPayment);
+router.post('/createOrder', paymentController.createOrder);
+router.post('/verifyPayment', paymentController.verifyPayment);
 
 
 

@@ -565,7 +565,7 @@
                             headers: {
                                 "Content-Type": "application/json"
                             },
-                            body: JSON.stringify({ productId,  color: selectedColor })
+                            body: JSON.stringify({ productId, color: selectedColor })
                         });
 
                         const result = await response.json();
@@ -695,50 +695,51 @@
                     }
                 });
 
-                document.querySelector('.wishlist-icon').addEventListener('click', async function (e) {
-                    event.preventDefault();
+                document.querySelectorAll('.wishlist-icon').forEach(icon => {
+                    icon.addEventListener('click', async function (e) {
+                        e.preventDefault(); // Use the event parameter "e"
 
-                    // Retrieve the product ID from the data attribute
-                    const productId = this.getAttribute("data-productid");
+                        // Retrieve the product ID from a data attribute
+                        const productId = this.getAttribute("data-productid");
 
-                    try {
-                        // Send a POST request to the wishlist endpoint
-                        const response = await fetch("/addToWishlist", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({ productId })
-                        });
-
-                        const result = await response.json();
-
-                        // Check the response and show appropriate SweetAlert notification
-                        if (result.status) {
-                            Swal.fire({
-                                icon: "success",
-                                title: "Success",
-                                text: result.message,
-                                timer: 1500,
-                                showConfirmButton: false
+                        try {
+                            // Send a POST request to the wishlist endpoint
+                            const response = await fetch("/addToWishlist", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ productId })
                             });
-                        } else {
+
+                            // Parse the response JSON
+                            const result = await response.json();
+
+                            // If the user is not logged in, result.message should be "Please login"
+                            if (result.status) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Success",
+                                    text: result.message,
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "info",
+                                    title: "Notice",
+                                    text: result.message,
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                });
+                            }
+                        } catch (error) {
+                            console.error("Error adding product to wishlist:", error);
                             Swal.fire({
-                                icon: "info",
-                                title: "Notice",
-                                text: result.message,
-                                timer: 1500,
-                                showConfirmButton: false
+                                icon: "error",
+                                title: "Error",
+                                text: "An error occurred. Please try again later."
                             });
                         }
-                    } catch (error) {
-                        console.error("Error adding product to wishlist:", error);
-                        Swal.fire({
-                            icon: "error",
-                            title: "Error",
-                            text: "An error occurred. Please try again later."
-                        });
-                    }
+                    });
                 });
 
 

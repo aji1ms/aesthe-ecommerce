@@ -27,6 +27,11 @@ const loadWishlist = async (req, res) => {
 const addToWishlist = async (req, res) => {
     try {
         const userId = req.session.user;
+
+        if (!userId) {
+            return res.status(400).json({status:false,message:"Please login"})
+        }
+
         const productId = req.body.productId;
         const user = await User.findById(userId);
 
