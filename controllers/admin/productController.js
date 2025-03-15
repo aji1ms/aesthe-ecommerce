@@ -157,7 +157,7 @@ const addProductOffer = async (req, res) => {
 // ---Remove Product offer---
 
 const removeProductOffer = async (req, res) => {  
-    try {
+    try { 
 
         const { productId } = req.body;
         const findProduct = await Product.findOne({ _id: productId });

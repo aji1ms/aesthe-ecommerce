@@ -6,6 +6,7 @@ const categoryController = require("../controllers/admin/categoryController");
 const brandController = require("../controllers/admin/brandController");
 const productController = require("../controllers/admin/productController");
 const orderController = require("../controllers/admin/orderController");
+const couponController = require("../controllers/admin/couponController");
 const { userAUth, adminAuth } = require("../middlewares/auth");
 const multer = require("multer");
 const storage = require("../helpers/multer");
@@ -47,7 +48,7 @@ router.get("/deleteBrand", adminAuth, brandController.deleteBrand);
 // --Product Management--
 
 router.get("/addProducts", adminAuth, productController.getProductAddPage);
-router.post("/addProducts", adminAuth, uploads.array("images", 4), productController.addProducts); 
+router.post("/addProducts", adminAuth, uploads.array("images", 4), productController.addProducts);
 router.get('/products', adminAuth, productController.getAllProducts);
 router.post('/addProductOffer', adminAuth, productController.addProductOffer);
 router.post('/removeProductOffer', adminAuth, productController.removeProductOffer);
@@ -55,7 +56,15 @@ router.get('/blockProduct', adminAuth, productController.blockProduct);
 router.get('/unblockProduct', adminAuth, productController.unblockProduct);
 router.get('/editProduct', adminAuth, productController.getEditProduct);
 router.post('/editProduct/:id', adminAuth, uploads.array("images", 4), productController.editProduct);
-router.post('/deleteImage', adminAuth, productController.deleteSingleImage);
+router.post('/deleteImage', adminAuth, productController.deleteSingleImage); 
+
+// --Coupon Management--
+
+router.get('/coupon', adminAuth, couponController.loadCoupon);
+router.post('/createCoupon', adminAuth, couponController.createCoupon);
+router.get('/editCoupon', adminAuth, couponController.loadEditCoupon)
+router.post('/updateCoupon', adminAuth, couponController.updateCoupon);
+router.get('/deleteCoupon', adminAuth, couponController.deleteCoupon)
 
 // --Order Management--
 
