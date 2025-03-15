@@ -454,12 +454,17 @@
                                 <div class="order-total-row">
                                     <div class="order-info-item">
                                         <div class="order-info-label">Total Amount</div>
-                                        <div class="order-info-value" id="total-amount">₹<%= order.totalAmount %>
+                                        <div class="order-info-value" id="total-amount">₹<%= order.finalAmount %>
                                         </div>
                                     </div>
                                     <div class="order-info-item">
                                         <div class="order-info-label">Discount</div>
                                         <div class="order-info-value" id="discount">₹<%= order.discount %>
+                                        </div>
+                                    </div>
+                                    <div class="order-info-item">
+                                        <div class="order-info-label">Delivery Charge</div>
+                                        <div class="order-info-value" id="discount">₹150 %>
                                         </div>
                                     </div>
                                 </div>
@@ -537,7 +542,7 @@
                                         <tr>
                                             <td colspan="4" style="text-align: right; font-weight: 600;">Total
                                                 Amount:</td>
-                                            <td style="font-weight: 600;">₹<%= order.totalAmount %>
+                                            <td style="font-weight: 600;">₹<%= order.finalAmount %>
                                             </td>
                                         </tr>
                                     </tfoot>

@@ -26,7 +26,11 @@ const loadCheckoutPage = async (req, res) => {
         }, 0);
 
         const deliveryCharge = 149;
-        const finalAmount = totalPrice + deliveryCharge;
+        let discount = 0;
+        if (req.session.appliedCoupon) {
+            discount = req.session.appliedCoupon.discount;
+        }
+        const finalAmount = totalPrice + deliveryCharge - discount;
 
         const addresses = await Address.find({ userId });
 
@@ -36,6 +40,8 @@ const loadCheckoutPage = async (req, res) => {
             totalPrice,
             deliveryCharge,
             finalAmount,
+            discount,
+            appliedCoupon: req.session.appliedCoupon || null,
             addresses
         });
 
@@ -86,7 +92,10 @@ const placeOrder = async (req, res) => {
         });
 
         const deliveryCharge = 149;
-        const discount = 0;
+        let discount = 0;
+        if (req.session.appliedCoupon) {
+            discount = req.session.appliedCoupon.discount;
+        }
         const finalAmount = totalPrice + deliveryCharge - discount;
 
         const newOrder = new Order({
@@ -105,11 +114,13 @@ const placeOrder = async (req, res) => {
         await newOrder.save();
 
         await Promise.all(orderedItem.map(async (item) => {
-        await Product.findByIdAndUpdate(item.product, { $inc: { quantity: -item.quantity } });
+            await Product.findByIdAndUpdate(item.product, { $inc: { quantity: -item.quantity } });
         }));
 
         cart.items = [];
         await cart.save();
+
+        req.session.appliedCoupon = null;
 
         res.status(200).json({ status: true, message: "Order placed successfully" });
 

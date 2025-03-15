@@ -321,6 +321,117 @@
         cursor: pointer;
     }
 
+    .btn {
+        padding: 5px 5px;
+        cursor: pointer;
+        border: none;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #000000;
+        border: 1px solid #333;
+        color: #ffffff;
+    }
+
+    .btn-primary:hover {
+        background-color: #ffffff;
+        color: black;
+    }
+
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal.active {
+        display: flex;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: 4px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Discount form styles */
+    .discount-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .discount-subtitle {
+        color: #666;
+        margin-bottom: 15px;
+        font-size: 16px;
+    }
+
+    .input-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .discount-input {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #000;
+        font-size: 16px;
+    }
+
+    .add-btn {
+        background-color: #000;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        min-width: 80px;
+    }
+
+    .add-btn:hover {
+        background-color: #333;
+    }
+
+    .save-btn {
+        background-color: #888;
+        color: white;
+        width: 100%;
+        padding: 12px;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .save-btn:hover {
+        background-color: #777;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+        .input-group {
+            flex-direction: column;
+        }
+
+        .add-btn {
+            width: 100%;
+        }
+    }
+
     /* Responsive styles */
     @media (max-width: 768px) {
         .checkout-container {
@@ -595,31 +706,62 @@
                         <div class="summary-section">
                             <div class="discount-section">
                                 <h3>Discounts</h3>
-                                <button type="button" class="apply-discount-btn">Apply discount</button>
-                            </div>
+                                <% if (!appliedCoupon) {%>
+                                <button type="button" class="btn btn-primary" id="openModalBtn">Add Discount</button>
+                                    <%}%>
+                                <div class="modal" id="discountModal">
+                                    <div class="modal-content">
+                                        <h2 class="discount-title">Discount</h2>
+                                        <p class="discount-subtitle">Add a discount code</p>
 
-                            <div class="price-breakdown">
-                                <div class="price-row">
-                                    <span>Order Value</span>
-                                    <span>Rs.<%= totalPrice.toFixed(2) %></span>
+                                        <div class="input-group">
+                                            <input type="text" class="discount-input" id="discountCode"
+                                                placeholder="Enter discount code">
+                                            <button type="button" class="add-btn" id="applyDiscountBtn">ADD</button>
+                                        </div>
+                                        <p id="discountMessage" style="color: red; display: none;"></p>
+                                        <button type="button" class="save-btn" id="saveBtn">SAVE</button>
+                                    </div>
                                 </div>
-                                <div class="price-row">
-                                    <span>Delivery</span>
-                                    <span>Rs.149.00</span>
-                                </div>
-                                <div class="price-row total">
-                                    <span>Total</span>
-                                    <span>Rs.<%= finalAmount.toFixed(2) %></span>
+                                <div id="appliedDiscountSection"
+                                    style="display: <%= appliedCoupon ? 'block' : 'none' %>;">
+                                    <p>Discount Applied: <span id="discountValue">-<%= appliedCoupon ?
+                                                appliedCoupon.discount.toFixed(2) : '0.00' %></span></p>
+                                    <button type="button" id="removeDiscountBtn">Remove</button>
                                 </div>
                             </div>
-
-                            <!-- Complete Purchase Button inside the form -->
-                            <button type="submit" class="complete-purchase-btn">Complete Purchase</button>
                         </div>
+
+
+                        <div class="price-breakdown">
+                            <div class="price-row">
+                                <span>Order Value</span>
+                                <span id="subtotal">
+                                    <%= totalPrice.toFixed(2) %>
+                                </span>
+                            </div>
+                            <div class="price-row">
+                                <span>Delivery</span>
+                                <span id="deliveryCharge">149.00</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Discount</span>
+                                <span id="discountAmount">0</span>
+                            </div>
+                            <div class="price-row total">
+                                <span>Total</span>
+                                <span id="grandTotal">
+                                    <%= finalAmount.toFixed(2) %>
+                                </span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="complete-purchase-btn">Complete Purchase</button>
                     </div>
                 </div>
             </div>
-        </form>
+    </div>
+    </form>
     </div>
 </body>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -627,14 +769,124 @@
 <script>
     const addressList = <%- JSON.stringify(addresses && addresses.length > 0 ? addresses[0].address : []) %>;
 
+    const currentUserId = "<%= user._id %>";
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const openModalBtn = document.getElementById('openModalBtn');
+        const discountModal = document.getElementById('discountModal');
+        const applyDiscountBtn = document.getElementById('applyDiscountBtn');
+        const discountCodeInput = document.getElementById('discountCode');
+        const discountMessage = document.getElementById('discountMessage');
+        const appliedDiscountSection = document.getElementById('appliedDiscountSection');
+        const discountValue = document.getElementById('discountValue');
+        const removeDiscountBtn = document.getElementById('removeDiscountBtn');
+
+
+        const subtotalElement = document.getElementById("subtotal");
+        const discountAmountElement = document.getElementById("discountAmount");
+        const grandTotalElement = document.getElementById("grandTotal");
+        const deliveryChargeElement = document.getElementById("deliveryCharge");
+
+        let deliveryCharge = parseFloat(deliveryChargeElement.textContent);
+        let originalSubtotal = parseFloat(subtotalElement.textContent);
+        let originalFinalTotal = originalSubtotal + deliveryCharge;
+        let appliedDiscount = 0;
+        let currentFinalTotal = originalFinalTotal;
+
+
+        openModalBtn.addEventListener('click', function () {
+            discountModal.classList.add('active');
+        });
+
+        discountModal.addEventListener('click', function (event) {
+            if (event.target === discountModal) {
+                discountModal.classList.remove('active');
+            }
+        });
+
+        function updateTotals() {
+            discountAmountElement.textContent = appliedDiscount.toFixed(2);
+            currentFinalTotal = originalFinalTotal - appliedDiscount;
+            grandTotalElement.textContent = currentFinalTotal.toFixed(2);
+        }
+
+        function showDiscountUI(discount) {
+            discountValue.textContent = `-${discount.toFixed(2)}`;
+            appliedDiscountSection.style.display = "block";
+            openModalBtn.style.display = "none";
+        }
+
+        function hideDiscountUI() {
+            appliedDiscountSection.style.display = "none";
+            openModalBtn.style.display = "block";
+            discountCodeInput.value = "";
+        }
+
+        function showError(message) {
+            discountMessage.textContent = message;
+            discountMessage.style.display = "block";
+        }
+
+        applyDiscountBtn.addEventListener('click', function () {
+            const couponCode = discountCodeInput.value.trim();
+            if (!couponCode) {
+                showError("Please enter a discount code.");
+                return;
+            }
+
+            fetch('/applyCoupon', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ couponName: couponCode, orderTotal: originalSubtotal, userId: currentUserId })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status) {
+                        appliedDiscount = data.discount;
+                        localStorage.setItem('appliedCoupon', JSON.stringify({
+                            couponName: discountCodeInput.value.trim().toUpperCase(),
+                            discount: data.discount
+                        }))
+                        updateTotals();
+                        showDiscountUI(appliedDiscount);
+                        discountModal.classList.remove('active');
+                    } else {
+                        showError(data.message);
+                    }
+                })
+                .catch(error => console.error("Error applying discount:", error));
+        });
+
+        removeDiscountBtn.addEventListener('click', function () {
+            fetch('/removeCoupon', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ couponName: discountCodeInput.value.trim(), userId: currentUserId })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status) {
+                        appliedDiscount = 0;
+                        updateTotals();
+                        hideDiscountUI();
+                        localStorage.removeItem('appliedCoupon');
+                    }
+                })
+                .catch(error => console.error("Error removing discount:", error));
+        });
+    });
 
     const razorpayKey = "<%= process.env.RAZORPAY_KEY_ID %>";
-    const finalAmountPaise = Number(<%= finalAmount %>) * 100; // Convert rupees to paise
+    const finalAmountPaise = Number(<%= finalAmount %>) * 100;
 
-    // Function to handle Razorpay payment flow
+
     async function payWithRazorpay() {
         try {
-            // Create order on the backend with the final amount
+
+            const grandTotalElement = document.getElementById("grandTotal");
+            const updatedGrandTotal = parseFloat(grandTotalElement.textContent);
+            const finalAmountPaise = updatedGrandTotal * 100;
+
             const response = await fetch('/createOrder', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -662,7 +914,6 @@
 
             var rzp1 = new Razorpay(options);
 
-            // Payment failure listener using SweetAlert2
             rzp1.on('payment.failed', function (response) {
                 Swal.fire({
                     icon: 'error',
@@ -684,10 +935,13 @@
         }
     }
 
-    // Function to verify payment and store order with updated payment status
     async function verifyPayment(paymentResponse) {
         try {
-            // Verify payment on the backend
+
+            const grandTotalElement = document.getElementById("grandTotal");
+            const updatedGrandTotal = parseFloat(grandTotalElement.textContent);
+            const finalAmountPaise = updatedGrandTotal * 100;
+
             const response = await fetch('/verifyPayment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -700,7 +954,6 @@
             const verification = await response.json();
 
             if (verification.success) {
-                // Get the selected billing address from the form
                 const selectedAddressElem = document.querySelector('input[name="billingAddress"]:checked');
                 if (!selectedAddressElem) {
                     Swal.fire({
@@ -714,18 +967,15 @@
                 }
                 const billingAddress = selectedAddressElem.value;
 
-                // Prepare order data including billing address and update paymentStatus to 'completed'
                 const orderData = {
                     payment: 'razorpay',
-                    paymentStatus: 'completed',  // updated status for successful payment
+                    paymentStatus: 'completed',
                     billingAddress: billingAddress,
                     amount: finalAmountPaise,
                     razorpay_payment_id: paymentResponse.razorpay_payment_id,
                     order_id: paymentResponse.razorpay_order_id
-                    // Include other order details if needed
                 };
 
-                // Store order details in your database
                 const storeResponse = await fetch('/placeOrder', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -771,7 +1021,6 @@
         }
     }
 
-    // Listen for form submission on the checkout form
     document.getElementById('checkoutForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
@@ -787,13 +1036,11 @@
         }
 
         if (selectedPayment === 'razorpay') {
-            // If Razorpay is selected, trigger the Razorpay payment flow
             await payWithRazorpay();
         } else {
-            // For COD (or UPI), proceed with the normal order placement
             const formData = {
                 billingAddress: selectedAddress.value,
-                payment: selectedPayment, // using a unified field name
+                payment: selectedPayment,
                 paymentStatus: selectedPayment === 'cod' ? 'pending' : 'upi'
             };
 
