@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const transactionSchema = require('./transactionSchema');
 
 
 const walletSchema = new mongoose.Schema({
@@ -7,7 +8,7 @@ const walletSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-        unique: true // Each user has one wallet
+        unique: true 
     },
     balance: {
         type: Number,

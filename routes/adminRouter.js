@@ -70,7 +70,8 @@ router.get('/deleteCoupon', adminAuth, couponController.deleteCoupon)
 
 router.get("/orderList", adminAuth, orderController.listOrders);
 router.get("/orderView/:orderId", adminAuth, orderController.viewOrderDetailPage);
-router.post("/orderView/:orderId", adminAuth, orderController.updateOrderStatus)
+router.post("/orderView/:orderId", adminAuth, orderController.updateOrderStatus);
+router.post('/refund', adminAuth, orderController.addRefund);
 
 
 module.exports = router;
