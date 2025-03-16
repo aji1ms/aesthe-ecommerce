@@ -7,6 +7,7 @@ const brandController = require("../controllers/admin/brandController");
 const productController = require("../controllers/admin/productController");
 const orderController = require("../controllers/admin/orderController");
 const couponController = require("../controllers/admin/couponController");
+const salesController = require("../controllers/admin/salesController");
 const { userAUth, adminAuth } = require("../middlewares/auth");
 const multer = require("multer");
 const storage = require("../helpers/multer");
@@ -72,6 +73,11 @@ router.get("/orderList", adminAuth, orderController.listOrders);
 router.get("/orderView/:orderId", adminAuth, orderController.viewOrderDetailPage);
 router.post("/orderView/:orderId", adminAuth, orderController.updateOrderStatus);
 router.post('/refund', adminAuth, orderController.addRefund);
+
+// --Sales Report--
+
+router.get('/sales', adminAuth, salesController.loadSales);
+router.get('/sales/pdf', adminAuth, salesController.downloadSalesPdf);
 
 
 module.exports = router;

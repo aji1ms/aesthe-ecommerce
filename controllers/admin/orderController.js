@@ -24,8 +24,6 @@ const listOrders = async (req, res) => {
       query.status = { $regex: '^' + orderFilter + '$', $options: 'i' };
     }
 
-    console.log("Received orderFilter:", orderFilter);
-
     const orders = await Order.find(query)
       .sort({ createdOn: -1 })
       .populate('billingAddress')
