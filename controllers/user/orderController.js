@@ -4,6 +4,8 @@ const Cart = require("../../models/cartSchema");
 const Product = require('../../models/productSchema');
 
 
+// ---Thanking Page---
+
 const thankingPage = async (req, res) => {
     try {
         const userId = req.session.user;
@@ -15,6 +17,8 @@ const thankingPage = async (req, res) => {
         res.redirect("/pageNotFound")
     }
 }
+
+// ---Order List---
 
 const orderList = async (req, res) => {
     try {
@@ -29,6 +33,9 @@ const orderList = async (req, res) => {
         res.redirect('/pageNotFound')
     }
 }
+
+
+// ---Order Detailed Page---
 
 const loadOrderDetails = async (req, res) => {
     try {
@@ -45,6 +52,9 @@ const loadOrderDetails = async (req, res) => {
         res.redirect("/pageNotFound");
     }
 }
+
+
+// ---cancel order---
 
 const cancelOrder = async (req, res) => {
     try {
@@ -73,6 +83,9 @@ const cancelOrder = async (req, res) => {
         res.status(500).json({ status: false, message: "Internal server error" });
     }
 }
+
+
+// ---return order---
 
 const returnOrder = async (req, res) => {
     try {

@@ -1,5 +1,8 @@
 const Coupon = require("../../models/couponSchema");
 
+
+// ---Apply coupon---
+
 const applyCoupon = async (req, res) => {
     try {
 
@@ -41,6 +44,8 @@ const applyCoupon = async (req, res) => {
     }
 }
 
+
+// ---Remove Coupon---
 
 const removeCoupon = async (req, res) => {
     try {

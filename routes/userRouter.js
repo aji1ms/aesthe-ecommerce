@@ -66,11 +66,12 @@ router.get("/editProfile", userAuth, profileController.editUserProfile);
 router.post('/editProfile', userAuth, profileController.postEditProfile);
 router.get("/change-email", userAuth, profileController.changeEmail);
 router.post("/change-email", userAuth, profileController.changeEmailValid);
-router.post("/verify-email-otp", userAuth, profileController.verifyEmailOtp);
+router.post("/verify-email-otp", profileController.verifyEmailOtp);
+router.get("/new-email", profileController.loadNewEmail);
 router.post("/update-email", userAuth, profileController.updateEmail);
 router.get('/change-password', userAuth, profileController.changePassword);
 router.post('/change-password', userAuth, profileController.changePasswordValid);
-router.post('/verify-changePassword-otp', userAuth, profileController.verifyChangePasswordOtp);
+router.post('/verify-changePassword-otp', profileController.verifyChangePasswordOtp);
 
 // --Address Management--
 
@@ -106,7 +107,7 @@ router.post('/placeOrder', userAuth, checkoutController.placeOrder);
 // --Coupon Management--
 
 router.post('/applyCoupon', userAuth, couponController.applyCoupon);
-router.post('/removeCoupon', userAuth, couponController.removeCoupon); 
+router.post('/removeCoupon', userAuth, couponController.removeCoupon);
 
 // --Order Management--
 

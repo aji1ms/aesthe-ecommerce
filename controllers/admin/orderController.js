@@ -1,16 +1,17 @@
 const Order = require('../../models/orderSchema');
 const Wallet = require('../../models/walletSchema');
 
+
+// ---order listing Page---
+
 const listOrders = async (req, res) => {
   try {
-    // Destructure orderFilter from req.query with a default value of "All"
     let { page = 1, limit = 10, search = "", orderFilter = "All" } = req.query;
     page = parseInt(page);
     limit = parseInt(limit);
 
     let query = {};
 
-    // Apply search filter if search is provided
     if (search) {
       query.$or = [
         { orderId: { $regex: search, $options: "i" } },
@@ -19,7 +20,6 @@ const listOrders = async (req, res) => {
       ];
     }
 
-    // Apply the status filter if orderFilter is provided and not "All"
     if (orderFilter && orderFilter !== "All") {
       query.status = { $regex: '^' + orderFilter + '$', $options: 'i' };
     }
@@ -46,6 +46,7 @@ const listOrders = async (req, res) => {
   }
 };
 
+// ---view order details---
 
 
 const viewOrderDetailPage = async (req, res) => {
@@ -87,6 +88,8 @@ const updateOrderStatus = async (req, res) => {
     res.redirect("/admin/orderView/" + req.params.orderId);
   }
 }
+
+// ---refund---
 
 const addRefund = async (req, res) => {
   try {

@@ -89,7 +89,6 @@ const addCategoryOffer = async (req, res) => {
 
         for (const product of products) {
             product.productOffer = percentage;
-            // Calculate the discounted sale price
             const discountAmount = Math.floor(product.regularPrice * (percentage / 100));
             product.salePrice = product.regularPrice - discountAmount;
             await product.save();

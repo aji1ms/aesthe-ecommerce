@@ -2,6 +2,8 @@ const Order = require("../../models/orderSchema")
 const PDFDocument = require('pdfkit');
 
 
+// ---Sales page---
+
 const loadSales = async (req, res) => {
     try {
         let match = { status: "Delivered" };
@@ -54,10 +56,10 @@ const loadSales = async (req, res) => {
     }
 };
 
+// ---PDF download---
 
 const downloadSalesPdf = async (req, res) => {
     try {
-        // Your existing filtering logic...
 
         let match = { status: "Delivered" };
         const period = req.query.period || 'daily';
@@ -86,7 +88,6 @@ const downloadSalesPdf = async (req, res) => {
             .populate('user')
             .sort({ createdOn: -1 });
 
-        // Set response headers for PDF download
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'attachment; filename="sales_report.pdf"');
 
