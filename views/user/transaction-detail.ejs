@@ -1,0 +1,425 @@
+
+
+<style>
+  /* Account Page Styles */
+  .account-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgb(230, 230, 230);
+  }
+
+  .account-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    padding-left: 15px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    color: #666;
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-size: 16px;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover {
+    color: #333;
+  }
+
+  .back-icon {
+    margin-right: 8px;
+  }
+
+  /* Transaction Detail Styles */
+  .transaction-detail-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .transaction-header {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .transaction-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .transaction-subtitle {
+    color: #666;
+    font-size: 14px;
+  }
+
+  .transaction-status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .status-completed {
+    background-color: #e6f7ee;
+    color: #28a745;
+  }
+
+  .status-pending {
+    background-color: #fff8e6;
+    color: #ffc107;
+  }
+
+  .status-failed {
+    background-color: #feebee;
+    color: #dc3545;
+  }
+
+  .transaction-body {
+    padding: 20px;
+  }
+
+  .transaction-section {
+    margin-bottom: 30px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .detail-item {
+    margin-bottom: 15px;
+  }
+
+  .detail-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+  }
+
+  .detail-value {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+  }
+
+  .transaction-amount {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .transaction-amount.credit {
+    color: #28a745;
+  }
+
+  .transaction-amount.debit {
+    color: #dc3545;
+  }
+
+  .transaction-id {
+    font-family: monospace;
+    background-color: #f5f5f5;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    color: #666;
+    font-weight: 600;
+    font-size: 18px;
+  }
+
+  .user-details {
+    flex: 1;
+  }
+
+  .user-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+
+  .user-email {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .timeline {
+    position: relative;
+    margin-left: 20px;
+    padding-left: 20px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background-color: #eee;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 20px;
+  }
+
+  .timeline-item:last-child {
+    padding-bottom: 0;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -26px;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 2px solid #ccc;
+  }
+
+  .timeline-item.active::before {
+    border-color: #28a745;
+    background-color: #e6f7ee;
+  }
+
+  .timeline-date {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 5px;
+  }
+
+  .timeline-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 3px;
+  }
+
+  .timeline-description {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .related-order {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 15px;
+  }
+
+  .order-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .order-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .order-info {
+    flex: 1;
+  }
+
+  .order-id {
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+
+  .order-date {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .view-order-btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+  }
+
+  .view-order-btn:hover {
+    background-color: #555;
+  }
+
+  .transaction-notes {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .detail-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .transaction-title {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .transaction-status {
+      margin-top: 10px;
+    }
+
+    .user-info {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .user-avatar {
+      margin-bottom: 10px;
+    }
+  }
+</style>
+
+<div class="account-container">
+  <a href="/walletHistory" class="back-link">
+    <span class="back-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+    </span>
+    Back to Wallet History
+  </a>
+
+  <div class="transaction-detail-container">
+    <div class="transaction-header">
+      <div class="transaction-title">
+        <span>Transaction Details</span>
+        <span class="transaction-status status-completed" id="transaction-status">Completed</span>
+      </div>
+      <div class="transaction-subtitle">
+        Transaction ID: <span class="transaction-id" id="transaction-id"><%=transaction._id%></span>
+      </div>
+    </div>
+
+    <div class="transaction-body">
+      <!-- User Information Section -->
+      <div class="transaction-section">
+        <h3 class="section-title">User Information</h3>
+        <div class="user-info">
+          <div class="user-avatar" id="user-avatar"></div>
+          <div class="user-details">
+            <div class="user-name" id="user-name"><%=transaction.user.name%></div>
+            <div class="user-email" id="user-email"><%=transaction.user.email%></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transaction Details Section -->
+      <div class="transaction-section">
+        <h3 class="section-title">Transaction Details</h3>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <div class="detail-label">Transaction Type</div>
+            <div class="detail-value" id="transaction-type"><%=transaction.type%></div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Amount</div>
+            <div class="transaction-amount credit" id="transaction-amount">+$<%=transaction.amount%></div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Date & Time</div>
+            <div class="detail-value" id="transaction-date"><%= new Date(transaction.date).toLocaleString() %></div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Payment Method</div>
+            <div class="detail-value" id="payment-method"></div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Source</div>
+                <p>This transaction is associated with:</p>
+                    <p><%=transaction.description%></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transaction Timeline Section -->
+      <div class="transaction-section">
+        <h3 class="section-title">Transaction Timeline</h3>
+        <div class="timeline">
+          <div class="timeline-item active">
+            <div class="timeline-date" id="timeline-date-1"><%= new Date(transaction.date).toLocaleString() %></div>
+            <div class="timeline-title">Transaction Completed</div>
+            <div class="timeline-description">The transaction was successfully processed.</div>
+          </div>
+          <div class="timeline-item active">
+            <div class="timeline-date" id="timeline-date-2"><%= new Date(transaction.date).toLocaleString() %></div>
+            <div class="timeline-title">Payment Verified</div>
+            <div class="timeline-description">Payment was verified and approved.</div>
+          </div>
+          <div class="timeline-item active">
+            <div class="timeline-date" id="timeline-date-3"><%= new Date(transaction.date).toLocaleString() %></div>
+            <div class="timeline-title">Transaction Initiated</div>
+            <div class="timeline-description">User initiated the transaction.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Notes Section -->
+      <div class="transaction-section">
+        <h3 class="section-title">Additional Notes</h3>
+        <div class="transaction-notes" id="transaction-notes">
+          This transaction was processed as part of a wallet recharge operation. The funds are now available in your wallet balance.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Hidden button for demo purposes to show a refund transaction -->
+<button id="load-refund-example" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 12px;">
+  Load Refund Example
+</button>
+

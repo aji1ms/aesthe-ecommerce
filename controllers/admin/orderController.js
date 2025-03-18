@@ -1,5 +1,6 @@
 const Order = require('../../models/orderSchema');
 const Wallet = require('../../models/walletSchema');
+const Transaction = require('../../models/transactionSchema');
 
 
 // ---order listing Page---
@@ -111,12 +112,15 @@ const addRefund = async (req, res) => {
       await wallet.save()
     }
 
-    wallet.balance += parseFloat(refundAmount);
-    wallet.transactions.push({
+    const transaction = await Transaction.create({
+      user: order.user,
       type: 'credit',
       amount: refundAmount,
-      description: `Refund for the order${order._id}`
-    })
+      description: `Refund for the order ${order._id}`
+    });
+
+    wallet.balance += parseFloat(refundAmount);
+    wallet.transactions.push(transaction._id);
     await wallet.save();
 
     res.json({ message: "Refund processed and wallet updated" });

@@ -3,6 +3,7 @@ const User = require("../../models/userSchema");
 const Category = require("../../models/categorySchema");
 const Product = require("../../models/productSchema");
 const Brand = require("../../models/brandSchema");
+const Wallet = require("../../models/walletSchema");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const { session } = require("passport");
@@ -104,17 +105,17 @@ const register = async (req, res) => {
         const { name, email, phone, password, cPassword } = req.body;
         console.log("Registration attempt with password:", password);
 
-      
+
         const normalizedEmail = email.toLowerCase();
 
         if (password != cPassword) {
             return res.render("register", { message: "Password do not match" });
         }
 
-        
+
         const findUser = await User.findOne({ email: normalizedEmail });
         if (findUser) {
-          
+
             if (findUser.authType === "google") {
                 return res.render("register", { message: "This email is already registered with Google. Please use Google login." });
             } else {
@@ -130,11 +131,11 @@ const register = async (req, res) => {
 
         req.session.otp = otp;
         req.session.otpExpiresAt = Date.now() + 60000;
-        req.session.userData = { 
-            name, 
-            email: normalizedEmail, 
-            phone, 
-            password 
+        req.session.userData = {
+            name,
+            email: normalizedEmail,
+            phone,
+            password
         };
 
         res.render("verify-otp");
@@ -182,6 +183,11 @@ const verifyOtp = async (req, res) => {
         });
 
         await saveUserData.save();
+
+        await Wallet.create({
+            user: saveUserData._id,
+            balance: 0
+        })
 
         req.session.otp = null;
         req.session.userData = null;
@@ -261,7 +267,7 @@ const login = async (req, res) => {
         const { email, password } = req.body;
         const findUser = await User.findOne({ isAdmin: 0, email: email });
 
-        
+
         console.log("Login attempt for email:", email);
         console.log("User found:", findUser);
 
@@ -326,7 +332,7 @@ const loadShoppingPage = async (req, res) => {
         const userData = await User.findOne({ _id: user });
         const categories = await Category.find({ isListed: true });
         const categoryIds = categories.map((category) => category._id.toString());
-        
+
         const page = parseInt(req.query.page) || 1;
         const limit = 16;
         const skip = (page - 1) * limit;

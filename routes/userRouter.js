@@ -120,11 +120,14 @@ router.post('/return', userAuth, orderController.returnOrder);
 // --Wallet Management--
 
 router.get('/wallet', userAuth, walletController.loadWallet);
+router.get('/walletHistory', userAuth, walletController.walletHistory);
+router.get('/transactionDetails/:id', walletController.transactionDetails);
 
 // --payment Management--
 
 router.post('/createOrder', paymentController.createOrder);
 router.post('/verifyPayment', paymentController.verifyPayment);
+
 
 
 
