@@ -535,7 +535,7 @@
             <div class="account-details-container">
                 <div class="transaction-history">
                     <div class="transaction-header">
-                        <div class="transaction-title">Wallet Transaction History</div>
+                        <div class="transaction-title">Wallet History</div>
                         <div class="transaction-filter">
                             <select class="filter-select" id="type-filter">
                                 <option value="all">All Types</option>
@@ -564,8 +564,8 @@
                                         <td><%= transaction._id %></td>
                                         <td><%= new Date(transaction.date).toLocaleString() %></td>
                                         <td><%= transaction.user ? transaction.user.name : "N/A" %></td>
-                                        <td><%= transaction.type %></td>
-                                        <td><%= transaction.amount %></td>
+                                        <td style="color: red;"><%= transaction.type %></td>
+                                        <td style="color: green;">$<%= transaction.amount %></td>
                                         <td>
                                             <a href="/transactionDetails/<%= transaction._id %>">
                                                 <button style="padding: 5px 15px; background-color: black; color: white;">view</button>

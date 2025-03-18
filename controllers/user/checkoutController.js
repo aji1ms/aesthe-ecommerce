@@ -98,6 +98,14 @@ const placeOrder = async (req, res) => {
         }
         const finalAmount = totalPrice + deliveryCharge - discount;
 
+        if (payment.toLowerCase() === "cod" && finalAmount > 1000) {
+            return res.status(400).json({
+                status: false,
+                message: "Order above Rs 1000 is not allowed for COD. Please choose another payment method."
+            });
+        }
+
+
         const newOrder = new Order({
             orderedItem,
             totalPrice,
