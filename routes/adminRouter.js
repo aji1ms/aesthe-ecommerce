@@ -8,6 +8,7 @@ const productController = require("../controllers/admin/productController");
 const orderController = require("../controllers/admin/orderController");
 const couponController = require("../controllers/admin/couponController");
 const salesController = require("../controllers/admin/salesController");
+const dashboardController = require("../controllers/admin/dashboardController");
 const { userAUth, adminAuth } = require("../middlewares/auth");
 const multer = require("multer");
 const storage = require("../helpers/multer");
@@ -17,7 +18,7 @@ const uploads = multer({ storage: storage });
 
 router.get("/adminlogin", adminController.loadLogin);
 router.post("/admin-login", adminController.login);
-router.get('/', adminAuth, adminController.loadDashboard);
+router.get('/', adminAuth, dashboardController.loadAdminDashboard);
 router.get('/logout', adminController.logout)
 router.get("/errorpage", adminController.pageError)
 
@@ -57,7 +58,7 @@ router.get('/blockProduct', adminAuth, productController.blockProduct);
 router.get('/unblockProduct', adminAuth, productController.unblockProduct);
 router.get('/editProduct', adminAuth, productController.getEditProduct);
 router.post('/editProduct/:id', adminAuth, uploads.array("images", 4), productController.editProduct);
-router.post('/deleteImage', adminAuth, productController.deleteSingleImage); 
+router.post('/deleteImage', adminAuth, productController.deleteSingleImage);
 
 // --Coupon Management--
 
