@@ -142,7 +142,6 @@ nav ul img {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 70px;
 }
 
 .second-nav-container .second-nav {
@@ -158,7 +157,7 @@ nav ul img {
 #logoImage {
   width: 200px;
   height: 180px;
-  position: absolute;
+  position: static;
   top: 0px;
   right: 650px;
 }
@@ -643,11 +642,15 @@ span i {
   color: white;
 }
 
+
+
 /* Responsive styles for New Arrivals */
 @media only screen and (max-width: 800px) {
+
   .product-card {
     flex: 0 0 calc(25% - 20px);
   }
+
 }
 
 @media only screen and (max-width: 600px) {
@@ -684,6 +687,7 @@ span i {
   .second-nav-container {
     display: none;
   }
+  
 
   .first-nav li {
     display: none;

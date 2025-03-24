@@ -182,7 +182,6 @@
                     timerProgressBar: true,
                 }).then(async (result) => {
                     if (result.isConfirmed) {
-                        console.log("Removing offer for product:", productId); // Debugging log
                         $.ajax({
                             url: "/admin/removeProductOffer",
                             method: "POST",
@@ -190,7 +189,6 @@
                                 productId: productId,
                             },
                             success: (response) => {
-                                console.log("Server Response:", response); // Debugging log
                                 if (response.status === true) {
                                     Swal.fire({
                                         title: "Removed!",
@@ -204,7 +202,6 @@
                                 }
                             },
                             error: (error) => {
-                                console.error("AJAX Error:", error); // Debugging log
                                 Swal.fire("Error", "Something went wrong!", "error");
                             },
                         });

@@ -46,6 +46,10 @@ router.get('/logout', userController.logout);
 // --Shopping Page--
 
 router.get('/shop', userController.loadShoppingPage);
+router.get('/ladies', userController.loadLadies);
+router.get('/men', userController.loadMens);
+router.get('/baby', userController.loadBaby);
+router.get('/kids', userController.loadKids);
 
 // --Filter Page--
 
@@ -122,6 +126,10 @@ router.post('/return', userAuth, orderController.returnOrder);
 router.get('/wallet', userAuth, walletController.loadWallet);
 router.get('/walletHistory', userAuth, walletController.walletHistory);
 router.get('/transactionDetails/:id', walletController.transactionDetails);
+
+// --contact--
+
+router.get('/contact', userAuth, profileController.contactPage);
 
 // --payment Management--
 

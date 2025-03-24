@@ -631,21 +631,6 @@
                                             <img src="/uploads/re-image/<%= item.productId.productImage[0] %>"
                                                 alt="<%= item.productId.name %>" width="100" height="120">
                                         </a>
-                                        <div class="delete-icon">
-                                            <button type="button" class="delete-button"
-                                                data-product-id="<%= item.productId._id %>">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                                    <path
-                                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                    </path>
-                                                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                </svg>
-                                            </button>
-                                        </div>
                                     </div>
                                     <div class="item-details">
                                         <p class="item-name">Parcel</p>
@@ -704,12 +689,6 @@
                                     <input type="radio" id="netbanking" name="payment" value="razorpay">
                                     <label for="netbanking">Razorpay</label>
                                 </div>
-                                <!-- <div class="payment-option">
-                                    <input type="radio" id="upi" name="payment" value="upi">
-                                    <label for="upi">UPI</label>
-                                    <img src="/placeholder.svg?height=20&width=40" alt="Google Pay"
-                                        class="payment-icon">
-                                </div> -->
                                 <div class="payment-option selected">
                                     <input type="radio" id="cod" name="payment" value="cod" checked>
                                     <label for="cod">Cash on delivery</label>
@@ -750,7 +729,7 @@
                                             style="display: <%= appliedCoupon ? 'block' : 'none' %>;">
                                             <p>Discount Applied: <span id="discountValue">-<%= appliedCoupon ?
                                                         appliedCoupon.discount.toFixed(2) : '0.00' %></span></p>
-                                            <button type="button" id="removeDiscountBtn">Remove</button>
+                                            <button type="button" class="btn btn-primary" id="removeDiscountBtn">Remove</button>
                                         </div>
                             </div>
                         </div>
@@ -901,7 +880,6 @@
 
         document.querySelectorAll('input[name="billingAddress"]').forEach(radio => {
             radio.addEventListener('change', function () {
-                // Retrieve the address details from the data attributes
                 const name = this.getAttribute('data-name');
                 const phone = this.getAttribute('data-phone');
                 const landMark = this.getAttribute('data-landmark');
@@ -909,10 +887,9 @@
                 const pincode = this.getAttribute('data-pincode');
                 const state = this.getAttribute('data-state');
 
-                // Find the preview element
+
                 const preview = document.getElementById('deliveryAddressPreview');
                 if (preview) {
-                    // Update the preview element's content
                     preview.innerHTML = `
                     <p>${name}</p>
                     <p>91+ ${phone}</p>

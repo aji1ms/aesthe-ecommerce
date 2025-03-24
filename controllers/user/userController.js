@@ -368,6 +368,203 @@ const loadShoppingPage = async (req, res) => {
     }
 }
 
+// --Ladies Page--
+
+const loadLadies = async (req, res) => {
+    try {
+
+        const user = req.session.user;
+        const userData = await User.findOne({ _id: user })
+        const categories = await Category.find({ isListed: true })
+        const categoryIds = categories.map((category) => category._id.toString());
+
+        const page = parseInt(req.query.page) || 1;
+        const limit = 16;
+        const skip = (page - 1) * limit;
+
+        const products = await Product.find({
+            isBlocked: false,
+            category: { $in: categoryIds },
+            quantity: { $gt: 0 },
+            categoryOf: "ladies",
+        }).sort({ createdAt: -1 }).skip(skip).limit(limit);
+
+        const totalProducts = await Product.countDocuments({
+            isBlocked: false,
+            category: { $in: categoryIds },
+            quantity: { $gt: 0 },
+            categoryOf: "ladies"
+        })
+        const totalPages = Math.ceil(totalProducts / limit);
+
+        const brands = await Brand.find({ isBlocked: false });
+        const categoriesWithIds = categories.map(category => ({ _id: category._id, name: category.name }));
+
+
+        res.render("ladies", {
+            user: userData,
+            category: categoriesWithIds,
+            products: products,
+            totalProducts: totalProducts,
+            currentPage: page,
+            totalPages: totalPages,
+            brand: brands,
+        });
+
+    } catch (error) {
+        console.log("Error Loading Ladies category: ", error);
+        res.redirect("/pageNotFound")
+    }
+}
+
+// --mens Page--
+
+const loadMens = async (req, res) => {
+    try {
+
+        const user = req.session.user;
+        const userData = await User.findOne({ _id: user })
+        const categories = await Category.find({ isListed: true })
+        const categoryIds = categories.map((category) => category._id.toString());
+
+        const page = parseInt(req.query.page) || 1;
+        const limit = 16;
+        const skip = (page - 1) * limit;
+
+        const products = await Product.find({
+            isBlocked: false,
+            category: { $in: categoryIds },
+            quantity: { $gt: 0 },
+            categoryOf: "mens",
+        }).sort({ createdAt: -1 }).skip(skip).limit(limit);
+
+        const totalProducts = await Product.countDocuments({
+            isBlocked: false,
+            category: { $in: categoryIds },
+            quantity: { $gt: 0 },
+            categoryOf: "mens"
+        })
+        const totalPages = Math.ceil(totalProducts / limit);
+
+        const brands = await Brand.find({ isBlocked: false });
+        const categoriesWithIds = categories.map(category => ({ _id: category._id, name: category.name }));
+
+
+        res.render("mens", {
+            user: userData,
+            category: categoriesWithIds,
+            products: products,
+            totalProducts: totalProducts,
+            currentPage: page,
+            totalPages: totalPages,
+            brand: brands,
+        });
+
+
+    } catch (error) {
+        console.log("Error Loading mens page: ", error);
+        res.redirect('/pageNotFound')
+    }
+}
+
+// --Baby Page--
+
+const loadBaby = async (req, res) => {
+    try {
+
+        const user = req.session.user;
+        const userData = await User.findOne({ _id: user })
+        const categories = await Category.find({ isListed: true })
+        const categoryIds = categories.map((category) => category._id.toString());
+
+        const page = parseInt(req.query.page) || 1;
+        const limit = 16;
+        const skip = (page - 1) * limit;
+
+        const products = await Product.find({
+            isBlocked: false,
+            category: { $in: categoryIds },
+            quantity: { $gt: 0 },
+            categoryOf: "baby",
+        }).sort({ createdAt: -1 }).skip(skip).limit(limit);
+
+        const totalProducts = await Product.countDocuments({
+            isBlocked: false,
+            category: { $in: categoryIds },
+            quantity: { $gt: 0 },
+            categoryOf: "baby"
+        })
+        const totalPages = Math.ceil(totalProducts / limit);
+
+        const brands = await Brand.find({ isBlocked: false });
+        const categoriesWithIds = categories.map(category => ({ _id: category._id, name: category.name }));
+
+
+        res.render("baby", {
+            user: userData,
+            category: categoriesWithIds,
+            products: products,
+            totalProducts: totalProducts,
+            currentPage: page,
+            totalPages: totalPages,
+            brand: brands,
+        });
+
+
+    } catch (error) {
+        console.log("Error Loading baby page: ", error);
+        res.redirect('/pageNotFound')
+    }
+}
+
+const loadKids = async (req, res) => {
+    try {
+
+        const user = req.session.user;
+        const userData = await User.findOne({ _id: user })
+        const categories = await Category.find({ isListed: true })
+        const categoryIds = categories.map((category) => category._id.toString());
+
+        const page = parseInt(req.query.page) || 1;
+        const limit = 16;
+        const skip = (page - 1) * limit;
+
+        const products = await Product.find({
+            isBlocked: false,
+            category: { $in: categoryIds },
+            quantity: { $gt: 0 },
+            categoryOf: "kids",
+        }).sort({ createdAt: -1 }).skip(skip).limit(limit);
+
+        const totalProducts = await Product.countDocuments({
+            isBlocked: false,
+            category: { $in: categoryIds },
+            quantity: { $gt: 0 },
+            categoryOf: "kids"
+        })
+        const totalPages = Math.ceil(totalProducts / limit);
+
+        const brands = await Brand.find({ isBlocked: false });
+        const categoriesWithIds = categories.map(category => ({ _id: category._id, name: category.name }));
+
+
+        res.render("kids", {
+            user: userData,
+            category: categoriesWithIds,
+            products: products,
+            totalProducts: totalProducts,
+            currentPage: page,
+            totalPages: totalPages,
+            brand: brands,
+        });
+
+
+    } catch (error) {
+        console.log("Error Loading kids page: ", error);
+        res.redirect('/pageNotFound')
+    }
+}
+
 // --Filter Page--
 
 const filterProducts = async (req, res) => {
@@ -541,6 +738,10 @@ module.exports = {
     login,
     logout,
     loadShoppingPage,
+    loadLadies,
+    loadMens,
+    loadBaby,
+    loadKids,
     filterProducts,
     filterByPrice,
     searchProducts

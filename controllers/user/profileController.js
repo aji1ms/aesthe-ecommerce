@@ -314,45 +314,45 @@ const loadNewEmail = async (req, res) => {
 
 const updateEmail = async (req, res) => {
     try {
-      console.log("updateEmail triggered. Request body:", req.body);
-      console.log("Current session userData:", req.session.userData);
-      
-      const newEmail = req.session.newEmail;
-      if (!newEmail) {
-        console.error("newEmail not found in session");
-        return res.redirect("/change-email");
-      }
-      
-      const userId = req.session.userData && req.session.userData._id;
-      if (!userId) {
-        console.error("No user ID found in session");
-        return res.redirect("/login");
-      }
-      
-      const updatedUser = await User.findByIdAndUpdate(
-        userId,
-        { email: newEmail },
-        { new: true } 
-      );
-      
-      console.log("Updated user from DB:", updatedUser);
-      if (!updatedUser) {
-        console.error("User not found or email update failed");
-        return res.redirect("/change-email");
-      }
-      
-      req.session.userData = updatedUser;
-      
-      delete req.session.newEmail;
-      
-      res.redirect("/userProfile");
+        console.log("updateEmail triggered. Request body:", req.body);
+        console.log("Current session userData:", req.session.userData);
+
+        const newEmail = req.session.newEmail;
+        if (!newEmail) {
+            console.error("newEmail not found in session");
+            return res.redirect("/change-email");
+        }
+
+        const userId = req.session.userData && req.session.userData._id;
+        if (!userId) {
+            console.error("No user ID found in session");
+            return res.redirect("/login");
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { email: newEmail },
+            { new: true }
+        );
+
+        console.log("Updated user from DB:", updatedUser);
+        if (!updatedUser) {
+            console.error("User not found or email update failed");
+            return res.redirect("/change-email");
+        }
+
+        req.session.userData = updatedUser;
+
+        delete req.session.newEmail;
+
+        res.redirect("/userProfile");
     } catch (error) {
-      console.error("Error updating email:", error);
-      res.redirect("/pageNotFound");
+        console.error("Error updating email:", error);
+        res.redirect("/pageNotFound");
     }
-  };
-  
-  
+};
+
+
 // ---Password Change---
 
 const changePassword = async (req, res) => {
@@ -412,7 +412,7 @@ const verifyChangePasswordOtp = async (req, res) => {
             res.json({ success: false, message: "OTP not matching" });
         }
     } catch (error) {
-        console.error("OTP verification error:", error); // Logs the real error details
+        console.error("OTP verification error:", error);
         res.status(500).json({ success: false, message: "An error occurred. Please try again" });
     }
 }
@@ -567,6 +567,14 @@ const deleteAddress = async (req, res) => {
     }
 }
 
+const contactPage = async (req, res) => {
+    try {
+        res.render("contact");
+    } catch (error) {
+        console.log("error loading contact page: ", error);
+    }
+}
+
 
 
 module.exports = {
@@ -593,4 +601,5 @@ module.exports = {
     editAddress,
     postEditAddress,
     deleteAddress,
+    contactPage,
 }

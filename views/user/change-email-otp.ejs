@@ -98,11 +98,9 @@
                 showConfirmButton: false,
                 timer: 2000,
               }).then(() => {
-                // Redirect if verification is successful
                 window.location.href = data.redirect || "/new-email";
               });
             } else {
-              // If OTP does not match, show error alert
               Swal.fire({
                 icon: "error",
                 toast: true,

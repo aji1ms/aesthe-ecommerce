@@ -375,15 +375,13 @@
 
     <body>
         <div class="container">
-            <!-- Product Detail Section -->
             <div class="product-detail">
-                <!-- Product Images Section -->
                 <div class="product-images">
                     <div class="images-grid">
                         <div class="zoom-container">
                             <img src="/uploads/re-image/<%= product.productImage[0] %>" alt="Product image"
                                 class="zoom-image"
-                                onclick="openModal('/uploads/re-image/<%= product.productImage[1] %>')" />
+                                onclick="openModal('/uploads/re-image/<%= product.productImage[0] %>')" />
                         </div>
                         <img src="/uploads/re-image/<%=product.productImage[1]%>" alt="Product image"
                             onclick="openModal('/uploads/re-image/<%= product.productImage[1] %>')">
@@ -391,8 +389,6 @@
                             onclick="openModal('/uploads/re-image/<%= product.productImage[2] %>')">
                         <img src="/uploads/re-image/<%=product.productImage[3]%>" alt="Product image"
                             onclick="openModal('/uploads/re-image/<%= product.productImage[3] %>')">
-                        <img src="/uploads/re-image/<%=product.productImage[0]%>" alt="Product image"
-                            onclick="openModal('/uploads/re-image/<%= product.productImage[0] %>')">
                     </div>
                 </div>
 
@@ -555,11 +551,9 @@
                 document.getElementById("btnWish").addEventListener("click", async function (event) {
                     event.preventDefault();
 
-                    // Retrieve the product ID from the data attribute
                     const productId = this.getAttribute("data-productid");
 
                     try {
-                        // Send a POST request to the wishlist endpoint
                         const response = await fetch("/addToWishlist", {
                             method: "POST",
                             headers: {
@@ -570,7 +564,6 @@
 
                         const result = await response.json();
 
-                        // Check the response and show appropriate SweetAlert notification
                         if (result.status) {
                             Swal.fire({
                                 icon: "success",
@@ -648,7 +641,7 @@
                     document.querySelectorAll(".size-option").forEach(size => size.classList.remove("active"));
                     element.classList.add("active");
                     const selected = element.innerText.trim();
-                    console.log("Selected size:", selected); // Debug: Check which size is selected
+                    console.log("Selected size:", selected);
                     document.getElementById("selectedSize").value = selected;
                 }
 
@@ -697,23 +690,19 @@
 
                 document.querySelectorAll('.wishlist-icon').forEach(icon => {
                     icon.addEventListener('click', async function (e) {
-                        e.preventDefault(); // Use the event parameter "e"
+                        e.preventDefault(); 
 
-                        // Retrieve the product ID from a data attribute
                         const productId = this.getAttribute("data-productid");
 
                         try {
-                            // Send a POST request to the wishlist endpoint
                             const response = await fetch("/addToWishlist", {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({ productId })
                             });
 
-                            // Parse the response JSON
                             const result = await response.json();
 
-                            // If the user is not logged in, result.message should be "Please login"
                             if (result.status) {
                                 Swal.fire({
                                     icon: "success",

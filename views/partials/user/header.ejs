@@ -36,7 +36,7 @@
                   <a href="/userProfile"><i class="fas fa-user"></i> My Profile</a>
                   <div class="divider"></div>
                   <a href="/orders"><i class="fas fa-shopping-bag"></i> My Orders</a>
-                  <a href="/settings"><i class="fas fa-cog"></i> Settings</a>
+                  <a href="/userProfile"><i class="fas fa-cog"></i> Settings</a>
                   <div class="divider"></div>
                   <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
@@ -48,21 +48,26 @@
                 <li><a href="/signup">Sign up</a></li>
                 <li><a href="/login">Login</a></li>
                 <%}%>
-                <%if(locals.userData){%>
-                  <img src="images/search.svg" class="search" alt="">
-                  <a href="/wishlist"><img src="images/fav.svg" width="25px" alt="">
-                  <li>Favourites</a></li>
+                  <%if(locals.userData){%>
+                    <img src="images/search.svg" class="search" alt="">
+                    <a href="/wishlist"><img src="images/fav.svg" width="25px" alt="">
+                      <li>Favourites
+                    </a></li>
 
-                  <a href="/cart"><img src="images/bag.svg" width="25px" alt="">
-                    <li>Shopping bag
-                  </a></li>
-                  <%}%>
+                    <a href="/cart"><img src="images/bag.svg" width="25px" alt="">
+                      <li>Shopping bag
+                    </a></li>
+                    <%}%>
           </ul>
         </nav>
       </div>
       <div class="mobile-img-logo">
-        <img src="images/menu.svg" class="mobile-menu" id="nav-toggle">
-        <img src="images/logo.svg" alt="">
+          <img src="images/menu.svg" class="mobile-menu" id="nav-toggle">
+          <div>
+            <a href="/">
+        <img src="/images/AestheLogo-red.png" alt="">
+      </a>
+      </div>
       </div>
       <div class="second-nav-container">
         <a href="/">
@@ -70,16 +75,16 @@
         </a>
         <nav class="second-nav">
           <ul id="MenuItems">
-            <li><a href="#">Ladies<span>&#8594;</span></a></li>
-            <li><a href="#">Men <span>&#8594;</span></a></li>
-            <li><a href="#">Baby <span>&#8594;</span></a></li>
-            <li><a href="#">Kids <span>&#8594;</span></a></li>
-            <li><a href="#">Home <span>&#8594;</span></a></li>
-            <li><a href="#">Sales <span>&#8594;</span></a></li>
+            <li><a href="/ladies">Ladies<span>&#8594;</span></a></li>
+            <li><a href="/men">Men <span>&#8594;</span></a></li>
+            <li><a href="/baby">Baby<span>&#8594;</span></a></li>
+            <li><a href="/kids">Kids<span>&#8594;</span></a></li>
+            <li><a href="/">Sales<span>&#8594;</span></a></li>
           </ul>
           <form action="/search" method="post">
-          <img src="images/search.svg" alt=""> <input placeholder="search products" name="query" type="text" class="search-input">
-        </form>
+            <img src="images/search.svg" alt=""> <input placeholder="search products" name="query" type="text"
+              class="search-input">
+          </form>
         </nav>
       </div>
     </div>
@@ -94,10 +99,10 @@
               <%=locals.user.name%>
             </a>
             <div class="dropdown-content">
-              <a href="/profile"><i class="fas fa-user"></i> My Profile</a>
+              <a href="/userProfile"><i class="fas fa-user"></i> My Profile</a>
               <div class="divider"></div>
               <a href="/orders"><i class="fas fa-shopping-bag"></i> My Orders</a>
-              <a href="/settings"><i class="fas fa-cog"></i> Settings</a>
+              <a href="/userProfile"><i class="fas fa-cog"></i> Settings</a>
               <div class="divider"></div>
               <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
@@ -105,12 +110,11 @@
           <%}else{%>
             <li><img src="images/account.svg">Sign in<span><i class="fa fa-times" id="hide-toggle"></i></span></li>
             <%}%>
-              <li><a href="#">Women <span>&#8594;</span></a></li>
-              <li><a href="#">Men <span>&#8594;</span></a></li>
-              <li><a href="#">Baby <span>&#8594;</span></a></li>
-              <li><a href="#">Kids <span>&#8594;</span></a></li>
-              <li><a href="#">Home <span>&#8594;</span></a></li>
-              <li><a href="#">Sale <span>&#8594;</span></a></li>=
+              <li><a href="/ladies">Women <span>&#8594;</span></a></li>
+              <li><a href="/men">Men <span>&#8594;</span></a></li>
+              <li><a href="/baby">Baby <span>&#8594;</span></a></li>
+              <li><a href="/kids">Kids <span>&#8594;</span></a></li>
+              <li><a href="/">Sale <span>&#8594;</span></a></li>=
               <li class="small-li">Customer Service</li>
               <li class="small-li">NewsLetter</li>
       </ul>

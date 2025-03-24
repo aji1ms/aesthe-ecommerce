@@ -687,19 +687,16 @@
 
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Select all elements with the class "return-btn"
             const returnButtons = document.querySelectorAll('.return-btn');
 
             returnButtons.forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
 
-                    // Find the nearest container (table-footer) and get the corresponding textarea
                     const container = button.closest('.table-footer');
                     const textarea = container.querySelector('textarea[name="return-reason"]');
                     const returnReason = textarea ? textarea.value.trim() : '';
 
-                    // If the return reason is empty, show an error alert and exit
                     if (!returnReason) {
                         Swal.fire({
                             icon: 'error',
@@ -709,7 +706,6 @@
                         return;
                     }
 
-                    // Show a confirmation prompt using SweetAlert2
                     Swal.fire({
                         title: 'Are you sure?',
                         text: "Do you really want to return this item?",
@@ -720,7 +716,6 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             const orderId = button.getAttribute('data-order-id');
-                            // Send the return request using fetch
                             fetch('/return', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
@@ -733,7 +728,7 @@
                                 .then(data => {
                                     if (data.status) {
                                         Swal.fire('Success', data.message, 'success').then(() => {
-                                            location.reload(); // Reload page to reflect changes
+                                            location.reload(); 
                                         });
                                     } else {
                                         Swal.fire('Error', data.message, 'error');

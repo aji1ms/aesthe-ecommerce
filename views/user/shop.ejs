@@ -481,7 +481,6 @@
     </head>
 
     <body>
-        <!-- Your header will go here -->
 
         <div class="shop-container">
             <!-- Filter and Sort Section -->
@@ -674,7 +673,7 @@
                 $.ajax({
                     url: '/addToWishlist',
                     method: 'POST',
-                    contentType: 'application/json',  // Ensure server expects JSON
+                    contentType: 'application/json',  
                     data: JSON.stringify({ productId: productId }),
                     success: function (response) {
                         console.log("AJAX success response:", response);

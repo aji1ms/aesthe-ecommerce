@@ -386,14 +386,14 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Menu item navigation
+         
             document.querySelectorAll('.menu-item[data-route]').forEach(item => {
                 item.addEventListener('click', function () {
                     window.location.href = this.getAttribute('data-route');
                 });
             });
 
-            // Logout functionality
+        
             document.getElementById('sign-out').addEventListener('click', function () {
                 fetch('/api/logout', {
                     method: 'POST',
@@ -403,7 +403,7 @@
                 });
             });
 
-            // Address Form Elements
+         
             const addressFormContainer = document.getElementById('address-form-container');
             const addressForm = {
                 fullName: document.getElementById('full-name'),
@@ -418,9 +418,9 @@
             const saveAddressBtn = document.getElementById('save-address-btn');
             const cancelAddressBtn = document.getElementById('cancel-address-btn');
 
-            // Form Validation Function
+  
             function validateAddressForm() {
-                // Validation rules
+         
                 const validations = {
                     fullName: {
                         test: value => value.trim().length >= 2,
@@ -448,25 +448,25 @@
                     }
                 };
 
-                // Perform validation
+              
                 let isValid = true;
                 Object.keys(validations).forEach(key => {
                     const input = addressForm[key];
                     const validation = validations[key];
 
-                    // Remove any existing error styles
+                
                     input.style.borderColor = '';
                     const existingError = input.nextElementSibling;
                     if (existingError && existingError.classList.contains('error-message')) {
                         existingError.remove();
                     }
 
-                    // Check validation
+            
                     if (!validation.test(input.value)) {
                         isValid = false;
                         input.style.borderColor = 'red';
 
-                        // Create error message
+                  
                         const errorMessage = document.createElement('div');
                         errorMessage.textContent = validation.errorMessage;
                         errorMessage.classList.add('error-message');
@@ -539,16 +539,14 @@
                 }
             });
 
-            // Cancel Button Handler
+   
             cancelAddressBtn.addEventListener('click', function (e) {
                 e.preventDefault();
-                // Reset form
                 Object.values(addressForm).forEach(input => {
                     input.value = '';
                     input.style.borderColor = '';
                 });
 
-                // Remove any error messages
                 const errorMessages = document.querySelectorAll('.error-message');
                 errorMessages.forEach(msg => msg.remove());
             });

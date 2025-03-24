@@ -543,20 +543,24 @@
                                         <option value="L">L</option>
                                         <option value="XL">XL</option>
                                         <option value="XXL">XXL</option>
-                                      </select>
+                                    </select>
                                 </div>
 
                                 <div class="sort-by">
                                     <select id="color-select-<%= product._id %>">
                                         <option value="">Select Color</option>
-                                        <% if (product.colors && product.colors.length > 0) { %>
-                                          <% product.colors.forEach(color => { %>
-                                            <option value="<%= color %>"><%= color %></option>
-                                          <% }) %>
-                                        <% } else { %>
-                                          <option value="<%= product.color %>"><%= product.color %></option>
-                                        <% } %>
-                                      </select>
+                                        <% if (product.colors && product.colors.length> 0) { %>
+                                            <% product.colors.forEach(color=> { %>
+                                                <option value="<%= color %>">
+                                                    <%= color %>
+                                                </option>
+                                                <% }) %>
+                                                    <% } else { %>
+                                                        <option value="<%= product.color %>">
+                                                            <%= product.color %>
+                                                        </option>
+                                                        <% } %>
+                                    </select>
                                 </div>
 
                                 <button id="addCart" onclick="addToCart('<%=product._id%>')">ADD TO CART</button>
@@ -573,67 +577,67 @@
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script>
-function addToCart(productId) {
-  // Get the select elements using unique IDs for this product
-  const sizeSelect = document.getElementById("size-select-" + productId);
-  const colorSelect = document.getElementById("color-select-" + productId);
+                function addToCart(productId) {
 
-  // Retrieve the selected values
-  const selectedSize = sizeSelect ? sizeSelect.value : "";
-  const selectedColor = colorSelect ? colorSelect.value : "";
+                    const sizeSelect = document.getElementById("size-select-" + productId);
+                    const colorSelect = document.getElementById("color-select-" + productId);
 
-  console.log("Selected Size:", selectedSize);
-  console.log("Selected Color:", selectedColor);
 
-  // Validate that both size and color have been selected
-  if (!selectedSize || !selectedColor) {
-    Swal.fire({
-      title: "Incomplete selection",
-      text: "Please select both a size and a color.",
-      icon: "warning",
-      timer: 2000,
-      showConfirmButton: false
-    });
-    return;
-  }
+                    const selectedSize = sizeSelect ? sizeSelect.value : "";
+                    const selectedColor = colorSelect ? colorSelect.value : "";
 
-  // Send the data using fetch
-  fetch("/addToCart", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ productId, size: selectedSize, color: selectedColor })
-  })
-    .then(response => response.json())
-    .then(result => {
-      if (result.status) {
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: result.message,
-          timer: 1500,
-          showConfirmButton: false
-        }).then(() => {
-          $(`#product-card-${productId}`).remove();
-        });
-      } else {
-        Swal.fire({
-          icon: "info",
-          title: "Notice",
-          text: result.message,
-          timer: 1500,
-          showConfirmButton: false
-        });
-      }
-    })
-    .catch(error => {
-      console.error("Error adding to cart:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Something went wrong. Please try again later."
-      });
-    });
-}
+                    console.log("Selected Size:", selectedSize);
+                    console.log("Selected Color:", selectedColor);
+
+
+                    if (!selectedSize || !selectedColor) {
+                        Swal.fire({
+                            title: "Incomplete selection",
+                            text: "Please select both a size and a color.",
+                            icon: "warning",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        return;
+                    }
+
+
+                    fetch("/addToCart", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ productId, size: selectedSize, color: selectedColor })
+                    })
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.status) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Success",
+                                    text: result.message,
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                }).then(() => {
+                                    $(`#product-card-${productId}`).remove();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "info",
+                                    title: "Notice",
+                                    text: result.message,
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error adding to cart:", error);
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: "Something went wrong. Please try again later."
+                            });
+                        });
+                }
 
                 function confirmRemove(productId) {
                     Swal.fire({
