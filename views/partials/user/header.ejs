@@ -63,9 +63,9 @@
       </div>
       <div class="mobile-img-logo">
           <img src="images/menu.svg" class="mobile-menu" id="nav-toggle">
-          <div>
+          <div style="position: absolute; top: 0px; left: 70px; width: 60px;">
             <a href="/">
-        <img src="/images/AestheLogo-red.png" alt="">
+        <img style="width: 100px; " src="/images/AestheLogo-red.png" alt="">
       </a>
       </div>
       </div>
@@ -79,7 +79,7 @@
             <li><a href="/men">Men <span>&#8594;</span></a></li>
             <li><a href="/baby">Baby<span>&#8594;</span></a></li>
             <li><a href="/kids">Kids<span>&#8594;</span></a></li>
-            <li><a href="/">Sales<span>&#8594;</span></a></li>
+            <li><a href="/shop">Sales<span>&#8594;</span></a></li>
           </ul>
           <form action="/search" method="post">
             <img src="images/search.svg" alt=""> <input placeholder="search products" name="query" type="text"
@@ -94,9 +94,9 @@
   <div class="mobile-navbar" id="nav-menu">
     <nav>
       <ul>
-        <%if (locals.user) {%>
+        <%if (locals.userData) {%>
           <li class="dropdown"><a href="#" class="user-name">
-              <%=locals.user.name%>
+              <%=locals.userData.name%>
             </a>
             <div class="dropdown-content">
               <a href="/userProfile"><i class="fas fa-user"></i> My Profile</a>
@@ -114,7 +114,7 @@
               <li><a href="/men">Men <span>&#8594;</span></a></li>
               <li><a href="/baby">Baby <span>&#8594;</span></a></li>
               <li><a href="/kids">Kids <span>&#8594;</span></a></li>
-              <li><a href="/">Sale <span>&#8594;</span></a></li>=
+              <li><a href="/shop">Sale <span>&#8594;</span></a></li>=
               <li class="small-li">Customer Service</li>
               <li class="small-li">NewsLetter</li>
       </ul>

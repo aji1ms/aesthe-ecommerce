@@ -94,8 +94,18 @@ const downloadSalesPdf = async (req, res) => {
         const doc = new PDFDocument({ margin: 50 });
         doc.pipe(res);
 
+        const periodMapping = {
+            daily: "Daily",
+            weekly: "Weekly",
+            monthly: "Monthly",
+            yearly: "Yearly",
+            custom: "Custom"
+        }
+
+        const reportHeader = `${periodMapping[period] || 'Sales'} Sales Report`;
+
         // PDF Title
-        doc.fontSize(18).text("Sales Report", { align: 'center' });
+        doc.fontSize(18).text(reportHeader, { align: 'center' });
         doc.moveDown(2);
 
         // Define column positions and widths

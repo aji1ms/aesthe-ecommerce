@@ -26,7 +26,7 @@ const loadAdminDashboard = async (req, res) => {
         const topProducts = await getTopSellingProducts();
         const topCategories = await getTopSellingCategories();
 
-        // Basic stats (replace with your logic)
+        
         const totalOrders = await Order.countDocuments();
         const totalRevenueObj = await Order.aggregate([{ $group: { _id: null, total: { $sum: "$finalAmount" } } }]);
         const totalRevenue = totalRevenueObj.length ? totalRevenueObj[0].total : 0;

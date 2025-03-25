@@ -548,5 +548,31 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          document.querySelectorAll('.menu-item[data-route]').forEach(item => {
+            item.addEventListener('click', function () {
+              window.location.href = this.getAttribute('data-route');
+            });
+          });
+    
+          document.getElementById('sign-out').addEventListener('click', function () {
+            fetch('/api/logout', {
+              method: 'POST',
+              credentials: 'same-origin'
+            }).then(() => {
+              window.location.href = '/';
+            });
+          });
+    
+          function loadUserData() {
+      
+          }
+          
+          loadUserData();
+        });
+    
+      </script>
+    
 
     <%-include("../../views/partials/user/footer")%>
