@@ -550,7 +550,7 @@
                                         <td><%= new Date(transaction.date).toLocaleString() %></td>
                                         <td><%= transaction.user ? transaction.user.name : "N/A" %></td>
                                         <td style="color: red;"><%= transaction.type %></td>
-                                        <td style="color: green;">$<%= transaction.amount %></td>
+                                        <td style="color: green;">₹<%= transaction.amount %></td>
                                         <td>
                                             <a href="/transactionDetails/<%= transaction._id %>">
                                                 <button style="padding: 5px 15px; background-color: black; color: white;">view</button>

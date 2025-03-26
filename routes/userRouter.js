@@ -126,6 +126,8 @@ router.post('/return', userAuth, orderController.returnOrder);
 router.get('/wallet', userAuth, walletController.loadWallet);
 router.get('/walletHistory', userAuth, walletController.walletHistory);
 router.get('/transactionDetails/:id', walletController.transactionDetails);
+router.post("/create-payment-order", walletController.createPaymentOrder);
+router.post("/verify-payment", walletController.verifyPayment);
 
 // --contact--
 

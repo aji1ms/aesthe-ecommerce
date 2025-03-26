@@ -369,14 +369,14 @@
                                         <%=order.user ? order.user.name : 'N/A' %>
                                     </td>
                                     <td>
-                                        <% if (order.products && order.products.length) { %>
-                                            <% order.products.forEach(function(product, index) { %>
-                                                <%= product.name %>
-                                                    <%= index < order.products.length - 1 ? ', ' : '' %>
-                                                        <% }); %>
-                                                            <% } else { %>
-                                                                N/A
-                                                                <% } %>
+                                        <% if (order.orderedItem && order.orderedItem.length) { %>
+                                            <% order.orderedItem.forEach(function(item, index) { %>
+                                                <%= item.product ? item.product.productName : 'Unknown' %>
+                                                <%= index < order.orderedItem.length - 1 ? ', ' : '' %>
+                                            <% }); %>
+                                        <% } else { %>
+                                            N/A
+                                        <% } %>
                                     </td>
                                     <td>$<%= order.discount ? order.discount.toFixed(2) : '0.00' %>
                                     </td>

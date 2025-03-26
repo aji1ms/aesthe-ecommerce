@@ -1,6 +1,7 @@
 const {
     getMonthlySalesForYear,
     getDailySalesForMonth,
+    getYearlySales,
     getTopSellingProducts,
     getTopSellingCategories,
 } = require("../../helpers/aggregation");
@@ -18,18 +19,27 @@ const loadAdminDashboard = async (req, res) => {
 
         let chartData = [];
         if (filterType === "yearly") {
-            chartData = await getMonthlySalesForYear(year);
+            chartData = await getYearlySales();
         } else if (filterType === "monthly") {
-            chartData = await getDailySalesForMonth(year, month);
+            chartData = await getMonthlySalesForYear(year);
+        } else {
+            chartData = await getMonthlySalesForYear(year);
         }
+
 
         const topProducts = await getTopSellingProducts();
         const topCategories = await getTopSellingCategories();
 
-        
-        const totalOrders = await Order.countDocuments();
-        const totalRevenueObj = await Order.aggregate([{ $group: { _id: null, total: { $sum: "$finalAmount" } } }]);
+       
+        const deliveredFilter = { status: "Delivered" };
+
+        const totalOrders = await Order.countDocuments(deliveredFilter);
+        const totalRevenueObj = await Order.aggregate([
+            { $match: deliveredFilter },
+            { $group: { _id: null, total: { $sum: "$finalAmount" } } }
+        ]);
         const totalRevenue = totalRevenueObj.length ? totalRevenueObj[0].total : 0;
+
         const totalCustomers = await User.countDocuments({ isAdmin: false });
         const totalCategories = await Category.countDocuments();
 

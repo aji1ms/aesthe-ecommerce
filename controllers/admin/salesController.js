@@ -11,10 +11,10 @@ const loadSales = async (req, res) => {
         const now = new Date();
 
         if (period === 'custom' && req.query.startDate && req.query.endDate) {
-            match.createdOn = {
-                $gte: new Date(req.query.startDate),
-                $lte: new Date(req.query.endDate)
-            };
+            const start = new Date(req.query.startDate);
+            const end = new Date(req.query.endDate);
+            end.setHours(23, 59, 59, 999);
+            match.invoiceDate = { $gte: start, $lte: end };
         } else if (period === 'daily') {
             const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             match.createdOn = { $gte: start, $lte: now };
@@ -31,6 +31,7 @@ const loadSales = async (req, res) => {
 
         const orders = await Order.find(match)
             .populate('user')
+            .populate('orderedItem.product')
             .sort({ createdOn: -1 });
 
         // Calculate totals
@@ -60,7 +61,6 @@ const loadSales = async (req, res) => {
 
 const downloadSalesPdf = async (req, res) => {
     try {
-
         let match = { status: "Delivered" };
         const period = req.query.period || 'daily';
         const now = new Date();
@@ -88,27 +88,36 @@ const downloadSalesPdf = async (req, res) => {
             .populate('user')
             .sort({ createdOn: -1 });
 
+        // Calculate totals
+        const totalSalesCount = orders.length;
+        const totalRevenue = orders.reduce((acc, order) => acc + (order.finalAmount || 0), 0);
+
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'attachment; filename="sales_report.pdf"');
 
         const doc = new PDFDocument({ margin: 50 });
         doc.pipe(res);
 
+        // Dynamic report heading
         const periodMapping = {
             daily: "Daily",
             weekly: "Weekly",
             monthly: "Monthly",
             yearly: "Yearly",
             custom: "Custom"
-        }
-
+        };
         const reportHeader = `${periodMapping[period] || 'Sales'} Sales Report`;
 
         // PDF Title
         doc.fontSize(18).text(reportHeader, { align: 'center' });
+        doc.moveDown(1.5);
+
+        // Add totals summary
+        doc.fontSize(14).text(`Total Sales Count: ${totalSalesCount}`, { align: 'center' });
+        doc.fontSize(14).text(`Total Revenue: $${totalRevenue.toFixed(2)}`, { align: 'center' });
         doc.moveDown(2);
 
-        // Define column positions and widths
+        // Define column positions and widths for table header
         const columns = {
             date: { x: 50, width: 80 },
             orderId: { x: 130, width: 180 },
@@ -141,7 +150,6 @@ const downloadSalesPdf = async (req, res) => {
             const discount = order.discount ? order.discount.toFixed(2) : "0.00";
             const total = order.finalAmount ? order.finalAmount.toFixed(2) : "0.00";
 
-            // Write each column value at its specific position
             doc.text(orderDate, columns.date.x, startY, {
                 width: columns.date.width,
                 align: 'left'
@@ -167,7 +175,6 @@ const downloadSalesPdf = async (req, res) => {
                 align: 'left'
             });
 
-            // Move down after the row is complete
             doc.moveDown(1.5);
         });
 
@@ -177,6 +184,7 @@ const downloadSalesPdf = async (req, res) => {
         res.status(500).send("Error generating PDF report.");
     }
 };
+
 
 
 

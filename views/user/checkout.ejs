@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aesthé - Checkout</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <style>
     /* Base styles */
@@ -693,6 +694,10 @@
                                     <input type="radio" id="cod" name="payment" value="cod" checked>
                                     <label for="cod">Cash on delivery</label>
                                 </div>
+                                <div class="payment-option selected">
+                                    <input type="radio" id="wallet" name="payment" value="wallet">
+                                    <label for="wallet">Wallet Pay</label>
+                                </div>
                                 <p class="payment-note">You pay only cash at time of receiving the order</p>
                             </div>
                         </div>
@@ -729,7 +734,8 @@
                                             style="display: <%= appliedCoupon ? 'block' : 'none' %>;">
                                             <p>Discount Applied: <span id="discountValue">-<%= appliedCoupon ?
                                                         appliedCoupon.discount.toFixed(2) : '0.00' %></span></p>
-                                            <button type="button" class="btn btn-primary" id="removeDiscountBtn">Remove</button>
+                                            <button type="button" class="btn btn-primary"
+                                                id="removeDiscountBtn">Remove</button>
                                         </div>
                             </div>
                         </div>
@@ -1048,7 +1054,7 @@
             });
         }
     }
-
+                             
     document.getElementById('checkoutForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
@@ -1063,7 +1069,44 @@
             return;
         }
 
-        if (selectedPayment === 'razorpay') {
+        const orderData = {
+            billingAddress: selectedAddress.value,
+            payment: selectedPayment,
+            paymentStatus: (selectedPayment === 'cod') ? 'pending' : (selectedPayment === 'wallet' ? 'wallet' : 'completed')
+        };
+
+        if (selectedPayment === 'wallet') {
+            try {
+                const response = await fetch('/placeOrder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+                const result = await response.json();
+                if (!result.status) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Wallet Payment Failed',
+                        text: result.message
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Payment Successful!',
+                        text: 'Your order is placed and wallet has been debited.'
+                    }).then(() => {
+                        window.location.href = '/thank';
+                    });
+                }
+            } catch (error) {
+                console.error("Error placing order with wallet:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Something went wrong. Please try again later.'
+                });
+            }
+        } else if (selectedPayment === 'razorpay') {
             await payWithRazorpay();
         } else {
             const formData = {
@@ -1079,7 +1122,7 @@
                     body: JSON.stringify(formData)
                 });
                 const result = await response.json();
-
+                console.log("Wallet Order Response:", result);
                 if (!response.ok) {
                     Swal.fire({
                         icon: 'error',
@@ -1125,9 +1168,9 @@
                     text: 'Your order has been canceled.',
                     icon: 'success',
                     showConfirmButton: false,
-                    timer: 2000 
+                    timer: 2000
                 }).then(() => {
-                    window.location.href = '/cart'; 
+                    window.location.href = '/cart';
                 });
             }
         })

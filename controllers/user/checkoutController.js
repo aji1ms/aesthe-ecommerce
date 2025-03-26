@@ -3,6 +3,8 @@ const Order = require('../../models/orderSchema');
 const Cart = require("../../models/cartSchema");
 const Address = require("../../models/addressSchema");
 const Product = require("../../models/productSchema");
+const Wallet = require("../../models/walletSchema");
+const Transaction = require("../../models/transactionSchema");
 
 
 
@@ -105,6 +107,33 @@ const placeOrder = async (req, res) => {
             });
         }
 
+        if (payment.toLowerCase() === "wallet") {
+           
+            let wallet = await Wallet.findOne({ user: userId });
+            if (!wallet) {
+                return res.status(400).json({ status: false, message: "Wallet not found." });
+            }
+            
+            if (wallet.balance < finalAmount) {
+                return res.status(400).json({ status: false, message: "Wallet is empty or has insufficient funds." });
+            }
+            
+            wallet.balance -= finalAmount;
+            
+            
+            const transaction = new Transaction({
+                user: userId,
+                type: "debit",
+                amount: finalAmount,
+                description: "Wallet payment for order"
+            });
+            await transaction.save();
+            wallet.transactions.push(transaction._id);
+            await wallet.save();
+            
+          
+            req.body.paymentStatus = "Completed";
+        }
 
         const newOrder = new Order({
             orderedItem,
@@ -114,7 +143,7 @@ const placeOrder = async (req, res) => {
             billingAddress: selectedAddress,
             user: userId,
             paymentMethod: payment,
-            paymentStatus: payment === "cod" ? "Pending" : "Completed",
+            paymentStatus: (payment.toLowerCase() === "wallet") ? "Completed" : (payment === "cod" ? "Pending" : "Completed"),
             status: "Pending",
             invoiceDate: new Date()
         });
@@ -134,7 +163,7 @@ const placeOrder = async (req, res) => {
 
     } catch (error) {
         console.error("Error placing order:", error);
-        res.status(500).redirect("/pageNotFound");
+        res.redirect("/pageNotFound");
     }
 };
 

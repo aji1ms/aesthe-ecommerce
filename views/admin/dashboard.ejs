@@ -80,7 +80,7 @@
         <div class="card shadow-sm border-0">
           <div class="card-body">
             <div class="card-title">Total Sales</div>
-            <div class="card-value">$<%= totalRevenue.toFixed(2) %></div>
+            <div class="card-value">₹<%= totalRevenue.toFixed(2) %></div>
             <div class="card-subtext text-success">
               <i class="fa fa-arrow-up"></i> +8% from last month
             </div>
@@ -169,9 +169,9 @@
                   <tr>
                     <td><%= product.productName %></td>
                     <td><%= product.categoryName || 'N/A' %></td>
-                    <td>$<%= (product.price || 0).toFixed(2) %></td>
+                    <td>₹<%= (product.price || 0).toFixed(2) %></td>
                     <td><%= product.totalQuantity %></td>
-                    <td>$<%= product.revenue.toFixed(2) %></td>
+                    <td>₹<%= product.revenue.toFixed(2) %></td>
                   </tr>
                 <% }) %>
               </tbody>
@@ -191,64 +191,90 @@
   ></script>
 
   <script>
-
     const chartData = <%- JSON.stringify(chartData) %>; 
     const filterType = "<%= filterType %>";   
-    const year = "<%= year %>";
+    const year = parseInt("<%= year %>") || new Date().getFullYear();
     const month = "<%= month || '' %>";
   
-    const labels = chartData.map((item) => item._id);
-    const totalSales = chartData.map((item) => item.totalSales);
+    let labels = [];
+    let totalSales = [];
   
-    const ctxSales = document.getElementById('salesChart').getContext('2d');
-    new Chart(ctxSales, {
+    if (filterType === "yearly") {
+      const startYear = 2024;
+      const endYear = 2030;
+      const rangeYears = [];
+      for (let y = startYear; y <= endYear; y++) {
+        rangeYears.push(y);
+      }
+      const yearlySales = Array(rangeYears.length).fill(0);
+      chartData.forEach(item => {
+        const idx = item._id - startYear; 
+        if (idx >= 0 && idx < yearlySales.length) {
+          yearlySales[idx] = item.totalSales;
+        }
+      });
+      labels = rangeYears;
+      totalSales = yearlySales;
+    } 
+    else if (filterType === "monthly") {
+      const monthlySales = Array(12).fill(0);
+      chartData.forEach(item => {
+        monthlySales[item._id - 1] = item.totalSales;
+      });
+      labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      totalSales = monthlySales;
+    } else {
+      labels = chartData.map(item => item._id);
+      totalSales = chartData.map(item => item.totalSales);
+    }
+  
+    new Chart(document.getElementById('salesChart').getContext('2d'), {
       type: 'line',
       data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        datasets: [
-          {
-            label: 'Total Sales',
-            data: totalSales,
-            backgroundColor: 'rgba(75, 192, 192, 0.1)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 2,
-            fill: true,
-            tension: 0.2 
-          }
-        ]
+        labels: labels,
+        datasets: [{
+          label: 'Total Sales',
+          data: totalSales,
+          backgroundColor: 'rgba(75, 192, 192, 0.1)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.2 
+        }]
       },
       options: {
         responsive: true,
         scales: { y: { beginAtZero: true } }
       }
     });
-  
 
     const topCategories = <%- JSON.stringify(topCategories) %>; 
-    const categoryLabels = topCategories.map((cat) => cat.categoryName);
-    const categoryValues = topCategories.map((cat) => cat.totalQuantity);
+  const categoryLabels = topCategories.map((cat) => cat.categoryName);
+  const categoryValues = topCategories.map((cat) => cat.totalQuantity);
   
-    const ctxCategories = document.getElementById('topCategoriesChart').getContext('2d');
-    new Chart(ctxCategories, {
-      type: 'bar',
-      data: {
-        labels: categoryLabels,
-        datasets: [
-          {
-            label: 'Items Sold',
-            data: categoryValues,
-            backgroundColor: 'rgba(54, 162, 235, 0.8)'
-          }
-        ]
-      },
-      options: {
-        indexAxis: 'y',  
-        responsive: true,
-        scales: {
-          x: { beginAtZero: true }
+  const ctxCategories = document.getElementById('topCategoriesChart').getContext('2d');
+  new Chart(ctxCategories, {
+    type: 'bar',
+    data: {
+      labels: categoryLabels,
+      datasets: [
+        {
+          label: 'Items Sold',
+          data: categoryValues,
+          backgroundColor: 'rgba(54, 162, 235, 0.8)'
         }
+      ]
+    },
+    options: {
+      indexAxis: 'y',  
+      responsive: true,
+      scales: {
+        x: { beginAtZero: true }
       }
-    });
+    }
+  });
+  
+    // Filter Buttons
 
     document.querySelectorAll('.chart-container .btn').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -260,8 +286,8 @@
         window.location.href = url;
       });
     });
+
   </script>
-  
 
 </body>
 </html>

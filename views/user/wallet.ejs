@@ -396,20 +396,21 @@
           </div>
         </div>
       </div>
-      
+
       <!-- WALLET PAGE CONTENT STARTS HERE -->
       <div class="account-details-container">
         <div class="account-details wallet-details">
           <div class="details-header">
             <div class="details-title">My Wallet</div>
           </div>
-          
+
           <div class="wallet-content">
             <div class="wallet-balance-section">
               <div class="wallet-balance-label">Wallet Balance:</div>
-              <div class="wallet-balance-amount">$<%=wallet.balance%></div>
+              <div class="wallet-balance-amount">₹<%=wallet.balance%>
+              </div>
             </div>
-            
+
             <div class="wallet-actions">
               <h3 class="wallet-action-title">Add Money to Wallet</h3>
               <div class="wallet-form">
@@ -425,7 +426,8 @@
       <!-- WALLET PAGE CONTENT ENDS HERE -->
     </div>
   </div>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       document.querySelectorAll('.menu-item[data-route]').forEach(item => {
@@ -444,13 +446,97 @@
       });
 
       function loadUserData() {
-  
+
       }
-      
+
       loadUserData();
+    });
+
+    document.getElementById('add-money-btn').addEventListener('click', async () => {
+
+      const { value: amount } = await Swal.fire({
+        title: 'Add Money to Wallet',
+        input: 'number',
+        inputLabel: 'Enter the amount (in INR)',
+        inputPlaceholder: 'e.g., 500',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value || value <= 0) {
+            return 'Please enter a valid amount';
+          }
+        }
+      });
+
+      if (amount) {
+
+        try {
+          const response = await fetch('/create-payment-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount: parseFloat(amount) })
+          });
+          const orderData = await response.json();
+          if (!orderData.success) {
+            throw new Error(orderData.message);
+          }
+
+          var options = {
+            key: '<%= process.env.RAZORPAY_KEY_ID %>',
+            amount: orderData.amount,
+            currency: "INR",
+            name: "AESTHE",
+            description: "Add Money to Wallet",
+            order_id: orderData.orderId,
+            handler: async function (paymentResponse) {
+              const verifyResponse = await fetch('/verify-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  razorpay_order_id: paymentResponse.razorpay_order_id,
+                  razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                  razorpay_signature: paymentResponse.razorpay_signature,
+                  amount: parseFloat(amount)
+                })
+              });
+              const verifyData = await verifyResponse.json();
+              if (verifyData.success) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Money Added!',
+                  text: 'Your wallet has been updated successfully.'
+                }).then(() => {
+                  window.location.reload();
+                });
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Payment Verification Failed',
+                  text: verifyData.message
+                });
+              }
+            },
+            prefill: {
+              name: "<%= userData ? userData.name : '' %>",
+              email: "<%= userData ? userData.email : '' %>"
+            },
+            theme: {
+              color: "#3399cc"
+            }
+          };
+
+          var rzp1 = new Razorpay(options);
+          rzp1.open();
+        } catch (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message || 'Something went wrong'
+          });
+        }
+      }
     });
 
   </script>
 
 
-<%-include("../../views/partials/user/footer")%>
+  <%-include("../../views/partials/user/footer")%>
