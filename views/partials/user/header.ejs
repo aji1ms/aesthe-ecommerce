@@ -19,7 +19,7 @@
         <div class="logo">
           <nav>
             <ul id="MenuItems">
-              <li><a href="#">Customer Service</a></li>
+              <li><a href="/contact">Customer Service</a></li>
               <li><a href="#">NewsLetter</a></li>
               <img src="/images/more.svg" width="25px" alt="">
             </ul>
@@ -49,7 +49,9 @@
                 <li><a href="/login">Login</a></li>
                 <%}%>
                   <%if(locals.userData){%>
+
                     <img src="images/search.svg" class="search" alt="">
+
                     <a href="/wishlist"><img src="images/fav.svg" width="25px" alt="">
                       <li>Favourites
                     </a></li>
@@ -81,10 +83,12 @@
             <li><a href="/kids">Kids<span>&#8594;</span></a></li>
             <li><a href="/shop">Sales<span>&#8594;</span></a></li>
           </ul>
+
           <form action="/search" method="post">
             <img src="images/search.svg" alt=""> <input placeholder="search products" name="query" type="text"
               class="search-input">
           </form>
+
         </nav>
       </div>
     </div>
@@ -115,8 +119,6 @@
               <li><a href="/baby">Baby <span>&#8594;</span></a></li>
               <li><a href="/kids">Kids <span>&#8594;</span></a></li>
               <li><a href="/shop">Sale <span>&#8594;</span></a></li>=
-              <li class="small-li">Customer Service</li>
-              <li class="small-li">NewsLetter</li>
       </ul>
     </nav>
   </div>

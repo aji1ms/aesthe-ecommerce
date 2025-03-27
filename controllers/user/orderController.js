@@ -22,11 +22,11 @@ const thankingPage = async (req, res) => {
 
 const orderList = async (req, res) => {
     try {
-        
-        const userId = req.session.user;
-        const orders = await Order.find({ user: req.session.user }).populate('orderedItem.product').populate('billingAddress');
 
-        res.render("orderListing", {orders})
+        const userId = req.session.user;
+        const orders = await Order.find({ user: req.session.user }).sort({ createdOn: -1 }).populate('orderedItem.product').populate('billingAddress');
+
+        res.render("orderListing", { orders })
 
     } catch (error) {
         console.log("error loding orderlist page");
@@ -41,10 +41,10 @@ const loadOrderDetails = async (req, res) => {
     try {
 
         const orderId = req.params.orderId;
-        const order = await Order.findById(orderId) 
-      .populate('orderedItem.product')
-      .populate('billingAddress')
-      .populate('user');
+        const order = await Order.findById(orderId)
+            .populate('orderedItem.product')
+            .populate('billingAddress')
+            .populate('user');
 
         res.render("orders", { order });
     } catch (error) {

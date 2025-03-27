@@ -673,11 +673,15 @@ const searchProducts = async (req, res) => {
 
         const user = req.session.user || null;
         const userData = await User.findOne({ _id: user });
-        let search = req.body.query;
+
+        let search = req.body.query || req.query.query || "";
+        search = search.trim();
+
 
         const categories = await Category.find({ isListed: true }).lean();
         const categoryIds = categories.map(category => category._id.toString());
         let searchResult = [];
+
         if (req.session.filteredProduct && req.session.filteredProduct.length > 0) {
             searchResult = req.session.filteredProduct.filter(product =>
                 product.productName.toLowerCase().includes(search.toLowerCase())
@@ -691,9 +695,10 @@ const searchProducts = async (req, res) => {
             }).lean()
         }
 
+
         searchResult.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-        let itemsPerPage = 6;
+        let itemsPerPage = 16;
         let currentPage = parseInt(req.query.page) || 1;
         let startIndex = (currentPage - 1) * itemsPerPage;
         let endIndex = startIndex + itemsPerPage;
