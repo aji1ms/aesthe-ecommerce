@@ -1,5 +1,6 @@
 const Order = require("../../models/orderSchema")
 const PDFDocument = require('pdfkit');
+const ExcelJS = require('exceljs');
 
 
 // ---Sales page---
@@ -88,7 +89,6 @@ const downloadSalesPdf = async (req, res) => {
             .populate('user')
             .sort({ createdOn: -1 });
 
-        // Calculate totals
         const totalSalesCount = orders.length;
         const totalRevenue = orders.reduce((acc, order) => acc + (order.finalAmount || 0), 0);
 
@@ -98,7 +98,6 @@ const downloadSalesPdf = async (req, res) => {
         const doc = new PDFDocument({ margin: 50 });
         doc.pipe(res);
 
-        // Dynamic report heading
         const periodMapping = {
             daily: "Daily",
             weekly: "Weekly",
@@ -108,16 +107,13 @@ const downloadSalesPdf = async (req, res) => {
         };
         const reportHeader = `${periodMapping[period] || 'Sales'} Sales Report`;
 
-        // PDF Title
         doc.fontSize(18).text(reportHeader, { align: 'center' });
         doc.moveDown(1.5);
 
-        // Add totals summary
         doc.fontSize(14).text(`Total Sales Count: ${totalSalesCount}`, { align: 'center' });
         doc.fontSize(14).text(`Total Revenue: $${totalRevenue.toFixed(2)}`, { align: 'center' });
         doc.moveDown(2);
 
-        // Define column positions and widths for table header
         const columns = {
             date: { x: 50, width: 80 },
             orderId: { x: 130, width: 180 },
@@ -126,7 +122,6 @@ const downloadSalesPdf = async (req, res) => {
             total: { x: 490, width: 60 }
         };
 
-        // Table Header
         doc.fontSize(12).font('Helvetica-Bold');
         doc.text("Date", columns.date.x, doc.y);
         doc.text("Order ID", columns.orderId.x, doc.y - doc.currentLineHeight());
@@ -135,14 +130,11 @@ const downloadSalesPdf = async (req, res) => {
         doc.text("Total", columns.total.x, doc.y - doc.currentLineHeight());
         doc.moveDown();
 
-        // Draw a line
         doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
         doc.moveDown(0.5);
 
-        // Reset font to normal
         doc.font('Helvetica');
 
-        // Iterate over orders and add rows
         orders.forEach(order => {
             const startY = doc.y;
             const orderDate = new Date(order.createdOn).toLocaleDateString();
@@ -186,10 +178,98 @@ const downloadSalesPdf = async (req, res) => {
 };
 
 
+const downloadExcelPdf = async (req, res) => {
+    try {
+        let match = { status: "Delivered" };
+        const period = req.query.period || 'daily';
+        const now = new Date();
+
+        if (period === 'custom' && req.query.startDate && req.query.endDate) {
+            const start = new Date(req.query.startDate);
+            const end = new Date(req.query.endDate);
+            end.setHours(23, 59, 59, 999);
+            match.createdOn = { $gte: start, $lte: end };
+        } else if (period === 'daily') {
+            const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            match.createdOn = { $gte: start, $lte: now };
+        } else if (period === 'weekly') {
+            const start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+            match.createdOn = { $gte: start, $lte: now };
+        } else if (period === 'monthly') {
+            const start = new Date(now.getFullYear(), now.getMonth(), 1);
+            match.createdOn = { $gte: start, $lte: now };
+        } else if (period === 'yearly') {
+            const start = new Date(now.getFullYear(), 0, 1);
+            match.createdOn = { $gte: start, $lte: now };
+        }
+
+        const orders = await Order.find(match)
+            .populate('user')
+            .sort({ createdOn: -1 });
+
+        const totalSalesCount = orders.length;
+        const totalRevenue = orders.reduce((acc, order) => acc + (order.finalAmount || 0), 0);
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Sales Report');
+
+        const periodMapping = {
+            daily: "Daily",
+            weekly: "Weekly",
+            monthly: "Monthly",
+            yearly: "Yearly",
+            custom: "Custom"
+        };
+        const reportHeader = `${periodMapping[period] || 'Sales'} Sales Report`;
+
+        worksheet.mergeCells('A1:E1');
+        const titleRow = worksheet.getCell('A1');
+        titleRow.value = reportHeader;
+        titleRow.font = { size: 18, bold: true };
+        titleRow.alignment = { horizontal: 'center' };
+
+        worksheet.addRow([]);
+
+        const totalOrdersRow = worksheet.addRow([`Total Sales Count: ${totalSalesCount}`]);
+        totalOrdersRow.font = { size: 14, bold: true };
+        const totalRevenueRow = worksheet.addRow([`Total Revenue: ₹${totalRevenue.toFixed(2)}`]);
+        totalRevenueRow.font = { size: 14, bold: true };
+
+        worksheet.addRow([]);
+
+        const headerRow = worksheet.addRow(["Date", "Order ID", "Customer", "Discount", "Total"]);
+        headerRow.font = { bold: true };
+        headerRow.eachCell((cell) => {
+            cell.border = { top: {style:'thin'}, left: {style:'thin'}, bottom: {style:'thin'}, right: {style:'thin'} };
+            cell.alignment = { horizontal: 'center' };
+        });
+
+        orders.forEach(order => {
+            const orderDate = new Date(order.createdOn).toLocaleDateString();
+            const customer = order.user ? order.user.name : "N/A";
+            const discount = order.discount ? order.discount.toFixed(2) : "0.00";
+            const total = order.finalAmount ? order.finalAmount.toFixed(2) : "0.00";
+            const row = worksheet.addRow([orderDate, order.orderId, customer, `₹${discount}`, `₹${total}`]);
+            row.eachCell((cell) => {
+                cell.border = { top: {style:'thin'}, left: {style:'thin'}, bottom: {style:'thin'}, right: {style:'thin'} };
+            });
+        });
+
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', 'attachment; filename="sales_report.xlsx"');
+
+        await workbook.xlsx.write(res);
+        res.end();
+    } catch (error) {
+        console.error("Error generating Excel report:", error);
+        res.status(500).send("Error generating Excel report.");
+    }
+};
 
 
 
 module.exports = {
     loadSales,
     downloadSalesPdf,
+    downloadExcelPdf,
 }

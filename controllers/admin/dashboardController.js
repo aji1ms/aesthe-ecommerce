@@ -2,6 +2,7 @@ const {
     getMonthlySalesForYear,
     getDailySalesForMonth,
     getYearlySales,
+    getWeeklySales,
     getTopSellingProducts,
     getTopSellingCategories,
 } = require("../../helpers/aggregation");
@@ -22,6 +23,8 @@ const loadAdminDashboard = async (req, res) => {
             chartData = await getYearlySales();
         } else if (filterType === "monthly") {
             chartData = await getMonthlySalesForYear(year);
+        } else if (filterType === "weekly") {
+            chartData = await getWeeklySales();
         } else {
             chartData = await getMonthlySalesForYear(year);
         }

@@ -120,6 +120,12 @@
             <h5 class="chart-title mb-0">Sales Overview</h5>
             <div>
               <button
+                class="btn btn-outline-secondary <%= filterType === 'weekly' ? 'active' : '' %>"
+                data-period="weekly"
+              >
+                Weekly
+              </button>
+              <button
                 class="btn btn-outline-secondary <%= filterType === 'monthly' ? 'active' : '' %>"
                 data-period="monthly"
               >
@@ -223,10 +229,22 @@
       });
       labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       totalSales = monthlySales;
-    } else {
-      labels = chartData.map(item => item._id);
-      totalSales = chartData.map(item => item.totalSales);
-    }
+    } 
+    else if (filterType === "weekly") {
+    const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const weeklySales = Array(7).fill(0);
+    chartData.forEach(item => {
+      let day = item._id; // 1 to 7
+      let index = day === 1 ? 6 : day - 2; 
+      weeklySales[index] = item.totalSales;
+    });
+    labels = weekDays;
+    totalSales = weeklySales;
+  } 
+  else {
+    labels = chartData.map(item => item._id);
+    totalSales = chartData.map(item => item.totalSales);
+  }
   
     new Chart(document.getElementById('salesChart').getContext('2d'), {
       type: 'line',

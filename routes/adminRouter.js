@@ -79,6 +79,7 @@ router.post('/refund', adminAuth, orderController.addRefund);
 
 router.get('/sales', adminAuth, salesController.loadSales);
 router.get('/sales/pdf', adminAuth, salesController.downloadSalesPdf);
+router.get('/sales/excel', adminAuth, salesController.downloadExcelPdf);
 
 
 module.exports = router;

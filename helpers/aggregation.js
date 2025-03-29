@@ -1,6 +1,7 @@
 const Order = require("../models/orderSchema");
 
 
+
 const getMonthlySalesForYear = async (year) => {
   return await Order.aggregate([
     {
@@ -26,14 +27,14 @@ const getMonthlySalesForYear = async (year) => {
 
 
 const getDailySalesForMonth = async (year, month) => {
-  
+
   const startDate = new Date(year, month - 1, 1);
-  const endDate = new Date(year, month, 0); 
+  const endDate = new Date(year, month, 0);
 
   return await Order.aggregate([
     {
       $match: {
-        status: "Delivered",           
+        status: "Delivered",
         invoiceDate: {
           $gte: startDate,
           $lte: endDate
@@ -42,7 +43,7 @@ const getDailySalesForMonth = async (year, month) => {
     },
     {
       $group: {
-        _id: { $dayOfMonth: "$invoiceDate" }, 
+        _id: { $dayOfMonth: "$invoiceDate" },
         totalSales: { $sum: "$finalAmount" },
         orderCount: { $sum: 1 }
       }
@@ -74,6 +75,37 @@ const getYearlySales = async () => {
   ]);
 };
 
+
+const getWeeklySales = async () => {
+  const now = new Date();
+
+  const dayOfWeek = now.getDay();
+  const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+  const monday = new Date(now);
+  monday.setDate(now.getDate() + diffToMonday);
+  monday.setHours(0, 0, 0, 0);
+
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  sunday.setHours(23, 59, 59, 999);
+
+  return await Order.aggregate([
+    {
+      $match: {
+        status: "Delivered",
+        invoiceDate: { $gte: monday, $lte: sunday }
+      }
+    },
+    {
+      $group: {
+        _id: { $dayOfWeek: "$invoiceDate" },
+        totalSales: { $sum: "$finalAmount" },
+        orderCount: { $sum: 1 }
+      }
+    },
+    { $sort: { "_id": 1 } }
+  ]);
+};
 
 const getTopSellingProducts = async () => {
   return await Order.aggregate([
@@ -113,7 +145,7 @@ const getTopSellingProducts = async () => {
         revenue: 1,
         productName: "$productInfo.productName",
         price: "$productInfo.salePrice",
-        categoryName: { $ifNull: [ "$categoryDetails.name", "N/A" ] }
+        categoryName: { $ifNull: ["$categoryDetails.name", "N/A"] }
       }
     }
   ]);
@@ -165,6 +197,7 @@ module.exports = {
   getMonthlySalesForYear,
   getDailySalesForMonth,
   getYearlySales,
+  getWeeklySales,
   getTopSellingProducts,
   getTopSellingCategories
 };

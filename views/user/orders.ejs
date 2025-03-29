@@ -555,7 +555,7 @@
                                         <%}else if (order.status==="Delivered" ) { %>
                                             <div class="table-footer">
                                                 <!-- Return Button with a unique class -->
-                                                <button class="return-btn" data-order-id="<%= order._id %>">
+                                                <button class="return-btn" data-order-id="<%= order._id %>" style="background: red; padding:8px 4px; border: none; color:white">
                                                     Return item
                                                 </button>
                                                 <!-- Return Reason Form -->
@@ -567,7 +567,11 @@
                                                             class="form-control" id="descriptionId" required></textarea>
                                                     </div>
                                                 </form>
-
+                                                <%}else if( order.status==="Return Request" ){%>
+                                                    <div class="table-footer">
+                                                        <button class="cancel-order-btn" disabled>
+                                                            Return Requested
+                                                        </button>
                                                 <%}else if(order.status==="Returned" ){%>
                                                     <div class="table-footer">
                                                         <button class="cancel-order-btn" disabled>

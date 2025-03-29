@@ -644,7 +644,7 @@ const filterByPrice = async (req, res) => {
 
         findProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-        let itemsPerPage = 6;
+        let itemsPerPage = 16;
         let currentPage = parseInt(req.query.page) || 1;
         let startIndex = (currentPage - 1) * itemsPerPage;
         let endIndex = startIndex + itemsPerPage;
