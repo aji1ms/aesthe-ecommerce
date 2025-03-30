@@ -336,11 +336,42 @@ const loadShoppingPage = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = 16;
         const skip = (page - 1) * limit;
+
+        let sortCriteria = { createdAt: -1 };
+
+        const sortOption = req.query.sort;
+
+        switch (sortOption) {
+            case "featured":
+                sortCriteria = { isFeatured: -1, createdAt: -1 };
+                break;
+            case "newest":
+                sortCriteria = { createdAt: -1 };
+                break;
+            case "price-low":
+                sortCriteria = { salePrice: 1 };
+                break;
+            case "price-high":
+                sortCriteria = { salePrice: -1 };
+                break;
+            case "name-asc":
+                sortCriteria = { productName: 1 };
+                break;
+            case "name-desc":
+                sortCriteria = { productName: -1 };
+                break;
+            default:
+                sortCriteria = { createdAt: -1 };
+        }
+
         const products = await Product.find({
             isBlocked: false,
             category: { $in: categoryIds },
             quantity: { $gt: 0 }
-        }).sort({ createdAt: -1 }).skip(skip).limit(limit);
+        })
+            .sort(sortCriteria)
+            .skip(skip)
+            .limit(limit);
 
         const totalProducts = await Product.countDocuments({
             isBlocked: false,
@@ -382,12 +413,42 @@ const loadLadies = async (req, res) => {
         const limit = 16;
         const skip = (page - 1) * limit;
 
+        let sortCriteria = { createdAt: -1 };
+
+        const sortOption = req.query.sort;
+
+        switch (sortOption) {
+            case "featured":
+                sortCriteria = { isFeatured: -1, createdAt: -1 };
+                break;
+            case "newest":
+                sortCriteria = { createdAt: -1 };
+                break;
+            case "price-low":
+                sortCriteria = { salePrice: 1 };
+                break;
+            case "price-high":
+                sortCriteria = { salePrice: -1 };
+                break;
+            case "name-asc":
+                sortCriteria = { productName: 1 };
+                break;
+            case "name-desc":
+                sortCriteria = { productName: -1 };
+                break;
+            default:
+                sortCriteria = { createdAt: -1 };
+        }
+
         const products = await Product.find({
             isBlocked: false,
             category: { $in: categoryIds },
             quantity: { $gt: 0 },
-            categoryOf: "ladies",
-        }).sort({ createdAt: -1 }).skip(skip).limit(limit);
+            categoryOf: "ladies"
+        })
+            .sort(sortCriteria)
+            .skip(skip)
+            .limit(limit);
 
         const totalProducts = await Product.countDocuments({
             isBlocked: false,
@@ -431,12 +492,42 @@ const loadMens = async (req, res) => {
         const limit = 16;
         const skip = (page - 1) * limit;
 
+        let sortCriteria = { createdAt: -1 };
+
+        const sortOption = req.query.sort;
+
+        switch (sortOption) {
+            case "featured":
+                sortCriteria = { isFeatured: -1, createdAt: -1 };
+                break;
+            case "newest":
+                sortCriteria = { createdAt: -1 };
+                break;
+            case "price-low":
+                sortCriteria = { salePrice: 1 };
+                break;
+            case "price-high":
+                sortCriteria = { salePrice: -1 };
+                break;
+            case "name-asc":
+                sortCriteria = { productName: 1 };
+                break;
+            case "name-desc":
+                sortCriteria = { productName: -1 };
+                break;
+            default:
+                sortCriteria = { createdAt: -1 };
+        }
+
         const products = await Product.find({
             isBlocked: false,
             category: { $in: categoryIds },
             quantity: { $gt: 0 },
-            categoryOf: "mens",
-        }).sort({ createdAt: -1 }).skip(skip).limit(limit);
+            categoryOf: "mens"
+        })
+            .sort(sortCriteria)
+            .skip(skip)
+            .limit(limit);
 
         const totalProducts = await Product.countDocuments({
             isBlocked: false,
@@ -481,12 +572,43 @@ const loadBaby = async (req, res) => {
         const limit = 16;
         const skip = (page - 1) * limit;
 
+        let sortCriteria = { createdAt: -1 };
+
+        const sortOption = req.query.sort;
+
+        switch (sortOption) {
+            case "featured":
+                sortCriteria = { isFeatured: -1, createdAt: -1 };
+                break;
+            case "newest":
+                sortCriteria = { createdAt: -1 };
+                break;
+            case "price-low":
+                sortCriteria = { salePrice: 1 };
+                break;
+            case "price-high":
+                sortCriteria = { salePrice: -1 };
+                break;
+            case "name-asc":
+                sortCriteria = { productName: 1 };
+                break;
+            case "name-desc":
+                sortCriteria = { productName: -1 };
+                break;
+            default:
+                sortCriteria = { createdAt: -1 };
+        }
+
         const products = await Product.find({
             isBlocked: false,
             category: { $in: categoryIds },
             quantity: { $gt: 0 },
-            categoryOf: "baby",
-        }).sort({ createdAt: -1 }).skip(skip).limit(limit);
+            categoryOf: "baby"
+        })
+            .sort(sortCriteria)
+            .skip(skip)
+            .limit(limit);
+
 
         const totalProducts = await Product.countDocuments({
             isBlocked: false,
@@ -529,12 +651,43 @@ const loadKids = async (req, res) => {
         const limit = 16;
         const skip = (page - 1) * limit;
 
+        let sortCriteria = { createdAt: -1 };
+
+        const sortOption = req.query.sort;
+
+        switch (sortOption) {
+            case "featured":
+                sortCriteria = { isFeatured: -1, createdAt: -1 };
+                break;
+            case "newest":
+                sortCriteria = { createdAt: -1 };
+                break;
+            case "price-low":
+                sortCriteria = { salePrice: 1 };
+                break;
+            case "price-high":
+                sortCriteria = { salePrice: -1 };
+                break;
+            case "name-asc":
+                sortCriteria = { productName: 1 };
+                break;
+            case "name-desc":
+                sortCriteria = { productName: -1 };
+                break;
+            default:
+                sortCriteria = { createdAt: -1 };
+        }
+
         const products = await Product.find({
             isBlocked: false,
             category: { $in: categoryIds },
             quantity: { $gt: 0 },
-            categoryOf: "kids",
-        }).sort({ createdAt: -1 }).skip(skip).limit(limit);
+            categoryOf: "kids"
+        })
+            .sort(sortCriteria)
+            .skip(skip)
+            .limit(limit);
+
 
         const totalProducts = await Product.countDocuments({
             isBlocked: false,

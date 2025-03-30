@@ -665,6 +665,14 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
 
+            document.addEventListener("DOMContentLoaded", function () {
+                const sortSelect = document.getElementById("sort-select");
+                sortSelect.addEventListener("change", function () {
+                const sortValue = sortSelect.value;
+                window.location.href = `/shop?sort=${sortValue}`;
+                });
+            });
+
             function addToWishlist(productId) {
                 $.ajax({
                     url: '/addToWishlist',

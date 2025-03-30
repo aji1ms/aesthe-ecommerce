@@ -1,0 +1,406 @@
+<%- include("../../views/partials/admin/header") %>
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+
+        .navbar {
+            background-color: #8da7ab;
+        }
+
+        .navbar-aside {
+            background-color: #b0d5de;
+        }
+
+        .menu-item a.menu-link {
+            color: #310505;
+        }
+
+        .menu-item a.menu-link:hover,
+        .menu-item a.menu-link.active {
+            background-color: #6e7e6e;
+            color: #ffffff;
+        }
+
+        .dropdown-menu {
+            background-color: #bb9aaf;
+        }
+
+        .dropdown-item:hover {
+            background-color: #33053d;
+            color: #ffffff;
+        }
+
+        /* Contact Messages Styles */
+        .content-main {
+            padding: 30px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .content-title {
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .card-message {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card-message:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            padding: 15px 20px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sender-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sender-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #b0d5de;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .sender-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sender-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .sender-email {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .message-date {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .message-subject {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        .message-content {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .card-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #eee;
+            padding: 15px 20px;
+            border-radius: 0 0 10px 10px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-action {
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-reply {
+            background-color: #b0d5de;
+            color: #333;
+            border: none;
+        }
+
+        .btn-reply:hover {
+            background-color: #8da7ab;
+            color: #fff;
+        }
+
+        .btn-delete {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: none;
+        }
+
+        .btn-delete:hover {
+            background-color: #f5c6cb;
+        }
+
+        .message-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background-color: #b0d5de;
+            border-color: #8da7ab;
+            color: #333;
+        }
+
+        .filter-btn:hover:not(.active) {
+            background-color: #e9ecef;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 5px;
+        }
+
+        .page-item {
+            width: 35px;
+            height: 35px;
+        }
+
+        .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .page-item.active .page-link {
+            background-color: #b0d5de;
+            color: #333;
+        }
+
+        .page-link:hover:not(.active) {
+            background-color: #e9ecef;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .content-main {
+                padding: 20px;
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .message-filters {
+                flex-wrap: wrap;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .message-date {
+                margin-top: 5px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .content-main {
+                padding: 15px;
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+
+            .card-footer {
+                flex-direction: column;
+            }
+
+            .btn-action {
+                width: 100%;
+            }
+        }
+
+        /* No messages state */
+        .no-messages {
+            text-align: center;
+            padding: 50px 0;
+            color: #888;
+        }
+
+        .no-messages i {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+
+        /* Unread message indicator */
+        .unread-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: #007bff;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .card-message.unread {
+            border-left: 4px solid #007bff;
+        }
+    </style>
+
+    <section class="content-main">
+        <div class="content-header">
+            <h2 class="content-title">Messages</h2>
+        </div>
+
+        <div class="message-list">
+            <% if (messages && messages.length> 0) { %>
+                <% messages.forEach(function(message) { %>
+                    <div class="card-message <%= message.read ? '' : 'unread' %>">
+                        <div class="card-header">
+                            <div class="sender-info">
+                                <div class="sender-avatar">
+                                    <%= message.name.charAt(0).toUpperCase() %>
+                                </div>
+                                <div class="sender-details">
+                                    <div class="sender-name">
+                                        <%= message.name %>
+                                    </div>
+                                    <div class="sender-email">
+                                        <%= message.email %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="message-date">
+                                <%= new Date(message.createdAt).toLocaleString() %>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="message-subject">
+                                <%= message.subject %>
+                            </h5>
+                            <p class="message-content">
+                                <%= message.message %>
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn-action btn-reply">Reply</button>
+                            <button class="btn-action btn-delete">Delete</button>
+                        </div>
+                    </div>
+                    <% }) %>
+                        <% } else { %>
+                            <p class="no-messages">No messages found.</p>
+                            <% } %>
+        </div>
+
+
+        <!-- Pagination -->
+        <div class="pagination-container">
+            <ul class="pagination">
+              <% if (currentPage > 1) { %>
+                <li class="page-item">
+                  <a class="page-link" href="/admin/contactMessages?page=<%= currentPage - 1 %>">
+                    <i class="fas fa-chevron-left"></i>
+                  </a>
+                </li>
+              <% } %>
+              
+              <% for (let i = 1; i <= totalPages; i++) { %>
+                <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                  <a class="page-link" href="/admin/contactMessages?page=<%= i %>"><%= i %></a>
+                </li>
+              <% } %>
+              
+              <% if (currentPage < totalPages) { %>
+                <li class="page-item">
+                  <a class="page-link" href="/admin/contactMessages?page=<%= currentPage + 1 %>">
+                    <i class="fas fa-chevron-right"></i>
+                  </a>
+                </li>
+              <% } %>
+            </ul>
+          </div>
+        </section>
+
+    <%- include("../../views/partials/admin/footer") %>

@@ -10,6 +10,7 @@ const orderController = require("../controllers/user/orderController");
 const walletController = require('../controllers/user/walletController');
 const paymentController = require('../controllers/user/paymentController');
 const couponController = require("../controllers/user/couponController");
+const contactController = require("../controllers/user/contactController");
 const passport = require('passport');
 const { userAuth } = require('../middlewares/auth');
 
@@ -137,6 +138,10 @@ router.get('/contact', userAuth, profileController.contactPage);
 
 router.post('/createOrder', paymentController.createOrder);
 router.post('/verifyPayment', paymentController.verifyPayment);
+
+// --Contact Management--
+
+router.post('/contact', userAuth, contactController.sendContactMessage);
 
 
 

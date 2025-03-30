@@ -1,19 +1,19 @@
 <%-include("../../views/partials/user/header")%>
     <!DOCTYPE html>
     <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Clothing Shop</title>
         <style>
-           
             .shop-container {
                 max-width: 1200px;
                 margin: 0 auto;
                 padding: 20px;
             }
 
-            
+
             .filter-section {
                 display: flex;
                 flex-wrap: wrap;
@@ -664,11 +664,19 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
 
+            document.addEventListener("DOMContentLoaded", function () {
+                const sortSelect = document.getElementById("sort-select");
+                sortSelect.addEventListener("change", function () {
+                    const sortValue = sortSelect.value;
+                    window.location.href = `/ladies?sort=${sortValue}`;
+                });
+            });
+
             function addToWishlist(productId) {
                 $.ajax({
                     url: '/addToWishlist',
                     method: 'POST',
-                    contentType: 'application/json',  
+                    contentType: 'application/json',
                     data: JSON.stringify({ productId: productId }),
                     success: function (response) {
                         console.log("AJAX success response:", response);
