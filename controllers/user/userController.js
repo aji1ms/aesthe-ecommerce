@@ -713,7 +713,7 @@ const filterProducts = async (req, res) => {
 
         const categories = await Category.find({ isListed: true })
 
-        let itemsPerPage = 6;
+        let itemsPerPage = 16;
         let currentPage = parseInt(req.query.page) || 1;
         let startIndex = (currentPage - 1) * itemsPerPage;
         let endIndex = startIndex + itemsPerPage;

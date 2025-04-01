@@ -1,13 +1,14 @@
 const passport = require("passport");
+const env = require("dotenv").config();
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/userSchema");
-const env = require("dotenv").config();
+const Wallet = require("../models/walletSchema");
 
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3005/auth/google/callback"
+    callbackURL: "http://aesthe.site/auth/google/callback"
 },
     async (accessToken, refreshToken, profile, done) => {
         try {
@@ -27,6 +28,15 @@ passport.use(new GoogleStrategy({
                     authType: "google",
                 });
                 await user.save();
+
+                const wallet = new Wallet({
+                    user: user._id, 
+                    balance: 0, 
+                    transactions: [], 
+                });
+
+                await wallet.save();
+
                 return done(null, user);
             }
         } catch (error) {
