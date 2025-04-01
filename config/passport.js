@@ -31,12 +31,13 @@ passport.use(new GoogleStrategy({
                 });
                 await user.save();
 
-                await Wallet.create({
+                const newWallet = new Wallet({
                     user: user._id,
-                    balance: 0,
-                    transactions: [],
+                    balance: 0,  
+                    transactions: [], 
                 });
 
+                await newWallet.save(); 
 
                 return done(null, user);
             }
