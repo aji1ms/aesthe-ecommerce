@@ -13,7 +13,6 @@ const thankingPage = async (req, res) => {
 
         res.render("order", { user })
     } catch (error) {
-        console.log("error rendering orderpage", error)
         res.redirect("/pageNotFound")
     }
 }
@@ -29,7 +28,6 @@ const orderList = async (req, res) => {
         res.render("orderListing", { orders })
 
     } catch (error) {
-        console.log("error loding orderlist page");
         res.redirect('/pageNotFound')
     }
 }
@@ -48,7 +46,6 @@ const loadOrderDetails = async (req, res) => {
 
         res.render("orders", { order });
     } catch (error) {
-        console.log("Error loading orderDetails page: ", error)
         res.redirect("/pageNotFound");
     }
 }
@@ -79,7 +76,6 @@ const cancelOrder = async (req, res) => {
         res.status(200).json({ status: true, message: "Order cancelled successfully" });
 
     } catch (error) {
-        console.log("Error occured during cancel order: ", error);
         res.status(500).json({ status: false, message: "Internal server error" });
     }
 }
@@ -108,7 +104,6 @@ const returnOrder = async (req, res) => {
         res.status(200).json({ status: true, message: "Return request submitted successfully." });
 
     } catch (error) {
-        console.log("Error occured during return request: ", error);
         res.status(500).json({ status: false, message: "Internal server error" });
     }
 }

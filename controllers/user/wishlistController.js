@@ -17,7 +17,6 @@ const loadWishlist = async (req, res) => {
         })
 
     } catch (error) {
-        console.log("Error occured in loaadWishlist: ", error);
         res.redirect("/pageNotFound")
     }
 }
@@ -43,7 +42,6 @@ const addToWishlist = async (req, res) => {
         return res.status(200).json({ status: true, message: "Product added to wishlist" })
 
     } catch (error) {
-        console.log("Error while adding product to wishlist: ", error);
         res.status(500).json({ status: false, messsage: "Server Error" });
     }
 }
@@ -62,7 +60,6 @@ const removeFromWishlist = async (req, res) => {
         return res.redirect("/wishlist")
 
     } catch (error) {
-        console.log("while product removing from wishlist error: ", error);
         return res.status(500).json({ status: false, message: "Server error" });
     }
 }

@@ -22,7 +22,6 @@ const loadHomepage = async (req, res) => {
                 category: { $in: categories.map(category => category._id) }, quantity: { $gt: 0 }
             }
         )
-        console.log(user)
 
         productData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         productData = productData.slice(0, 5);
@@ -34,7 +33,6 @@ const loadHomepage = async (req, res) => {
             return res.render('home', { products: productData });
         }
     } catch (error) {
-        console.log("Home Page Not Found", error)
         res.status(500).redirect("/pageNotFound")
     }
 }
@@ -45,7 +43,6 @@ const loadSignup = async (req, res) => {
     try {
         res.render("signup");
     } catch (error) {
-        console.log("Sign Up page Loading Error", error)
         res.status(500).redirect("/pageNotFound")
     }
 }
@@ -56,7 +53,6 @@ const loadRegisterpage = async (req, res) => {
     try {
         res.render("register")
     } catch (error) {
-        console.log("Register Page Loading Error", error);
         res.status(500).redirect('/pageNotFound');
 
     }
@@ -93,7 +89,6 @@ async function sendVerificationEmail(email, otp) {
         return info.accepted.length > 0;
 
     } catch (error) {
-        console.error("Error sending email,", error);
         return false;
     }
 }
@@ -103,7 +98,6 @@ async function sendVerificationEmail(email, otp) {
 const register = async (req, res) => {
     try {
         const { name, email, phone, password, cPassword } = req.body;
-        console.log("Registration attempt with password:", password);
 
 
         const normalizedEmail = email.toLowerCase();
@@ -139,9 +133,7 @@ const register = async (req, res) => {
         };
 
         res.render("verify-otp");
-        console.log("OTP Sent :", otp);
     } catch (error) {
-        console.log("Register Error", error);
         res.redirect("/pageNotFound");
     }
 }
@@ -153,9 +145,6 @@ const verifyOtp = async (req, res) => {
         const userData = req.session.userData;
         const otpExpiresAt = req.session.otpExpiresAt;
 
-        console.log("Received OTP from user:", otp);
-        console.log("Stored OTP in session:", req.session.otp);
-        console.log("Stored User Data:", req.session.userData);
 
         if (Date.now() > otpExpiresAt) {
             return res.status(400).json({
@@ -200,7 +189,6 @@ const verifyOtp = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("OTP verification error:", error);
         return res.status(500).json({
             status: 'error',
             message: 'Failed to verify OTP.'
@@ -227,7 +215,6 @@ const resendOtp = async (req, res) => {
         const emailSent = await sendVerificationEmail(userData.email, otp);
 
         if (emailSent) {
-            console.log("Resend OTP : ", otp);
             return res.status(200).json({
                 success: true,
                 message: "OTP Resent Successfully"
@@ -239,7 +226,6 @@ const resendOtp = async (req, res) => {
             });
         }
     } catch (error) {
-        console.error("Error resending OTP", error);
         return res.status(500).json({
             success: false,
             message: "Internal Server Error. Please try again"
@@ -257,7 +243,6 @@ const loadloginpage = async (req, res) => {
             return res.render("login");
         }
     } catch (error) {
-        console.log("Login Page Loading Error", error);
         res.status(500).redirect("/pageNotFound")
     }
 }
@@ -267,9 +252,6 @@ const login = async (req, res) => {
         const { email, password } = req.body;
         const findUser = await User.findOne({ isAdmin: 0, email: email });
 
-
-        console.log("Login attempt for email:", email);
-        console.log("User found:", findUser);
 
         if (!findUser) {
             return res.render('login', { message: "User not found" });
@@ -284,7 +266,6 @@ const login = async (req, res) => {
         }
 
         const passwordMatch = await bcrypt.compare(password, findUser.password);
-        console.log("Password match:", passwordMatch);
 
         if (!passwordMatch) {
             return res.render('login', { message: "Password incorrect" });
@@ -300,7 +281,6 @@ const login = async (req, res) => {
         return res.redirect("/");
 
     } catch (error) {
-        console.log("Error Login", error);
         return res.render('login', { message: "Login failed. Please try again later" });
     }
 }
@@ -311,13 +291,11 @@ const logout = async (req, res) => {
     try {
         req.session.destroy((err) => {
             if (err) {
-                console.log("Session destroty error", err.message);
                 return res.redirect('/pageNotFound');
             }
             return res.redirect('/login');
         })
     } catch (error) {
-        console.log("Logout error", error);
         res.redirect('/pageNotFound');
     }
 }
@@ -394,7 +372,6 @@ const loadShoppingPage = async (req, res) => {
         });
 
     } catch (error) {
-        console.log("error loading shopping page: ", error)
         res.redirect("/pageNotFound");
     }
 }
@@ -473,7 +450,6 @@ const loadLadies = async (req, res) => {
         });
 
     } catch (error) {
-        console.log("Error Loading Ladies category: ", error);
         res.redirect("/pageNotFound")
     }
 }
@@ -553,7 +529,6 @@ const loadMens = async (req, res) => {
 
 
     } catch (error) {
-        console.log("Error Loading mens page: ", error);
         res.redirect('/pageNotFound')
     }
 }
@@ -634,7 +609,6 @@ const loadBaby = async (req, res) => {
 
 
     } catch (error) {
-        console.log("Error Loading baby page: ", error);
         res.redirect('/pageNotFound')
     }
 }
@@ -713,7 +687,6 @@ const loadKids = async (req, res) => {
 
 
     } catch (error) {
-        console.log("Error Loading kids page: ", error);
         res.redirect('/pageNotFound')
     }
 }
@@ -772,7 +745,6 @@ const filterProducts = async (req, res) => {
         })
 
     } catch (error) {
-        console.log("error loading filterPage", error);
         res.redirect('/pageNotFound');
     }
 }
@@ -814,7 +786,6 @@ const filterByPrice = async (req, res) => {
         })
 
     } catch (error) {
-        console.log("error loading filterbyPrice: ", error);
         res.redirect("/pageNotFound");
     }
 }
@@ -867,7 +838,6 @@ const searchProducts = async (req, res) => {
         })
 
     } catch (error) {
-        console.log("Error in search: ", error);
         res.redirect("/pageNotFound");
     }
 }
@@ -878,7 +848,6 @@ const pageNotFound = async (req, res) => {
     try {
         res.render('page-404')
     } catch (error) {
-        console.log("Page-404 Loading Error", error)
         res.status(500).redirect("/pageNotFound")
     }
 }

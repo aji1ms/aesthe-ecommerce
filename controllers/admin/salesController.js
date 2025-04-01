@@ -53,7 +53,6 @@ const loadSales = async (req, res) => {
         });
 
     } catch (error) {
-        console.log("Error occurred while loading sales page: ", error);
         res.redirect("/pageNotFound");
     }
 };
@@ -172,7 +171,6 @@ const downloadSalesPdf = async (req, res) => {
 
         doc.end();
     } catch (error) {
-        console.error("Error generating PDF report:", error);
         res.status(500).send("Error generating PDF report.");
     }
 };
@@ -261,7 +259,6 @@ const downloadExcelPdf = async (req, res) => {
         await workbook.xlsx.write(res);
         res.end();
     } catch (error) {
-        console.error("Error generating Excel report:", error);
         res.status(500).send("Error generating Excel report.");
     }
 };

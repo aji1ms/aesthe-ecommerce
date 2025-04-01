@@ -39,7 +39,6 @@ const applyCoupon = async (req, res) => {
         });
 
     } catch (error) {
-        console.log("Error adding coupon: ", error);
         res.status(500).json({ status: false, message: "Server error" });
     }
 }
@@ -64,7 +63,6 @@ const removeCoupon = async (req, res) => {
         res.status(200).json({ status: true, message: "Coupon removed successfully" });
         
     } catch (error) {
-        console.error(error);
         res.status(500).json({ status: false, message: "Server error" });
     }
 };

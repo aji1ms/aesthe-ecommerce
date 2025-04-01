@@ -12,7 +12,6 @@ const loadWallet = async (req, res) => {
         }
         res.render("wallet", { wallet })
     } catch (error) {
-        console.log("error loading wallet: ", error);
         res.redirect('/pageNOtFound');
     }
 }
@@ -27,7 +26,6 @@ const walletHistory = async (req, res) => {
 
         res.render("wallet-history", { transactions })
     } catch (error) {
-        console.log("Error Loading wallet history: ", error);
         res.redirect("/pageNotFound");
     }
 }
@@ -47,7 +45,6 @@ const transactionDetails = async (req, res) => {
         res.render("transaction-detail", { transaction })
 
     } catch (error) {
-        console.log("Error occured trasaction detail page load: ", error);
         res.redirect("/pageNotFound")
     }
 }
@@ -77,7 +74,6 @@ const createPaymentOrder = async (req, res) => {
             currency: order.currency,
         });
     } catch (error) {
-        console.error("Error creating Razorpay order:", error);
         res.status(500).json({ success: false, message: "Server error creating order" });
     }
 };
@@ -124,7 +120,6 @@ const verifyPayment = async (req, res) => {
   
       res.json({ success: true, message: "Payment verified and wallet updated" });
     } catch (error) {
-      console.error("Error verifying payment:", error);
       res.status(500).json({ success: false, message: "Server error verifying payment" });
     }
   };

@@ -52,7 +52,6 @@ const productDetails = async (req, res) => {
     });
 
   } catch (error) {
-    console.log("Error fetching Product Details", error);
     res.redirect("/PageNotFound");
   }
 }

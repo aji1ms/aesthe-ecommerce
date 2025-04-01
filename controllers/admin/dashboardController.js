@@ -59,7 +59,6 @@ const loadAdminDashboard = async (req, res) => {
             totalCategories
         });
     } catch (error) {
-        console.error("Error loading dashboard:", error);
         res.status(500).send("Server Error");
     }
 };

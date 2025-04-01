@@ -42,7 +42,6 @@ const listOrders = async (req, res) => {
       orderFilter: orderFilter || "All"
     });
   } catch (error) {
-    console.error("Error listing orders:", error);
     res.redirect("/errorpage");
   }
 };
@@ -65,7 +64,6 @@ const viewOrderDetailPage = async (req, res) => {
     res.render("orderViewPage", { order })
 
   } catch (error) {
-    console.error("Error viewing order details:", error);
     res.redirect("/orderList");
   }
 }
@@ -84,8 +82,6 @@ const updateOrderStatus = async (req, res) => {
     res.redirect("/admin/orderView/" + orderId + "?updated=true");
 
   } catch (error) {
-
-    console.error("Error updating order status:", error);
     res.redirect("/admin/orderView/" + req.params.orderId);
   }
 }
@@ -126,7 +122,6 @@ const addRefund = async (req, res) => {
     res.json({ message: "Refund processed and wallet updated" });
 
   } catch (error) {
-    console.log("Error occured while adding refund: ", error);
     res.status(500).json({ error: 'Server error processing refund.' });
   }
 }

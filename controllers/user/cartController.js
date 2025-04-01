@@ -20,7 +20,6 @@ const loadCart = async (req, res) => {
             cartItems,
         })
     } catch (error) {
-        console.log("Error loading cart page");
         res.redirect("/pageNotFound");
     }
 }
@@ -30,7 +29,6 @@ const loadCart = async (req, res) => {
 const addToCart = async (req, res) => {
     try {
         const { productId, size,color } = req.body;
-        console.log("Request body:", req.body); 
         const userId = req.session.user;
 
         if (!userId) {
@@ -102,7 +100,6 @@ const addToCart = async (req, res) => {
         return res.status(200).json({ status: true, message: "Product added to cart" });
 
     } catch (error) {
-        console.error("Error adding to cart:", error);
         return res.status(500).json({ status: false, message: 'Server error' });
     }
 };
@@ -156,7 +153,6 @@ const updateProductQuantity = async (req, res) => {
         })
 
     } catch (error) {
-        console.log("Error updating cart quantity: ", error);
         return res.status(500).json({ status: false, message: "Server Error" })
     }
 }
@@ -187,7 +183,6 @@ const deleteProductFromCart = async (req, res) => {
         return res.status(200).json({ status: true, message: "Product removed succesfully" });
 
     } catch (error) {
-        console.log("error occured while deleting product",error);
         return res.status(404).json({ status: false, message: "Server Error" })
     }
 }

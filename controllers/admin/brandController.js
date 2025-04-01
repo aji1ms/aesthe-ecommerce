@@ -87,7 +87,6 @@ const deleteBrand = async (req, res) => {
         res.redirect("/admin/brands");
 
     } catch (error) {
-        console.log("Error During Deleting: ",error);
         res.status(500).redirect("/errorpage");
     }
 }

@@ -77,7 +77,6 @@ const addProducts = async (req, res) => {
         }
 
     } catch (error) {
-        console.log("Error saving product: ", error);
         return res.redirect("/admin/errorpage");
     }
 }
@@ -168,7 +167,6 @@ const removeProductOffer = async (req, res) => {
         res.json({ status: true });
 
     } catch (error) {
-        console.log("Error in remove offer: ", error);
         res.redirect("/errorpage");
 
     }
@@ -264,7 +262,6 @@ const editProduct = async (req, res) => {
         res.redirect("/admin/products");
 
     } catch (error) {
-        console.log("edit error: ", error);
         res.redirect("/errorpage")
     }
 }
@@ -279,9 +276,7 @@ const deleteSingleImage = async (req, res) => {
         const imagePath = path.join("public", "uploads", "re-image", imageNameToServer);
         if (fs.existsSync(imagePath)) {
             await fs.unlinkSync(imagePath);
-            console.log(`Image ${imageNameToServer} deleted successfully`);
         } else {
-            console.log(`Image ${imageNameToServer} not found`)
         }
         res.send({ status: true });
 

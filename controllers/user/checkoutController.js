@@ -48,7 +48,6 @@ const loadCheckoutPage = async (req, res) => {
         });
 
     } catch (error) {
-        console.log("Error loading checkout page: ", error);
         res.redirect('/pageNotFound')
     }
 }
@@ -162,7 +161,6 @@ const placeOrder = async (req, res) => {
         res.status(200).json({ status: true, message: "Order placed successfully" });
 
     } catch (error) {
-        console.error("Error placing order:", error);
         res.redirect("/pageNotFound");
     }
 };

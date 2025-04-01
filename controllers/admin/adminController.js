@@ -31,7 +31,6 @@ const login = async (req, res) => {
             return res.render("admin-login", { message: "Email not found or not an admin" });
         }
     } catch (error) {
-        console.log("Admin login error", error);
         return res.render("admin-login", { message: "An error occured. please try again" });
     }
 }
@@ -54,13 +53,11 @@ const logout = async (req, res) => {
     try {
         req.session.destroy(err => { 
             if (err) {
-                console.log("Error destroying session", err);
                 return res.redirect("/errorPage");
             }
             return res.redirect("/admin/adminlogin");
         })
     } catch (error) {
-        console.log("unexpected error during logout", error);
         res.redirect("/errorpage")
     }
 }

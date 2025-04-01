@@ -11,7 +11,6 @@ const loadCoupon = async (req, res) => {
         res.render("coupon", { coupons: findCoupons });
 
     } catch (error) {
-        console.log("Error loading coupon page: ", error);
         res.redirect("/errorpage")
     }
 }
@@ -40,7 +39,6 @@ const createCoupon = async (req, res) => {
         return res.redirect("/admin/coupon");
 
     } catch (error) {
-        console.log("Error occured while creating coupon: ", error);
         res.redirect("/errorpage")
     }
 }
@@ -55,7 +53,6 @@ const loadEditCoupon = async (req, res) => {
         res.render("edit-coupon", { findCoupon: findCoupon })
 
     } catch (error) {
-        console.log("Error Ocuured rendering edit coupon: ", error)
         res.redirect("/errorPage")
     }
 }
@@ -92,7 +89,6 @@ const updateCoupon = async (req, res) => {
         }
 
     } catch (error) {
-        console.log("error occured while coupon update", error);
         res.redirect("/errorpage")
     }
 }
@@ -107,7 +103,6 @@ const deleteCoupon = async (req, res) => {
         res.status(200).send({ status: true, message: "coupon deleted successfully" })
 
     } catch (error) {
-        console.log("Error occured while deleting: ", error);
         res.status(500).send({ success: false, message: "Failed to delete coupon" })
     }
 }

@@ -17,15 +17,11 @@ const categoryInfo = async (req, res) => {
             };
         }
 
-        console.log("Mongo Query:", query);
-
         const categoryData = await Category.find(query)
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit);
 
-
-        console.log("Matching documents:", await Category.countDocuments(query));
 
         const totalCategories = await Category.countDocuments(query);
         const totalPages = Math.ceil(totalCategories / limit);
@@ -38,7 +34,6 @@ const categoryInfo = async (req, res) => {
             search: search,
         });
     } catch (error) {
-        console.log(error);
         res.redirect("/errorpage");
     }
 };
