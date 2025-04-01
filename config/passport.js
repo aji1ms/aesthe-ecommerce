@@ -1,5 +1,9 @@
-const passport = require("passport");
 const env = require("dotenv").config();
+
+console.log("Google Client ID:", process.env.GOOGLE_CLIENT_ID);
+console.log("Google Client Secret:", process.env.GOOGLE_CLIENT_SECRET);
+
+const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/userSchema");
 const Wallet = require("../models/walletSchema");
@@ -9,6 +13,7 @@ passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: "http://aesthe.site/auth/google/callback"
+
 },
     async (accessToken, refreshToken, profile, done) => {
         try {
