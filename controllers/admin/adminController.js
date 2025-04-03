@@ -40,7 +40,7 @@ const login = async (req, res) => {
 const loadDashboard = async (req, res) => {
     if (req.session.admin) {
         try {
-            res.render("dashboard");
+            res.render(""admin/dashboard"");
         } catch (error) {
             res.redirect("/errorpage");
         }
