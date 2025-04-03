@@ -10,7 +10,7 @@ const loadLogin = (req, res) => {
     if (!req.session.admin) {
         return res.render('admin-login', { message: null })
     }
-    return res.render('admin-login');
+    return res.render('admin');
 }
 
 // ---Admin login---
