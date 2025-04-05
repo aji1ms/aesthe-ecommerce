@@ -10,7 +10,7 @@ const loadLogin = (req, res) => {
     if (!req.session.admin) {
         return res.render('admin-login', { message: null })
     }
-    return res.redirect('/admin/dashboard');
+    return res.render("dashboard")
 }
 
 // ---Admin login---
@@ -40,7 +40,7 @@ const login = async (req, res) => {
 const loadDashboard = async (req, res) => {
     if (req.session.admin) {
         try {
-            res.render("admin/dashboard");
+            res.render("dashboard");
         } catch (error) {
             res.redirect("/errorpage");
         }
