@@ -12,8 +12,14 @@ const Category = require("../../models/categorySchema");
 const Order = require("../../models/orderSchema");
 
 
+
 const loadAdminDashboard = async (req, res) => {
     try {
+
+        if (!req.session.admin) {
+            res.redirect("/adminlogin")
+        }
+
         const filterType = req.query.filter || "monthly";
         const year = req.query.year || new Date().getFullYear();
         const month = req.query.month || new Date().getMonth() + 1;
@@ -33,7 +39,7 @@ const loadAdminDashboard = async (req, res) => {
         const topProducts = await getTopSellingProducts();
         const topCategories = await getTopSellingCategories();
 
-       
+
         const deliveredFilter = { status: "Delivered" };
 
         const totalOrders = await Order.countDocuments(deliveredFilter);
