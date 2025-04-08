@@ -19,10 +19,11 @@ const loadWallet = async (req, res) => {
 
 const walletHistory = async (req, res) => {
   try {
+    const userId = req.session.user;
 
-    const userId = req.session.userData._id;
+    const userObjectId = mongoose.Types.ObjectId(userId);
 
-    const transactions = await Transaction.find({ user: userId })
+    const transactions = await Transaction.find({ user: userObjectId })
       .populate("user", "name email")
       .sort({ date: -1 });
 
