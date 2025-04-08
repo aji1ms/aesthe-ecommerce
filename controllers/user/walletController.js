@@ -21,7 +21,10 @@ const walletHistory = async (req, res) => {
     try {
      
       const userId = req.session.user;
-  
+      
+      console.log("Session content:", req.session);
+      console.log("Session user:", req.session.user);
+      
       const transactions = await Transaction.find({ user: userId })
         .populate("user", "name email")
         .sort({ date: -1 });
@@ -34,9 +37,6 @@ const walletHistory = async (req, res) => {
     }
   };
   
-  
-
-
 const transactionDetails = async (req, res) => {
     try {
 
