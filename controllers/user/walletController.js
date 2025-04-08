@@ -19,11 +19,7 @@ const loadWallet = async (req, res) => {
 
 const walletHistory = async (req, res) => {
   try {
-    const userId = req.session.userData?._id; // Use userData instead of user
-
-    if (!userId) {
-      return res.redirect("/login");
-    }
+    const userId = req.session.user;
 
     const userObjectId = mongoose.Types.ObjectId(userId);
 
