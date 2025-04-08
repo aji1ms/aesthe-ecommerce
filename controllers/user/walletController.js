@@ -20,6 +20,9 @@ const loadWallet = async (req, res) => {
 const walletHistory = async (req, res) => {
     try {
      
+      console.log("==== walletHistory Controller HIT ====");
+
+
       const userId = req.session.user;
       
       console.log("Session content:", req.session);
