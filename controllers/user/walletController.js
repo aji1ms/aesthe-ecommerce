@@ -20,15 +20,17 @@ const loadWallet = async (req, res) => {
 const walletHistory = async (req, res) => {
     try {
 
-        const transactions = await Transaction.find()
+        const userId = req.session.user;
+        const transactions = await Transaction.find({ user: userId })
             .populate("user", "name email")
-            .sort({ date: -1 })
+            .sort({ date: -1 });
 
-        res.render("wallet-history", { transactions })
+        res.render("wallet-history", { transactions });
     } catch (error) {
         res.redirect("/pageNotFound");
     }
-}
+};
+
 
 const transactionDetails = async (req, res) => {
     try {
