@@ -19,14 +19,10 @@ const loadWallet = async (req, res) => {
 
 const walletHistory = async (req, res) => {
     try {
-      if (!req.session.user) {
-        return res.redirect("/login");
-      }
-  
+     
       const userId = req.session.user;
-      console.log("Session user:", userId);
   
-      const transactions = await Transaction.find({ user: userId })
+      const transactions = await Transaction.findOne({ user: userId })
         .populate("user", "name email")
         .sort({ date: -1 });
   
