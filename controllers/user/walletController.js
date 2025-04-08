@@ -20,7 +20,7 @@ const loadWallet = async (req, res) => {
 const walletHistory = async (req, res) => {
     try {
 
-        const userId = req.session.user;
+        const userId = req.session.user._id;
         const transactions = await Transaction.find({ user: userId })
             .populate("user", "name email")
             .sort({ date: -1 });
