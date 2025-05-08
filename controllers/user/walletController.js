@@ -16,23 +16,17 @@ const loadWallet = async (req, res) => {
   }
 }
 
-
 const walletHistory = async (req, res) => {
-  try {
-    const userId = req.session.user;
+    try {
+        const transactions = await Transaction.find()
+            .populate("user", "name email")
+            .sort({ date: -1 })
 
-    const userObjectId = mongoose.Types.ObjectId(userId);
-
-    const transactions = await Transaction.find({ user: userObjectId })
-      .populate("user", "name email")
-      .sort({ date: -1 });
-
-    res.render("wallet-history", { transactions });
-  } catch (error) {
-    console.error("Wallet history error:", error);
-    res.redirect("/pageNotFound");
-  }
-};
+        res.render("wallet-history", { transactions })
+    } catch (error) {
+        res.redirect("/pageNotFound");
+    }
+}
 
 const transactionDetails = async (req, res) => {
   try {
