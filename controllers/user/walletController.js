@@ -18,23 +18,19 @@ const loadWallet = async (req, res) => {
 
 const walletHistory = async (req, res) => {
   try {
-    const userId = req.session.user;
-   console.log('walletHistory – session.user =', req.session.user);
-   console.log('typeof session.user =', typeof req.session.user);
-    // now fetch transactions
-    const transactions = await Transaction.find({ user: userId })
+    const userId = mongoose.Types.ObjectId(req.session.user);
+    const transactions = await Transaction
+      .find({ user: userId })
       .populate('user', 'name email')
       .sort({ date: -1 })
       .lean();
 
-    console.log('→ walletHistory: found', transactions.length, 'transactions:', transactions.map(t => t.user));
-
-    res.render('wallet-history', { transactions });
+    return res.render('wallet-history', { transactions });
   } catch (err) {
-    console.error(err);
-    res.redirect('/pageNotFound');
+    console.error('walletHistory error:', err);
+    return res.redirect('/pageNotFound');
   }
-}
+};
 
 const transactionDetails = async (req, res) => {
   try {
