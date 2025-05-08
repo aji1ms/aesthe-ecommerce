@@ -17,17 +17,27 @@ const loadWallet = async (req, res) => {
 }
 
 const walletHistory = async (req, res) => {
-    try {
-        const userId = req.session.user; 
-        const transactions = await Transaction.find({ user: userId })
-            .populate("user", "name email")
-            .sort({ date: -1 });
-
-        res.render("wallet-history", { transactions });
-    } catch (error) {
-        res.redirect("/pageNotFound");
+  try {
+    const userId = req.session.user;
+    const wallet  = await Wallet.findOne({ user: userId }).lean();
+    if (!wallet) {
+      return res.status(404).render('pageNotFound');
     }
-}
+
+    const transactions = await Transaction.find({
+      _id: { $in: wallet.transactions }
+    })
+    .populate('user', 'name email')
+    .sort({ date: -1 })
+    .lean();
+
+    res.render('wallet-history', { transactions });
+  } catch (err) {
+    console.error(err);
+    res.redirect('/pageNotFound');
+  }
+};
+
 
 const transactionDetails = async (req, res) => {
   try {
