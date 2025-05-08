@@ -24,9 +24,7 @@ const walletHistory = async (req, res) => {
       return res.status(404).render('pageNotFound');
     }
 
-    const transactions = await Transaction.find({
-      _id: { $in: wallet.transactions }
-    })
+    const transactions = await Transaction.find({ user: userId })
     .populate('user', 'name email')
     .sort({ date: -1 })
     .lean();
