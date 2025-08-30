@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-   
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
@@ -167,10 +167,10 @@
                 <label>Password</label>
             </div>
             <div style="margin-top: 20px;">
-            <button>Sign in</button>
+                <button>Sign in</button>
             </div>
         </form>
-        <% if (message) { %>
+        <% if (typeof message !=="undefined" && message) { %>
             <div class="error-message" style="color: red;">
                 <%= message %>
             </div>

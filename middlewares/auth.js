@@ -11,7 +11,7 @@ const userAuth = (req, res, next) => {
                         _id: data._id,
                         name: data.name,
                         email: data.email,
-                        phone:data.phone,
+                        phone: data.phone,
                     };
                     next();
                 } else {

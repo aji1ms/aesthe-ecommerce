@@ -2,6 +2,7 @@ const Transaction = require("../../models/transactionSchema");
 const Wallet = require("../../models/walletSchema");
 const Razorpay = require("razorpay");
 const crypto = require('crypto');
+const mongoose = require("mongoose");
 
 const loadWallet = async (req, res) => {
   try {
@@ -18,7 +19,7 @@ const loadWallet = async (req, res) => {
 
 const walletHistory = async (req, res) => {
   try {
-    const userId = mongoose.Types.ObjectId(req.session.user);
+    const userId = new mongoose.Types.ObjectId(req.session.user);
     const transactions = await Transaction
       .find({ user: userId })
       .populate('user', 'name email')

@@ -15,8 +15,8 @@ const multer = require("multer");
 const storage = require("../helpers/multer");
 const uploads = multer({ storage: storage });
 
-// --Login Management--
-
+// --Login Management-- 
+ 
 router.get("/adminlogin", adminController.loadLogin);
 router.post("/admin-login", adminController.login);
 router.get('/', adminAuth, dashboardController.loadAdminDashboard);
@@ -24,11 +24,11 @@ router.get('/logout', adminController.logout)
 router.get("/errorpage", adminController.pageError)
 
 // --Customer Management--
-
+ 
 router.get("/users", adminAuth, customerController.customerInfo)
 router.get("/blockCustomer", adminAuth, customerController.customerBlocked);
-router.get("/unblockCustomer", adminAuth, customerController.customerUnblocked)
-
+router.get("/unblockCustomer", adminAuth, customerController.customerUnblocked) 
+ 
 // --Category Management--
 
 router.get("/category", adminAuth, categoryController.categoryInfo);

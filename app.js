@@ -9,7 +9,7 @@ const adminRouter = require("./routes/adminRouter");
 db();
 
 const app = express();
- 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
@@ -18,12 +18,12 @@ app.use(session({
     saveUninitialized: true,
     cookie: {
         secure: false,
-        httpOnly: true, 
+        httpOnly: true,
         maxAge: 72 * 60 * 60 * 1000
     }
 }))
 
-app.use((req, res, next) => {
+app.use((req, res, next) => { 
     res.locals.userData = req.session.userData || null;
     next();
 });
@@ -39,14 +39,14 @@ app.use((req, res, next) => {
 app.set("view engine", "ejs");
 app.set("views", [path.join(__dirname, "views/user"), path.join(__dirname, "views/admin")]);
 app.use(express.static(path.join(__dirname, "public")));
-
+ 
 app.use('/', userRouter);
-app.use('/admin',adminRouter);
+app.use('/admin', adminRouter); 
 
-const PORT = 3000 || process.env.PORT;
-app.listen(process.env.PORT, () => {  
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
     console.log("Server Running....");
-}); 
- 
- 
-module.exports = app;     
+});
+
+
+module.exports = app;      

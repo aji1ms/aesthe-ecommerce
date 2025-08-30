@@ -116,7 +116,7 @@ const getAllProducts = async (req, res) => {
                 totalPages: Math.ceil(count / limit),
                 cat: category,
                 brand: brand,
-
+                search,
             })
         } else {
             res.render("admin-error")

@@ -12,7 +12,7 @@ const bannerSchema = new mongoose.Schema({
     },
     description:{
         type:String,
-        required:true
+        required:true 
     }, 
     link:{
         type:String,

@@ -7,12 +7,11 @@ const Wallet = require("../models/walletSchema");
 
 
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientID: process.env.GOOGLE_CLIENT_ID, 
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://aesthe.site/auth/google/callback"
-
+    callbackURL: "http://localhost:3005/auth/google/callback",
 },
-    async (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {                        
         try {
             const email = profile.emails[0].value.toLowerCase();
             let user = await User.findOne({ email });
@@ -33,11 +32,11 @@ passport.use(new GoogleStrategy({
 
                 const newWallet = new Wallet({
                     user: user._id,
-                    balance: 0,  
-                    transactions: [], 
+                    balance: 0,
+                    transactions: [],
                 });
 
-                await newWallet.save(); 
+                await newWallet.save();
 
                 return done(null, user);
             }

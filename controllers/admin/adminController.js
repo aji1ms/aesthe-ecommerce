@@ -1,3 +1,4 @@
+
 const User = require("../../models/userSchema");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
@@ -40,7 +41,7 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
     try {
-        req.session.destroy(err => { 
+        req.session.destroy(err => {
             if (err) {
                 return res.redirect("/errorPage");
             }

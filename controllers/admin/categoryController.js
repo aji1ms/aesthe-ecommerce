@@ -22,7 +22,6 @@ const categoryInfo = async (req, res) => {
             .skip(skip)
             .limit(limit);
 
-
         const totalCategories = await Category.countDocuments(query);
         const totalPages = Math.ceil(totalCategories / limit);
 
@@ -44,8 +43,8 @@ const addCategory = async (req, res) => {
     const { name, description } = req.body;
     try {
 
-        const existingCategory = await Category.findOne({ 
-            name: { $regex: new RegExp("^" + name + "$", "i") } 
+        const existingCategory = await Category.findOne({
+            name: { $regex: new RegExp("^" + name + "$", "i") }
         });
         if (existingCategory) {
             return res.status(400).json({ error: "Category already exists" })
