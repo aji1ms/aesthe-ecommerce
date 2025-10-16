@@ -25,7 +25,7 @@ app.use(session({
     }
 }))
 
-app.use((req, res, next) => { 
+app.use((req, res, next) => {
     res.locals.userData = req.session.userData || null;
     next();
 });
@@ -35,17 +35,18 @@ app.use(passport.session());
 
 app.use((req, res, next) => {
     res.set('cache-control', 'no-store')
-    next() 
+    next()
 })
 
+app.use(compression()); 
 app.set("view engine", "ejs");
 app.set("views", [path.join(__dirname, "views/user"), path.join(__dirname, "views/admin")]);
 app.use(compression());
 app.use(express.static(path.join(__dirname, "public")));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
- 
+
 app.use('/', userRouter);
-app.use('/admin', adminRouter); 
+app.use('/admin', adminRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
