@@ -1,7 +1,6 @@
 {
   "name": "aesthe",
   "version": "1.0.0",
-  "type": "module",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -27,5 +26,8 @@
     "sharp": "^0.33.5",
     "sweetalert2": "^11.16.1",
     "uuid": "^11.1.0"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
