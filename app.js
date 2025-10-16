@@ -6,7 +6,7 @@ const passport = require("./config/passport");
 const db = require("./config/db");
 const userRouter = require("./routes/userRouter");
 const adminRouter = require("./routes/adminRouter");
-import compression from 'compression';
+const compression = require('compression');
 
 db();
 
@@ -38,7 +38,7 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use(compression()); 
+app.use(compression());
 app.set("view engine", "ejs");
 app.set("views", [path.join(__dirname, "views/user"), path.join(__dirname, "views/admin")]);
 app.use(compression());
