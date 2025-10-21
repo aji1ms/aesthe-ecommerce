@@ -9,7 +9,7 @@ const Wallet = require("../models/walletSchema");
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID, 
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3005/auth/google/callback",
+    callbackURL: "https://aesthe.site/auth/google/callback",
 },
     async (accessToken, refreshToken, profile, done) => {                        
         try {
