@@ -1122,7 +1122,6 @@
                     body: JSON.stringify(formData)
                 });
                 const result = await response.json();
-                console.log("Wallet Order Response:", result);
                 if (!response.ok) {
                     Swal.fire({
                         icon: 'error',

@@ -680,7 +680,6 @@
                     contentType: 'application/json',  
                     data: JSON.stringify({ productId: productId }),
                     success: function (response) {
-                        console.log("AJAX success response:", response);
                         if (response.status) {
                             Swal.fire({
                                 title: "Added to wishlist",
