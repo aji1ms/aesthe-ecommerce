@@ -4,7 +4,7 @@ const {
     getYearlySales,
     getWeeklySales,
     getTopSellingProducts,
-    getTopSellingCategories, 
+    getTopSellingCategories,
 } = require("../../helpers/aggregation");
 const User = require("../../models/userSchema");
 const Product = require("../../models/productSchema");
@@ -49,13 +49,13 @@ const loadAdminDashboard = async (req, res) => {
         const totalRevenue = totalRevenueObj.length ? totalRevenueObj[0].total : 0;
 
         const totalCustomers = await User.countDocuments({ isAdmin: false });
-        const totalCategories = await Category.countDocuments(); 
+        const totalCategories = await Category.countDocuments();
 
-        res.render("dashboard", { 
+        res.render("dashboard", {
             chartData,
             topProducts,
             topCategories,
-            filterType, 
+            filterType,
             year,
             month,
             totalOrders,
