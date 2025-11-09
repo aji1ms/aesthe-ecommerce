@@ -8,7 +8,7 @@ const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const { session } = require("passport");
 const env = require("dotenv").config();
-const resend = require("resend");
+const { Resend } = require('resend');
 
 // ---Home page---
 
@@ -66,39 +66,13 @@ function generateOtp() {
 }
 
 async function sendVerificationEmail(email, otp) {
-    // try {
-    //     const transporter = nodemailer.createTransport({
-    //         service: 'gmail',
-    //         port: 587,
-    //         secure: false,
-    //         requireTLS: true,
-    //         auth: {
-    //             user: process.env.NODEMAILER_EMAIL,
-    //             pass: process.env.NODEMAILER_PASSWORD,
-    //         }
-    //     })
-
-    //     const info = await transporter.sendMail({
-    //         from: process.env.NODEMAILER_EMAIL,
-    //         to: email,
-    //         subject: "Verify your account",
-    //         text: `Your OTP is ${otp}`,
-    //         html: `<b>Your OTP: ${otp}</b>`,
-    //     })
-
-    //     return info.accepted.length > 0;
-
-    // } catch (error) {
-    //     return false;
-    // }
-
-    async function sendVerificationEmail(email, otp) {
-        try {
-            const data = await resend.emails.send({
-                from: process.env.NODEMAILER_EMAIL,
-                to: email,
-                subject: 'Verify your AESTHE account',
-                html: `
+    try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        const data = await resend.emails.send({
+            from: "AESTHE <no-reply@aesthe.site>",
+            to: email,
+            subject: 'Verify your AESTHE account',
+            html: `
         <div style="font-family: Arial, sans-serif; color: #333;">
           <h2>Welcome to AESTHE 👗</h2>
           <p>Use the following OTP to verify your email:</p>
@@ -106,14 +80,11 @@ async function sendVerificationEmail(email, otp) {
           <p>This OTP is valid for 1 minute.</p>
         </div>
       `,
-            });
+        });
 
-            console.log("Resend response:", data);
-            return true;
-        } catch (error) {
-            console.error("Resend error:", error);
-            return false;
-        }
+        return true;
+    } catch (error) {
+        return false;
     }
 }
 
