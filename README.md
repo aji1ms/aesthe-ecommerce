@@ -47,26 +47,25 @@ Built using the **MERN stack**, it delivers a smooth shopping experience with a 
 
 ## 📁 Project Structure
 
+```bash
 AESTHE-ECOMMERCE/
- |   ├── config/
- │   ├── controllers/
- │   ├── helpers/
- │   ├── middlewares/
- │   ├── models/
- │   ├── public/
- │   ├── routes/
- │   ├── views/
- |__ server.js
- |
- └── README.md
+│
+├── config/
+├── controllers/
+├── helpers/
+├── middlewares/
+├── models/
+├── public/
+├── routes/
+├── views/
+│
+├── server.js
+└── README.md
 
----
+🚀 How to Run the Project
 
-## 🚀 How to Run the Project
-
-### 1️⃣ Clone the Repository
-```sh
-git clone https://github.com/aji1ms/aesthe-ecommerce.git 
+1️⃣ Clone the Repository
+git clone https://github.com/aji1ms/aesthe-ecommerce.git
 
 2️⃣ Install Backend Packages
 npm install
