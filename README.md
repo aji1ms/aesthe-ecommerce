@@ -1,27 +1,112 @@
-🛍️ AESTHE - Minimal Fashion E-Commerce Website
+🛍️ AESTHE – Minimal Fashion E-Commerce Platform
 
-AESTHE is a minimal and modern fashion e-commerce platform inspired by brands like H&M and ZARA. Built using the MERN stack, it offers a seamless shopping experience with a clean UI and essential e-commerce features.
+AESTHE is a modern, minimalistic fashion e-commerce website inspired by brands like H&M and ZARA.
+Built using the MERN stack, it delivers a smooth shopping experience with a clean design, fast performance, and essential e-commerce functionalities.
 
-🚀 Features
-🔐 User Authentication (Sign up, Login)
+✨ Features
+👤 User Features
 
-🛒 Add to Cart & Checkout
+🔐 User Authentication (Signup, Login, JWT-based)
 
-📦 Product Listing with Filters (Category, Price, etc.)
+🛒 Add to Cart
 
-🔍 Product Search
-
-🖼️ Responsive & Minimal UI
+💳 Checkout Flow
 
 🧾 Order Summary & Confirmation
 
-⚙️ Admin Panel 
+🔍 Search Products
+
+🎛️ Product Filters (Category, Price, etc.)
+
+📱 Fully Responsive UI
+
+❤️ Minimal, modern, fashion-focused design
+
+🛠️ Admin Features
+
+📦 Manage Products (Add, Edit, Delete)
+
+📊 View Orders
+
+👤 Manage Users
+
+🔧 Secure Admin Panel Access
 
 🧰 Tech Stack
-Frontend: HTML, CSS, JavaScript
+Frontend
 
-Backend: Node.js, Express.js
+HTML
 
-Database: MongoDB
+CSS
 
-Version Control: Git & GitHub
+JavaScript
+
+Backend
+
+Node.js
+
+Express.js
+
+Database
+
+MongoDB
+
+Others
+
+Git & GitHub for Version Control
+
+REST API Architecture
+
+📁 Project Structure (Sample)
+AESTHE-ECOMMERCE/
+ |   ├── config/
+ │   ├── controllers/
+ │   ├── helpers/
+ │   ├── middlewares/
+ │   ├── models/
+ │   ├── public/
+ │   ├── routes/
+ │   ├── views/
+ |__ server.js
+ |
+ └── README.md
+
+🚀 How to Run the Project
+1️⃣ Clone the Repository
+git clone https://github.com/aji1ms/aesthe-ecommerce.git
+cd aesthe
+
+2️⃣ Install Backend Packages
+npm install
+
+3️⃣ Start Backend Server
+npm start
+
+🎯 Project Goals
+
+Build a real-world MERN e-commerce platform
+
+Create a clean & minimal fashion brand identity
+
+Learn UI/UX essentials
+
+Understand production-level backend structure
+
+📦 Future Enhancements
+
+🧾 Invoice Download (PDF)
+
+💬 Reviews & Ratings
+
+🛍️ Wishlist
+
+📧 Email Notifications
+
+💳 Payment Gateway (Razorpay)
+
+📦 Delivery Tracking
+
+🌟 About the Project
+
+AESTHE is built with the goal of understanding how fashion e-commerce platforms work in real life.
+Minimal design, clean UI, and essential core features make it perfect for MERN learning and portfolio showcase.
