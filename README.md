@@ -1,63 +1,52 @@
-🛍️ AESTHE – Minimal Fashion E-Commerce Platform
+# 🛍️ AESTHE – Minimal Fashion E-Commerce Platform
 
-AESTHE is a modern, minimalistic fashion e-commerce website inspired by brands like H&M and ZARA.
-Built using the MERN stack, it delivers a smooth shopping experience with a clean design, fast performance, and essential e-commerce functionalities.
+AESTHE is a **modern, minimalistic fashion e-commerce website** inspired by brands like **H&M** and **ZARA**.  
+Built using the **MERN stack**, it delivers a smooth shopping experience with a clean design, fast performance, and essential e-commerce functionalities.
 
-✨ Features
-👤 User Features
+---
 
-🔐 User Authentication (Signup, Login, JWT-based)
+## ✨ Features
 
-🛒 Add to Cart
+### 👤 User Features
+- 🔐 **User Authentication** (Signup, Login, JWT-based)
+- 🛒 **Add to Cart**
+- 💳 **Checkout Flow**
+- 🧾 **Order Summary & Confirmation**
+- 🔍 **Search Products**
+- 🎛️ **Product Filters** (Category, Price, etc.)
+- 📱 **Fully Responsive UI**
+- ❤️ **Minimal, modern, fashion-focused design**
 
-💳 Checkout Flow
+### 🛠️ Admin Features
+- 📦 Manage Products (Add, Edit, Delete)
+- 📊 View Orders
+- 👤 Manage Users
+- 🔧 Secure Admin Panel Access
 
-🧾 Order Summary & Confirmation
+---
 
-🔍 Search Products
+## 🧰 Tech Stack
 
-🎛️ Product Filters (Category, Price, etc.)
+### Frontend
+- HTML  
+- CSS  
+- JavaScript  
 
-📱 Fully Responsive UI
+### Backend
+- Node.js  
+- Express.js  
 
-❤️ Minimal, modern, fashion-focused design
+### Database
+- MongoDB  
 
-🛠️ Admin Features
+### Others
+- Git & GitHub for Version Control  
+- REST API Architecture  
 
-📦 Manage Products (Add, Edit, Delete)
+---
 
-📊 View Orders
+## 📁 Project Structure
 
-👤 Manage Users
-
-🔧 Secure Admin Panel Access
-
-🧰 Tech Stack
-Frontend
-
-HTML
-
-CSS
-
-JavaScript
-
-Backend
-
-Node.js
-
-Express.js
-
-Database
-
-MongoDB
-
-Others
-
-Git & GitHub for Version Control
-
-REST API Architecture
-
-📁 Project Structure (Sample)
 AESTHE-ECOMMERCE/
  |   ├── config/
  │   ├── controllers/
@@ -71,10 +60,13 @@ AESTHE-ECOMMERCE/
  |
  └── README.md
 
-🚀 How to Run the Project
-1️⃣ Clone the Repository
-git clone https://github.com/aji1ms/aesthe-ecommerce.git
-cd aesthe
+---
+
+## 🚀 How to Run the Project
+
+### 1️⃣ Clone the Repository
+```sh
+git clone https://github.com/aji1ms/aesthe-ecommerce.git 
 
 2️⃣ Install Backend Packages
 npm install
@@ -105,8 +97,3 @@ Understand production-level backend structure
 💳 Payment Gateway (Razorpay)
 
 📦 Delivery Tracking
-
-🌟 About the Project
-
-AESTHE is built with the goal of understanding how fashion e-commerce platforms work in real life.
-Minimal design, clean UI, and essential core features make it perfect for MERN learning and portfolio showcase.
